@@ -7,13 +7,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.PathViewer"
-    tools:showIn="@layout/activity_data_base_values">
+    tools:context=".activities.PathEditor">
 
-    <ListView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lista"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/button_draw_path"
+        android:id="@+id/buttonCreateInPath"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view"
+        android:id="@+id/buttonViewInPath"
+        android:layout_alignTop="@+id/buttonCreateInPath"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

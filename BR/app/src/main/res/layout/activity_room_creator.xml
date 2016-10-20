@@ -7,13 +7,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.PathViewer"
-    tools:showIn="@layout/activity_data_base_values">
+    tools:context=".activities.RoomCreator">
 
-    <ListView
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextRoomName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lista"
-        android:layout_alignParentTop="true"
+        android:text="Confirm"
+        android:id="@+id/buttonConfirm"
+        android:layout_below="@+id/editTextRoomName"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

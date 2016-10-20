@@ -7,29 +7,30 @@ public class Record {
 
     private int id;
     private String name;
+    private String address;
     private int rssi;
     private long time;
-    private int direction;
+    private int edgeNumber;
 
     public Record()
     {
     }
 
-    public Record(int id,String name,int rssi, long time, int direction)
+    public Record(int id,String name,int rssi, long time, int edgeNumber)
     {
         this.id=id;
         this.name=name;
         this.rssi=rssi;
         this.time=time;
-        this.direction=direction;
+        this.edgeNumber=edgeNumber;
     }
 
-    public Record(String name,int rssi, long time, int direction)
+    public Record(String name,int rssi, long time, int edgeNumber)
     {
         this.name=name;
         this.rssi=rssi;
         this.time=time;
-        this.direction=direction;
+        this.edgeNumber=edgeNumber;
     }
 
     public void setId(int id) {
@@ -44,9 +45,9 @@ public class Record {
         this.rssi = rssi;
     }
 
-    public void setDirection(int direction)
+    public void setEdgeNumber(int edgeNumber)
     {
-        this.direction = direction;
+        this.edgeNumber = edgeNumber;
     }
 
     public void setTime(long time) {this.time = time;}
@@ -63,7 +64,7 @@ public class Record {
         return name;
     }
 
-    public int getDirection(){
-        return direction;
+    public int getEdgeNumber(){
+        return edgeNumber;
     }
 }

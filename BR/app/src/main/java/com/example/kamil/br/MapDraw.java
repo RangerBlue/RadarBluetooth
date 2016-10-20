@@ -8,9 +8,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.example.kamil.br.database.model.PathData;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by kamil on 07.05.16.
@@ -18,16 +19,33 @@ import java.util.Random;
 public class MapDraw extends View
 {
 
-    public MapDraw(Context context) {
+    private static ArrayList<PathData> data;
+    private Paint p;
+    private static int number;
+    private String TAG = "MapDraw";
+
+
+
+    public void setData(ArrayList<PathData> data)
+    {
+        this.data = data;
+    }
+    public void setNumber(int number){this.number=number;}
+
+    public MapDraw(Context context)
+    {
         super(context);
+        setWillNotDraw(false);
     }
 
     public MapDraw(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setWillNotDraw(false);
     }
 
     public MapDraw(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setWillNotDraw(false);
     }
 
     public int[] getCornerTime(List<Record> elements)//zwraca 4 wartosci czasu w narożnikach
@@ -38,7 +56,7 @@ public class MapDraw extends View
         int j=1;
         while( i<elements.size() )
         {
-            if(elements.get(i).getDirection() == 0)   //jesli przerwa
+            if(elements.get(i).getEdgeNumber() == 0)   //jesli przerwa
             {
                 corners[j] = i;
                 j++;
@@ -107,8 +125,8 @@ public class MapDraw extends View
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void dispatchDraw(Canvas canvas) {
+        /* warzywne obliczenia
         Random random = new Random();
         //-26 blisko, -100 daleko
         DBHandler db = new DBHandler(getContext());
@@ -260,10 +278,81 @@ public class MapDraw extends View
         p.setStrokeWidth(5);
         p.setColor(Color.BLUE);
         canvas.drawRect(2,2,szerEkranu-3,wysEkranu-3, p);
-
         super.onDraw(canvas);
+        */
+
+
+
+
+        p = new Paint();
+        p.setAntiAlias(true);
+        p.setStyle(Paint.Style.FILL);
+        p.setStrokeWidth(1);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.BLUE);
+
+        //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
+        int ratio = 44;
+        int radius = 3;
+        //rysowanie punktów
+        for(PathData e : data )
+        {
+            p.setColor(Color.RED);
+            canvas.drawCircle(e.getP1()*ratio,e.getP2Reverse()*ratio,radius,p);
+        }
+
+
+        //rysowanie lini, od pierwszej do ostatniej
+        Log.d(TAG, "Number "+Integer.toString(number));
+        p.setColor(Color.BLUE);
+        for(int i = 0 ; i < data.size()-1; i++)
+        {
+            if(data.get(i).getEdgeNumber()==number)
+            {
+                p.setColor(Color.YELLOW);
+                canvas.drawLine(data.get(i).getP1()*ratio,data.get(i).getP2Reverse()*ratio,data.get(i+1).getP1()*ratio,data.get(i+1).getP2Reverse()*ratio,p);
+            }
+            else
+            {
+                p.setColor(Color.BLUE);
+                canvas.drawLine(data.get(i).getP1()*ratio,data.get(i).getP2Reverse()*ratio,data.get(i+1).getP1()*ratio,data.get(i+1).getP2Reverse()*ratio,p);
+            }
+
+        }
+
+        //rysowanie lini ostatniej z pierwszą
+        if(data.get(data.size()-1).getEdgeNumber()==number)
+        {
+            p.setColor(Color.YELLOW);
+            canvas.drawLine(data.get(data.size()-1).getP1()*ratio,data.get(data.size()-1).getP2Reverse()*ratio,data.get(0).getP1()*ratio,data.get(0).getP2Reverse()*ratio,p);
+        }
+        else
+        {
+            p.setColor(Color.BLUE);
+            canvas.drawLine(data.get(data.size()-1).getP1()*ratio,data.get(data.size()-1).getP2Reverse()*ratio,data.get(0).getP1()*ratio,data.get(0).getP2Reverse()*ratio,p);
+        }
+
+
+        //canvas.drawLine(10,10,122,13,p);
+        //canvas.drawCircle(122,13,2,p);
+
+
+
+
+        super.dispatchDraw(canvas);
+
     }
 
 
 
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 }

@@ -1,6 +1,7 @@
-package com.example.kamil.br;
+package com.example.kamil.br.activities;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.List;
+import com.example.kamil.br.R;
+import com.example.kamil.br.database.DBHandler;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static Context context;
     private String LOG_TAG;
     private int REQUEST_ENABLE_BT = 99; // Any positive integer should work.
     private BluetoothAdapter mBluetoothAdapter;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonEnableBT = (Button) findViewById(R.id.button_enableBT);
         buttonScanBT = (Button) findViewById(R.id.button_scanBT);
-        buttonData = (Button) findViewById(R.id.button_data) ;
+        buttonData = (Button) findViewById(R.id.button_edit_room) ;
         buttonPath = (Button) findViewById(R.id.button_path);
 
         buttonEnableBT.setOnClickListener(new View.OnClickListener()
@@ -64,9 +67,17 @@ public class MainActivity extends AppCompatActivity {
 
         buttonData.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                editRoom();
+            }
+        });
+
+        /*
+        buttonData.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v)
             {
-                int i=0;
+               int i=0;
                 List<Record> elements = db.getAll();
                 for (Record r : elements)
                 {
@@ -89,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        */
     }//end onCreate
 
     private void enableBluetoothOnDevice()
@@ -133,20 +146,29 @@ public class MainActivity extends AppCompatActivity {
     private void scanForBluetoothDevices()
     {
         // Start this on a new activity without passing any data to it
-        Intent intent = new Intent(this, FoundBTDevices.class);
+        Intent intent = new Intent(this, BluetoothFinder.class);
         startActivity(intent);
     }
 
     private void showDatabase()
     {
-        Intent intent = new Intent(this, DataBaseValues.class);
+        Intent intent = new Intent(this, PathViewer.class);
         startActivity(intent);
     }
 
     private void drawPath()
     {
-        Intent intent = new Intent(this, CreatePath.class);
+        Intent intent = new Intent(this, PathEditor.class);
         startActivity(intent);
     }
 
+    private void editRoom()
+    {
+        Intent intent = new Intent(this, RoomEditor.class);
+        startActivity(intent);
+    }
+
+    public static Context getContext() {
+        return context;
+    }
 }
