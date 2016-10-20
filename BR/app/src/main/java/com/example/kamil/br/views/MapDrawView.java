@@ -31,6 +31,9 @@ public class MapDrawView extends View {
     private int radius;
     private static String TAG = MapDrawView.class.getSimpleName();
 
+    //ratio ustawione na pałe
+    private float walkRatio = 0.1f;
+
 
 
     public MapDrawView(Context context) {
@@ -197,9 +200,14 @@ public class MapDrawView extends View {
     private void drawMeasure(Canvas canvas, PathData record, int value)
     {
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
-        float length = BluetoothDistance.getDistance(value);
+        float length = getConvertedValue(BluetoothDistance.getDistance(value));
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,length*ratio,p);
 
+    }
+
+    private float getConvertedValue(float result)
+    {
+        return result/walkRatio;
     }
 
     /**
