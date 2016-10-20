@@ -1,6 +1,5 @@
 package com.example.kamil.br.activities;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +9,12 @@ import android.widget.ListView;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.RoomViewerAdapter;
-import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class PathChooseRoom extends AppCompatActivity {
+public class BluetoothResultChooseRoom extends AppCompatActivity {
 
     private ListView list;
     private RoomViewerAdapter adapter;
@@ -24,7 +22,7 @@ public class PathChooseRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_path_choose_room);
+        setContentView(R.layout.activity_bluetooth_result_choose_room);
 
         list = (ListView) findViewById(R.id.listViewPathChooseRoom);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
@@ -39,7 +37,7 @@ public class PathChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(PathChooseRoom.this, PathCreator.class);
+                Intent intent = new Intent(BluetoothResultChooseRoom.this, BluetoothResultCreate.class);
                 intent.putExtra("id", idToPass);
                 startActivity(intent);
             }

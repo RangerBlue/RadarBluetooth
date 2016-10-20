@@ -30,12 +30,13 @@ public class PathCreator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_creator);
-
+        PathData.setGridCells(gridsCells);
         //odebranie paczki
         idRooms = getIntent().getIntExtra("id",-1);
+        PathData.setRoomNumber(idRooms);
 
-        position = new ArrayList<Integer>();
-        pathData = new ArrayList<PathData>();
+        position = new ArrayList<>();
+        pathData = new ArrayList<>();
         drawGrid();
 
 
@@ -44,7 +45,7 @@ public class PathCreator extends AppCompatActivity {
         przycisk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculateFunctions(position, pathData);
+                PathData.calculateFunctions(position, pathData, getApplicationContext() );
                 Intent intent = new Intent(PathCreator.this, PathViewer.class);
                 intent.putExtra("drawData", pathData);
                 startActivity(intent);
@@ -85,95 +86,7 @@ public class PathCreator extends AppCompatActivity {
         }
     }
 
-    //obliczanie funkcji liniowych
-    public void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target) {
-        int listLenght = source.size();
-        //zamiana numeru i kolejnosci dwóch pól(punktów) na funkcje liniową przechodzącą przez 2 punkty
-        for (int i = 0; i < listLenght - 1; i++) {
-            target.add(positionAndOrderToCoefficients(source.get(i), source.get(i + 1)));
-        }
-        //ostatni punkt z pierwszym
-        target.add(positionAndOrderToCoefficients(source.get(listLenght - 1), source.get(0)));
 
-
-        PathDataController pathDataController = new PathDataController();
-
-        //wypisanie w logu calej listy funkcji
-        int i=0;
-        for (PathData item : pathData)
-        {
-            //dodanie klucza obcego oraz edgeNumber do obiektu room
-            item.setEdgeNumber(i); i++;
-            item.setIdRooms(idRooms);
-            //umieszczenie wszystkich danych w bazie
-
-            pathDataController.insert(item, getApplicationContext());
-
-            Log.d("Dane: : ",
-                    "a:" + Float.toString(item.getA()) +
-                            "|b:" + Float.toString(item.getB()) +
-                            "|x:" + Float.toString(item.getX()) +
-                            "|linear:" + Float.toString(item.getIsIfLinear()) +
-                            "|p1:" + Float.toString(item.getP1()) +
-                            "|p2:" + Float.toString(item.getP2()) +
-                            "|edgeNumber:" + Integer.toString(item.getEdgeNumber())+
-                            "|idRooms:" + Integer.toString(item.getIdRooms()));
-        }
-    }
-
-    //zamienia pozycje dwóch pól na współczynniki funkcji liniowej
-    public PathData positionAndOrderToCoefficients(int position1, int position2) {
-        Log.d("Positions", Integer.toString(position1) + ", " + Integer.toString(position2));
-        int xposition1 = getX(position1);
-        int yposition1 = getY(xposition1, position1);
-        int xposition2 = getX(position2);
-        int yposition2 = getY(xposition2, position2);
-
-        //sprawdzanie czy funkcja jest "pionowa"
-        if (xposition1 == xposition2) {
-            PathData result = new PathData(xposition1, xposition1, yposition1);
-            return result;
-        } else {
-            //wzþr na funkcję przechodzącą przez 2 punkty
-            float a = (yposition1 - yposition2) / (float) (xposition1 - xposition2);
-            float b = (yposition1 - a * xposition1);
-            PathData result = new PathData(a, b, xposition1, yposition1);
-
-            return result;
-        }
-
-    }
-
-    //oblicza współrzędną na osi x
-    public int getX(int order) {
-        int divider = gridsCells;
-        int step = (int) Math.sqrt(gridsCells);
-
-        if (order == 0) {
-            return 0;
-        } else if (order < 10) {
-            return order;
-        } else {
-            while ((order % divider) > step) {
-                divider -= step;
-            }
-
-            return order - divider;
-        }
-
-
-    }
-
-    //oblicza współrzedna na osi y
-    public int getY(int xposition, int order) {
-        int step = (int) Math.sqrt(gridsCells);
-        if (order < step - 1) {
-            return 0;
-        } else {
-            //pobranie pierwszej cyfry z integera
-            return -Integer.parseInt(Integer.toString(order - xposition).substring(0, 1));
-        }
-    }
 
 
 }

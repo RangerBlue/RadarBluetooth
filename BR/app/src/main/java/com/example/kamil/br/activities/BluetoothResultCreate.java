@@ -22,7 +22,7 @@ import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;
 
-public class BluetoothFinder extends AppCompatActivity
+public class BluetoothResultCreate extends AppCompatActivity
 {
     //https://developer.android.com/guide/topics/connectivity/bluetooth.html
     /*
@@ -34,7 +34,6 @@ public class BluetoothFinder extends AppCompatActivity
      */
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
-    private String direction;
     private DBHandler db;
     private Button buttonSearch;
     private Button buttonCorner;
@@ -50,19 +49,8 @@ public class BluetoothFinder extends AppCompatActivity
         db = new DBHandler(this);
 
         arrayOfFoundBTDevices = new ArrayList<>();
-      /*  List<Record> elements = db.getAll();
-        long time = System.currentTimeMillis();
-        if(elements.isEmpty()==true)
-        {
-            db.insert(new Record(null,0,time,0));
-           // Log.d("Sprawdzanie wstawiania true",);
-        }
-        */
-
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //Log.d("Wywołanie funkcji", "Wywoływanie display ..");
-        //displayListOfFoundDevices();
 
         buttonSearch = (Button) findViewById(R.id.button_search);
         buttonSearch.setOnClickListener(new View.OnClickListener() {

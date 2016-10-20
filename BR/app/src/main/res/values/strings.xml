@@ -6,9 +6,10 @@
     <string name="button_view">View</string>
     <string name="button_draw_path">Draw path</string>
     <string name="button_edit_path">Path</string>
-    <string name="text_view_list_path_data_choose_room_header">Choose one from below</string>
+    <string name="text_view_list_choose_room_header">Choose one from below</string>
     <string name="progres_scanning">Scanning...</string>
     <string name="next_edge">Next edge</string>
     <string name="stop">Stop</string>
     <string name="start">Start</string>
+    <string name="save">Save</string>
 </resources>

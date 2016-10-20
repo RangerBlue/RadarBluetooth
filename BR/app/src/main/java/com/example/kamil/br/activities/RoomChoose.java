@@ -15,7 +15,7 @@ import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class RoomViewer extends AppCompatActivity {
+public class RoomChoose extends AppCompatActivity {
 
     private ListView list;
     private RoomViewerAdapter adapter;
@@ -38,7 +38,7 @@ public class RoomViewer extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(RoomViewer.this, PathViewer.class);
+                Intent intent = new Intent(RoomChoose.this, PathViewer.class);
                 intent.putExtra("id", idToPass);
                 startActivity(intent);
             }

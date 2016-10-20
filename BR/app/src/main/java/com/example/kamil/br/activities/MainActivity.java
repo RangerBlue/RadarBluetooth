@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     private void scanForBluetoothDevices()
     {
         // Start this on a new activity without passing any data to it
-        Intent intent = new Intent(this, BluetoothFinder.class);
+        Intent intent = new Intent(this, BluetoothResultCreate.class);
         startActivity(intent);
     }
 

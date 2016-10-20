@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -21,15 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.BluetoothFinder" />
+        <activity android:name=".activities.BluetoothResultCreate" />
         <activity android:name=".activities.PathViewer" />
         <activity android:name=".activities.PathCreator" />
         <activity android:name=".activities.RoomCreator" />
         <activity android:name=".activities.CreateRoom" />
-        <activity android:name=".activities.RoomViewer" />
+        <activity android:name=".activities.RoomChoose" />
         <activity android:name=".activities.RoomEditor" />
         <activity android:name=".activities.PathEditor" />
-        <activity android:name=".activities.PathChooseRoom"></activity>
+        <activity android:name=".activities.PathChooseRoom" />
+        <activity android:name=".activities.BluetoothResultEditor" />
+        <activity android:name=".activities.BluetoothResultChooseRoom"></activity>
     </application>
 
 </manifest>

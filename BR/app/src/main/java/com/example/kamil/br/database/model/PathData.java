@@ -1,13 +1,16 @@
 package com.example.kamil.br.database.model;
 
+import android.content.Context;
 import android.nfc.Tag;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.kamil.br.QuadraticFunction;
+import com.example.kamil.br.database.controller.PathDataController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by kamil on 30.07.16.
@@ -41,6 +44,26 @@ public class PathData implements Serializable
     //stosunek dlugosc 0 odcinka/czas trwania pierwszego odcinka
     private static float ratio;
 
+    private static int gridCells;
+
+    private static int roomNumber;
+
+    public static int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public static void setRoomNumber(int roomNumber) {
+        PathData.roomNumber = roomNumber;
+    }
+
+    public static int getGridCells() {
+        return gridCells;
+    }
+
+    public static void setGridCells(int gridCells) {
+        PathData.gridCells = gridCells;
+    }
+
     public static float getRatio() {
         return ratio;
     }
@@ -59,11 +82,11 @@ public class PathData implements Serializable
 
 
 
-    public int getIdRooms() {
+    public  int getIdRooms() {
         return idRooms;
     }
 
-    public void setIdRooms(int idRooms) {
+    public  void setIdRooms(int idRooms) {
         this.idRooms = idRooms;
     }
 
@@ -116,17 +139,20 @@ public class PathData implements Serializable
         this.x = x;
     }
 
-    public PathData(float a, float b, int p1, int p2) {
+    public PathData(float a, float b, float p1, float p2) {
         this.a = a;
         this.b = b;
+        this.x = 0;
         this.p1 = p1;
         this.p2 = p2;
         this.ifLinear=1;
     }
 
-    public PathData(float x, int p1, int p2) {
-        this.x = x;
-        this.p1 = p1;
+    public PathData(float xp1, float p2) {
+        this.a = 0;
+        this.b = 0;
+        this.x = xp1;
+        this.p1 = xp1;
         this.p2 = p2;
         this.ifLinear=0;
     }
@@ -147,6 +173,14 @@ public class PathData implements Serializable
         this.b = b;
     }
 
+    /**
+     * Ustawia nowy punkt w drugiej wartości w zależności w jakiej odległości
+     * jest od punktu w wartości pierwszej, uwzględniając fukcje przechodzącą
+     * przez te dwa punkty
+     * @param time czas w ms ile zajmuje "przejście" po wybranej krawędzi
+     * @param firstValue pierwszy rekord do przetworzenia
+     * @param secondValue drugi rekord do przetworzenia
+     */
     public static void setNewPoint(long time, PathData firstValue, PathData secondValue )
     {
         float oldlenght = getSegmentLenght(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG+" oldLength",Float.toString(oldlenght) );
@@ -225,9 +259,6 @@ public class PathData implements Serializable
     }
 
 
-
-
-
     //klasa wewnętrzna
     public static class Point
     {
@@ -261,5 +292,135 @@ public class PathData implements Serializable
             return (point1.getLength()<point2.getLength()) ? point1:point2;
         }
     }
+
+
+
+    //obliczanie funkcji liniowych
+    public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, Context applicationContext) {
+        int listLenght = source.size();
+        //zamiana numeru i kolejnosci dwóch pól(punktów) na funkcje liniową przechodzącą przez 2 punkty
+        for (int i = 0; i < listLenght - 1; i++) {
+            target.add(positionAndOrderToCoefficients(source.get(i), source.get(i + 1)));
+        }
+        //ostatni punkt z pierwszym
+        target.add(positionAndOrderToCoefficients(source.get(listLenght - 1), source.get(0)));
+
+
+        PathDataController pathDataController = new PathDataController();
+
+        //wypisanie w logu calej listy funkcji
+        int i=0;
+        for (PathData item : target)
+        {
+            //dodanie klucza obcego oraz edgeNumber do obiektu room
+            item.setEdgeNumber(i); i++;
+            item.setIdRooms(roomNumber);
+            //umieszczenie wszystkich danych w bazie
+
+            pathDataController.insert(item, applicationContext);
+
+            Log.d("Dane: : ",
+                    "a:" + Float.toString(item.getA()) +
+                            "|b:" + Float.toString(item.getB()) +
+                            "|x:" + Float.toString(item.getX()) +
+                            "|linear:" + Float.toString(item.getIsIfLinear()) +
+                            "|p1:" + Float.toString(item.getP1()) +
+                            "|p2:" + Float.toString(item.getP2()) +
+                            "|edgeNumber:" + Integer.toString(item.getEdgeNumber())+
+                            "|idRooms:" + Integer.toString(item.getIdRooms()));
+        }
+    }
+
+    //zamienia pozycje dwóch pól na współczynniki funkcji liniowej
+    public static PathData positionAndOrderToCoefficients(int position1, int position2) {
+        Log.d("Positions", Integer.toString(position1) + ", " + Integer.toString(position2));
+        int xposition1 = getXAxis(position1);
+        int yposition1 = getYAxis(xposition1, position1);
+        int xposition2 = getXAxis(position2);
+        int yposition2 = getYAxis(xposition2, position2);
+
+        //sprawdzanie czy funkcja jest "pionowa"
+        if (xposition1 == xposition2) {
+            PathData result = new PathData(xposition1, yposition1);
+            return result;
+        }
+        else
+        {
+            //wzor na funkcję przechodzącą przez 2 punkty
+            float a = (yposition1 - yposition2) / (float) (xposition1 - xposition2);
+            float b = (yposition1 - a * xposition1);
+            PathData result = new PathData(a, b, xposition1, yposition1);
+
+            return result;
+        }
+
+    }
+
+    //oblicza współrzędną na osi x
+    public static int getXAxis(int order) {
+        int divider = gridCells;
+        int step = (int) Math.sqrt(gridCells);
+
+        if (order == 0)
+        {
+            return 0;
+        }
+        else
+        if (order < 10)
+        {
+            return order;
+        }
+        else
+        {
+            while ((order % divider) > step) {
+                divider -= step;
+            }
+            return order - divider;
+        }
+
+
+    }
+
+    //oblicza współrzedna na osi y
+    public static int getYAxis(int xposition, int order) {
+        int step = (int) Math.sqrt(gridCells);
+        if (order < step - 1) {
+            return 0;
+        } else {
+            //pobranie pierwszej cyfry z integera
+            return -Integer.parseInt(Integer.toString(order - xposition).substring(0, 1));
+        }
+    }
+
+    public static void setNewCoefficients(PathData firstValue, PathData secondValue) {
+        Log.d(TAG, "wywołanie setNewCoefficients");
+        float x1 = firstValue.getP1();
+        float y1 = firstValue.getP2();
+        float x2 = secondValue.getP1();
+        float y2 = secondValue.getP2();
+
+        //sprawdzanie czy funkcja jest "pionowa"
+        if (x1 == x2)
+        {
+            PathData result = new PathData(x1, y1);
+            firstValue.setA(result.getA());
+            firstValue.setB(result.getB());
+            firstValue.setX(result.getX());
+            firstValue.setIfLinear(result.getIsIfLinear());
+        }
+        else
+        {
+            //wzor na funkcję przechodzącą przez 2 punkty
+            float a = (y1 - y2) / (x1 - x2);
+            float b = (y1 - a * x1);
+            PathData result = new PathData(a, b, x1, y1);
+            firstValue.setA(result.getA());
+            firstValue.setB(result.getB());
+            firstValue.setX(result.getX());
+            firstValue.setIfLinear(result.getIsIfLinear());
+        }
+
+    }
+
 
 }

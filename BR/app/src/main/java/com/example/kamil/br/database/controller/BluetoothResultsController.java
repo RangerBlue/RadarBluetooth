@@ -32,7 +32,6 @@ public class BluetoothResultsController {
         values.put(BluetoothResults.ADDRESS, bluetoothResult.getName());
         values.put(BluetoothResults.RSSI, bluetoothResult.getRssi());
         values.put(BluetoothResults.TIME, bluetoothResult.getTime());
-        values.put(BluetoothResults.ID_PATHDATA, 1);//tu bede musiał ustawić jakos magicznie
         db.insert(BluetoothResults.TABLE, null, values);
         db.close(); // Closing database connection
     }

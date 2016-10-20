@@ -24,4 +24,5 @@
         android:id="@+id/buttonConfirm"
         android:layout_below="@+id/editTextRoomName"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

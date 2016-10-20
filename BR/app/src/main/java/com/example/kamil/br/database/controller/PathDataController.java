@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.kamil.br.activities.MainActivity;
 import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.model.PathData;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class PathDataController {
 
-
+    public static String TAG = PathDataController.class.getSimpleName();
 
     public static String createTable() {
         return "CREATE TABLE " + PathData.TABLE + "(" +
@@ -47,6 +49,22 @@ public class PathDataController {
         values.put(PathData.ID_ROOMS, pathadata.getIdRooms());
         db.insert(PathData.TABLE, null, values);
         db.close(); // Closing database connection
+    }
+
+    public void update(PathData pathdata, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PathData.A, pathdata.getA());
+        values.put(PathData.X, pathdata.getX());
+        values.put(PathData.LINEAR, (pathdata.getIsIfLinear()));
+        values.put(PathData.P1, pathdata.getP1());
+        values.put(PathData.P2, pathdata.getP2());
+
+        String where = " PathData." + PathData.ID_PATHDATA+"="+Integer.toString(pathdata.getIdPathData());
+
+        db.update(PathData.TABLE, values, where,  null);
+        Log.d(TAG, " Updated row number: "+pathdata.getIdPathData());
     }
 
     public List<PathData> selectAll(Context context)
@@ -126,6 +144,28 @@ public class PathDataController {
         cursor.close();
 
         return pathData;
+    }
+
+    //debug only
+    public static void printAllTableToLog(ArrayList<PathData> list)
+    {
+        //wypisanie rekordów z PathData nienaruszonych
+        DecimalFormat format = new DecimalFormat();
+        format.setMinimumFractionDigits(2);
+        for ( PathData element : list )
+        {
+            Log.d("Tabela PathData: ",
+                    "\t|ID| "+String.valueOf(element.getIdPathData()) +
+                            "\t|A| "+ format.format(element.getA()) +
+                            "\t|B| "+ format.format(element.getB()) +
+                            "\t|X| "+ format.format(element.getX()) +
+                            "\t|Linear| "+ element.getIsIfLinear() +
+                            "\t|P1| "+ format.format(element.getP1()) +
+                            "\t|P2| "+ format.format(element.getP2()) +
+                            "\t|EdgeNumbers| "+ element.getEdgeNumber() +
+                            "\t|IdRooms| "+ element.getIdRooms()
+            ) ;
+        }
     }
 }
 

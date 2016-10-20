@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.kamil.br.R;
 
-public class RoomEditor extends AppCompatActivity {
+public class BluetoothResultEditor extends AppCompatActivity {
 
     private Button buttonCreate;
     private Button buttonView;
@@ -16,7 +16,7 @@ public class RoomEditor extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_editor);
+        setContentView(R.layout.activity_bluetooth_results_editor);
 
         buttonCreate = (Button) findViewById(R.id.buttonCreate);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class RoomEditor extends AppCompatActivity {
 
     private void create()
     {
-        Intent intent = new Intent(this, RoomCreator.class);
+        Intent intent = new Intent(this, BluetoothResultCreate.class);
         startActivity(intent);
     }
 
@@ -47,4 +47,6 @@ public class RoomEditor extends AppCompatActivity {
         Intent intent = new Intent(this, RoomChoose.class);
         startActivity(intent);
     }
+
+
 }

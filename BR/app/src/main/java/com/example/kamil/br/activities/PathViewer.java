@@ -12,7 +12,9 @@ import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.PathData;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+
 
 
 public class PathViewer extends AppCompatActivity  {
@@ -21,6 +23,7 @@ public class PathViewer extends AppCompatActivity  {
     private String TAG="PathViewer";
     private Button buttonNext;
     private Button buttonStopStart;
+    private Button buttonSave;
     private int counter=0;
     private int counterLimit;
     private MapDraw map;
@@ -61,6 +64,8 @@ public class PathViewer extends AppCompatActivity  {
             map.setNumber(counter);
             counterLimit = list.get(list.size()-1).getEdgeNumber();
 
+            PathDataController.printAllTableToLog(list);
+
             buttonNext = (Button) findViewById(R.id.buttonPathViewerNext);
             hideButtonIfRatioIsNotSet(buttonNext);
             buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +103,32 @@ public class PathViewer extends AppCompatActivity  {
                         buttonNext.setVisibility(View.INVISIBLE);
                         hideButtonIfRatioIsNotSet(buttonNext);
                     }
+                }
+            });
+
+            buttonSave = (Button) findViewById(R.id.buttonPathViewerSave);
+            buttonSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    int listLength = list.size();
+                    //uaktualnienie wpółczynników funkcji
+                    for (int i = 0; i < listLength - 1; i++)
+                    {
+                        PathData.setNewCoefficients(list.get(i), list.get(i+1));
+                    }
+                    //ostatni punkt z pierwszym
+                    PathData.setNewCoefficients(list.get(listLength-2), list.get(0));
+
+                    //uaktualnienie ich w bazie
+                    for( PathData item : list)
+                    {
+                        PathDataController controller = new PathDataController();
+                        controller.update(item, getApplicationContext());
+                    }
+
+                    PathDataController.printAllTableToLog(list);
+
                 }
             });
         }
@@ -225,4 +256,6 @@ public class PathViewer extends AppCompatActivity  {
         PathData.setRatio(0);
         Log.d(TAG, "wyzerowanie ratia");
     }
+
+
 }

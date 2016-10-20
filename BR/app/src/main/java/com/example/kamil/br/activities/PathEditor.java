@@ -3,7 +3,6 @@ package com.example.kamil.br.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +10,7 @@ import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.PathData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PathEditor extends AppCompatActivity {
@@ -39,22 +39,9 @@ public class PathEditor extends AppCompatActivity {
             }
         });
 
-        //wypisanie całej bazy
+        //wypisanie Tabeli pathdata
         List<PathData> all = new PathDataController().selectAll(getApplicationContext());
-        for ( PathData element : all )
-        {
-            Log.d("Tabela PathData: ",
-                            "ID "+String.valueOf(element.getIdPathData()) +
-                            " A "+ element.getA() +
-                            " B "+ element.getB() +
-                            " X "+ element.getX() +
-                            " Linear "+ element.getIsIfLinear() +
-                            " P1 "+ element.getP1() +
-                            " P2 "+ element.getP2() +
-                            " EdgeNumbers "+ element.getEdgeNumber() +
-                            " IdRooms "+ element.getIdRooms()
-                ) ;
-        }
+        PathDataController.printAllTableToLog((ArrayList<PathData>) all);
 
 
     }
@@ -71,7 +58,7 @@ public class PathEditor extends AppCompatActivity {
 
     private void view()
     {
-        Intent intent = new Intent(this, RoomViewer.class);
+        Intent intent = new Intent(this, RoomChoose.class);
         startActivity(intent);
     }
 
