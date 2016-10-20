@@ -22,7 +22,7 @@ public class MapDraw extends View
     private static ArrayList<PathData> data;
     private Paint p;
     private static int number;
-    private String TAG = "MapDraw";
+    private static String TAG = "MapDraw";
 
 
 
@@ -303,7 +303,7 @@ public class MapDraw extends View
 
 
         //rysowanie lini, od pierwszej do ostatniej
-        Log.d(TAG, "Number "+Integer.toString(number));
+
         p.setColor(Color.BLUE);
         for(int i = 0 ; i < data.size()-1; i++)
         {
@@ -345,7 +345,7 @@ public class MapDraw extends View
 
 
 
-
+    //gdy chcemy zmienić cos w widoku
     @Override
     public void invalidate() {
         super.invalidate();

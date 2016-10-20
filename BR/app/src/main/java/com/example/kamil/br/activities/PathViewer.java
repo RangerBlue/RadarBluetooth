@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.kamil.br.MapDraw;
 import com.example.kamil.br.R;
-import com.example.kamil.br.database.DBHandler;
+
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.PathData;
 
@@ -19,12 +19,15 @@ public class PathViewer extends AppCompatActivity  {
 
 
     private String TAG="PathViewer";
-    private DBHandler db = new DBHandler(this);
     private Button buttonNext;
     private Button buttonStopStart;
     private int counter=0;
     private int counterLimit;
     private MapDraw map;
+    private long timeStart;
+    private long timeStop;
+    private boolean ifTheClockIsTicking = false;
+    private ArrayList<PathData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,14 +38,16 @@ public class PathViewer extends AppCompatActivity  {
         int idRooms = getIntent().getIntExtra("id",-1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
-
+        //wyzerowanie ratia
+        PathData.setRatio(0);
 
         //tu dane są pobierane podczas tworzenia ścierzki
         if(idRooms==-1)
         {
             Log.d(TAG, "Z tworzenia ścieżki");
-            ArrayList<PathData> passedData = (ArrayList<PathData>) getIntent().getSerializableExtra("drawData");
-
+            ArrayList<PathData> passedData = new ArrayList<>();
+            passedData = (ArrayList<PathData>) getIntent().getSerializableExtra("drawData");
+            map = (MapDraw) findViewById(R.id.viewDrawMap);
             map.setData(passedData);
 
 
@@ -50,13 +55,14 @@ public class PathViewer extends AppCompatActivity  {
         else//tu z bazy danych
         {
             Log.d(TAG, "Z bazy danych");
-            ArrayList<PathData> list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
+            list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
             map = (MapDraw) findViewById(R.id.viewDrawMap);
             map.setData(list);
             map.setNumber(counter);
             counterLimit = list.get(list.size()-1).getEdgeNumber();
 
             buttonNext = (Button) findViewById(R.id.buttonPathViewerNext);
+            hideButtonIfRatioIsNotSet(buttonNext);
             buttonNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
@@ -65,7 +71,33 @@ public class PathViewer extends AppCompatActivity  {
                     map.setNumber(counter);
                     map.invalidate();
 
-                    Log.d(TAG, Integer.toString(counter));
+                    Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
+                    hideButtonOnMainEdgeIfRatioIsSet(buttonStopStart);
+                }
+            });
+
+            buttonStopStart = (Button) findViewById(R.id.buttonPathViewerStartStop);
+            buttonStopStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    if(ifTheClockIsTicking)
+                    {
+                        buttonStopStart.setText(R.string.start);
+                        timeStop = System.currentTimeMillis();
+                        getTimeDifference(timeStart, timeStop);
+                        ifTheClockIsTicking = false;
+                        buttonNext.setVisibility(View.VISIBLE);
+                        hideButtonIfRatioIsNotSet(buttonNext);
+                    }
+                    else
+                    {
+                        buttonStopStart.setText(R.string.stop);
+                        timeStart = System.currentTimeMillis();
+                        ifTheClockIsTicking = true;
+                        buttonNext.setVisibility(View.INVISIBLE);
+                        hideButtonIfRatioIsNotSet(buttonNext);
+                    }
                 }
             });
         }
@@ -128,6 +160,69 @@ public class PathViewer extends AppCompatActivity  {
             counter++;
     }
 
+    public int getCounterIncrement()
+    {
+        if(counter == counterLimit)
+        {
+            return 0;
+        }
+        else
+        {
+            int _counter = counter;
+            return ++_counter;
+        }
 
+    }
 
+    public void getTimeDifference(long start, long stop)
+    {
+        long time = stop-start;
+        Log.d(TAG, "Czas w ms: "+Long.toString((time)));
+
+        if(counter == 0)
+        {
+            float segmentLength = PathData.getSegmentLenght(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
+            float ratio = time/ segmentLength;
+            PathData.setRatio(ratio);
+            Log.d(TAG, "Ratio: "+ratio);
+            Log.d(TAG, "Długość pierwszego(0) odcinka: "+Float.toString(segmentLength));
+        }
+        else
+        {
+            Log.d(TAG,"sprawdzenie counter i getCounter "+ counter +","+getCounterIncrement());
+            Log.d(TAG, "Ratio: "+PathData.getRatio());
+
+            PathData.setNewPoint(time, list.get(counter), list.get(getCounterIncrement()));
+
+        }
+
+    }
+
+    public void hideButtonIfRatioIsNotSet(Button button)
+    {
+        if(PathData.getRatio() == 0)
+        {
+            button.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void hideButtonOnMainEdgeIfRatioIsSet(Button button)
+    {
+        if(PathData.getRatio()!=0 && counter == 0)
+        {
+            button.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            button.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //wyzerowanie ratia
+        PathData.setRatio(0);
+        Log.d(TAG, "wyzerowanie ratia");
+    }
 }
