@@ -15,6 +15,8 @@ import java.util.List;
 
 public class PathEditor extends AppCompatActivity {
 
+    private final String TAG = PathEditor.class.getSimpleName();
+
     private Button buttonCreate;
     private Button buttonView;
 
