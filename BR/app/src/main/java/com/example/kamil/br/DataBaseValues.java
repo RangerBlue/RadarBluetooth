@@ -9,30 +9,64 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class DataBaseValues extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private SimpleCursorAdapter mAdapterKursor;
     private ListView mLista;
 
+    DBHandler db = new DBHandler(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_base_values);
+        setContentView(R.layout.activity_data_base_v2);
+        Button przyciskDelete = (Button) findViewById(R.id.button_delete_records);
+       // mLista = (ListView) findViewById(R.id.lista);
+        //uruchomLoader();
+        //mLista.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+       // mLista.setMultiChoiceModeListener(wyborWieluElementowListy());
 
-        mLista = (ListView) findViewById(R.id.lista);
-        uruchomLoader();
-        mLista.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mLista.setMultiChoiceModeListener(wyborWieluElementowListy());
+        List<Record> elements = db.getAll();
+
+        for (Record item : elements) {
+            String log = "Id: " + item.getId()
+                    + " ,Name: " + item.getName()
+                    + " ,RSSI: " + item.getRssi()
+                    + " ,Time: " + item.getTime()
+                    + " ,Direction: " + item.getDirection();
+            // Writing shops  to log
+            Log.d("Item: : ", log);
+        }
+
+
+        przyciskDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                List<Record> elements = db.getAll();
+                for (Record item : elements)
+                {
+                    db.delete(item);
+                    Toast.makeText(DataBaseValues.this, "Usunięto rekordy", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 
@@ -101,8 +135,8 @@ public class DataBaseValues extends AppCompatActivity implements LoaderManager.L
     {
         getLoaderManager().initLoader(0, null,this);
 
-        String [] mapujZ = new String[]{PomocnikBD.KOLUMNA1,PomocnikBD.KOLUMNA2};
-        int [] mapujDo = new int[]{R.id.Kol1,R.id.Kol2};
+        String [] mapujZ = new String[]{DBHandler.NAME,DBHandler.RSSI,DBHandler.TIME};
+        int [] mapujDo = new int[]{R.id.Kol1,R.id.Kol2, R.id.Kol3};
 
         mAdapterKursor = new SimpleCursorAdapter(this, R.layout.list_row, null, mapujZ, mapujDo);
         mLista.setAdapter(mAdapterKursor);
@@ -126,7 +160,7 @@ public class DataBaseValues extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projekcja = {PomocnikBD.ID,PomocnikBD.KOLUMNA1,PomocnikBD.KOLUMNA2};
+        String[] projekcja = {DBHandler.NAME,DBHandler.RSSI,DBHandler.TIME};
         CursorLoader loaderKursor = new CursorLoader(this,Provider.URI_ZAWARTOSC,projekcja,null,null,null);
         return loaderKursor;
     }

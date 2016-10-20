@@ -7,18 +7,26 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Path;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class FoundBTDevices extends AppCompatActivity
 {
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayList<BluetoothObject> arrayOfFoundBTDevices;
+    private String direction;
+    private DBHandler db;
 
 
     @Override
@@ -26,22 +34,47 @@ public class FoundBTDevices extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.found_devices);
+        db = new DBHandler(this);
+        List<Record> elements = db.getAll();
+        String time = DateFormat.getTimeInstance().format(new Date());
+        if(elements.isEmpty()==true)
+        {
+            db.insert(new Record(null,null,time,"stop"));
+        }
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //        Log.d("Wywołanie funkcji", "Wywoływanie display ..");
         displayListOfFoundDevices();
 
-        Button przycisk = (Button) findViewById(R.id.button_search);
-        przycisk.setOnClickListener(new View.OnClickListener() {
+        Button search = (Button) findViewById(R.id.button_search);
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
+                Log.d("przycisk0", "Wywoływanie ");
             }
         });
+
+        Button corner = (Button) findViewById(R.id.button_corner);
+        corner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                String time = DateFormat.getTimeInstance().format(new Date());
+                db.insert(new Record(null,null,time,"stop"));
+            }
+        });
+
+
     }
 
     private void displayListOfFoundDevices()
     {
+        Log.d("DisplayList", "W środku ");
+
         arrayOfFoundBTDevices = new ArrayList<BluetoothObject>();
 
         // start looking for bluetooth devices
@@ -54,6 +87,7 @@ public class FoundBTDevices extends AppCompatActivity
             @Override
             public void onReceive(Context context, Intent intent)
             {
+                Log.d("OnReceive", "W środku ");
                 String action = intent.getAction();
                 // When discovery finds a device
                 if (BluetoothDevice.ACTION_FOUND.equals(action))
@@ -85,6 +119,10 @@ public class FoundBTDevices extends AppCompatActivity
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
+        //Unregister
+        //unregisterReceiver(mReceiver);
+
+
     }
 
     @Override
@@ -95,11 +133,10 @@ public class FoundBTDevices extends AppCompatActivity
         mBluetoothAdapter.cancelDiscovery();
     }
 
-    private void dodajWartosc(String nazwa, String rssi){
-        ContentValues wartosci = new ContentValues();
-        wartosci.put(PomocnikBD.KOLUMNA1, nazwa);
-        wartosci.put(PomocnikBD.KOLUMNA2, rssi);
-
-        getContentResolver().insert(Provider.URI_ZAWARTOSC,wartosci);
+    private void dodajWartosc(String nazwa, String rssi)
+    {
+        Log.d("Insert: ", "Inserting ..");
+        String time = DateFormat.getTimeInstance().format(new Date());
+        db.insert(new Record(nazwa,rssi,time,direction));
     }
 }
