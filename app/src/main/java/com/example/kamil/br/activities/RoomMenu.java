@@ -8,8 +8,16 @@ import android.widget.Button;
 
 import com.example.kamil.br.R;
 
+/**
+ * Aktywność służaca do wyboru opcji związanych z pokojami czyli
+ * utworzenie, wyświetlenie, edycja, usunięcie
+ * Created by Kamil
+ */
 public class RoomMenu extends AppCompatActivity {
 
+    /**
+     * Przycisk do utworzenia pokoju
+     */
     private Button buttonCreate;
     private Button buttonView;
 
