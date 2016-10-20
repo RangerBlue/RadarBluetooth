@@ -3,22 +3,17 @@ package com.example.kamil.br;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Path;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FoundBTDevices extends AppCompatActivity
@@ -27,6 +22,9 @@ public class FoundBTDevices extends AppCompatActivity
     private ArrayList<BluetoothObject> arrayOfFoundBTDevices;
     private String direction;
     private DBHandler db;
+    private Button buttonSearch;
+    private Button buttonCorner;
+    private FoundBTDevicesAdapter adapter;
 
 
     @Override
@@ -39,7 +37,8 @@ public class FoundBTDevices extends AppCompatActivity
         long time = System.currentTimeMillis();
         if(elements.isEmpty()==true)
         {
-            db.insert(new Record(null,0,time,"stop"));
+            db.insert(new Record(null,0,time,0));
+           // Log.d("Sprawdzanie wstawiania true",);
         }
 
 
@@ -47,11 +46,11 @@ public class FoundBTDevices extends AppCompatActivity
 
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //        Log.d("Wywołanie funkcji", "Wywoływanie display ..");
+        Log.d("Wywołanie funkcji", "Wywoływanie display ..");
         displayListOfFoundDevices();
 
-        Button search = (Button) findViewById(R.id.button_search);
-        search.setOnClickListener(new View.OnClickListener() {
+        buttonSearch = (Button) findViewById(R.id.button_search);
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -62,13 +61,13 @@ public class FoundBTDevices extends AppCompatActivity
             }
         });
 
-        Button corner = (Button) findViewById(R.id.button_corner);
-        corner.setOnClickListener(new View.OnClickListener() {
+        buttonCorner = (Button) findViewById(R.id.button_corner);
+        buttonCorner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                long time = System.currentTimeMillis();
-                db.insert(new Record(null,0,time,"stop"));
+                Log.d("przyciskCorner", "Wywoływanie ");
+                addValueStop();
             }
         });
 
@@ -85,6 +84,7 @@ public class FoundBTDevices extends AppCompatActivity
         arrayOfFoundBTDevices = new ArrayList<BluetoothObject>();
 
         // start looking for bluetooth devices
+
         mBluetoothAdapter.startDiscovery();
 
         // Discover new devices
@@ -108,16 +108,16 @@ public class FoundBTDevices extends AppCompatActivity
 
                     // Create the device object and add it to the arrayList of devices
                     BluetoothObject bluetoothObject = new BluetoothObject();
-                    bluetoothObject.setBluetooth_name(device.getName());
-                    bluetoothObject.setBluetooth_address(device.getAddress());
-                    bluetoothObject.setBluetooth_rssi(rssi);
+                    bluetoothObject.setBluetoothName(device.getName());
+                    bluetoothObject.setBluetoothAddress(device.getAddress());
+                    bluetoothObject.setBluetoothRssi(rssi);
 
                     arrayOfFoundBTDevices.add(bluetoothObject);
                     //String rssi_string = Integer.toString(rssi);
-                    dodajWartosc(device.getName(), rssi);
+                    addValue(device.getName(), rssi);
 
                     // 1. Pass context and data to the custom adapter
-                    FoundBTDevicesAdapter adapter = new FoundBTDevicesAdapter(getApplicationContext(), arrayOfFoundBTDevices);
+                    adapter = new FoundBTDevicesAdapter(getApplicationContext(), arrayOfFoundBTDevices);
                     ListView lista = (ListView) findViewById(R.id.list);
                     lista.setAdapter(adapter);
                 }
@@ -127,7 +127,7 @@ public class FoundBTDevices extends AppCompatActivity
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
         //Unregister
-        unregisterReceiver(mReceiver);
+        //unregisterReceiver(mReceiver);
 
 
     }
@@ -139,10 +139,17 @@ public class FoundBTDevices extends AppCompatActivity
         mBluetoothAdapter.cancelDiscovery();
     }
 
-    private void dodajWartosc(String nazwa, int rssi)
+    private void addValue(String name, int rssi)
     {
-        Log.d("Insert: ", "Inserting ..");
+        Log.d("Insert: ", "Inserting record");
         long time = System.currentTimeMillis();
-        db.insert(new Record(nazwa,rssi,time,direction));
+        db.insert(new Record(name,rssi,time,1));
+    }
+
+    private void addValueStop()
+    {
+        Log.d("przyciskCorner", "wstawianie przerwy ");
+        long time = System.currentTimeMillis();
+        db.insert(new Record(null,0,time,0));
     }
 }

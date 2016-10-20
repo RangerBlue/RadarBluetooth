@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,16 @@ import java.util.List;
  */
 public class DBHandler extends SQLiteOpenHelper {
 
-    // Database Version
+    // wersja bazy
     private static final int DATABASE_VERSION = 1;
 
-    // Database Name
-    private static final String DATABASE_NAME = "dataDB_5";
+    // nazwa bazy
+    private static final String DATABASE_NAME = "dataDB_8";
 
-    // Contacts table name
-    public final String TABLE_DB = "tableDB_5";
+    // nazwa tabeli
+    public final String TABLE_DB = "tableDB_8";
 
-    // Shops Table Columns names
+    // nazwy kolumn w tabeli
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String RSSI = "rssi";
@@ -39,6 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_DB_TABLE = "CREATE TABLE " + TABLE_DB+ "("
                 + ID + " INTEGER PRIMARY KEY," + NAME + " TEXT,"
                 + RSSI + " TEXT," + TIME + " TEXT," + DIRECTION + " TEXT" + ")";
+        Log.d("Tworzenie bazy: ", "stworzono");
         db.execSQL(CREATE_DB_TABLE);
     }
 
@@ -58,29 +60,27 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(RSSI, record.getRssi());
         values.put(TIME, record.getTime());
         values.put(DIRECTION, record.getDirection());
-        // Inserting Row
         db.insert(TABLE_DB, null, values);
         db.close(); // Closing database connection
     }
 
-    // Getting one shop
+    // Getting one record
 
     public Record select(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_DB, new String[]{ID,
-                        NAME, RSSI}, ID+ "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null); //moze jeszcze jeden null
+                        NAME, RSSI, TIME, DIRECTION}, ID+ "=?",
+                new String[]{String.valueOf(id)}, null, null, null,null); //moze jeszcze jeden null
         if (cursor != null)
             cursor.moveToFirst();
 
         Record element = new Record(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), Integer.parseInt(cursor.getString(2)),Long.parseLong(cursor.getString(3)),cursor.getString(4));
-        // return shop
+                cursor.getString(1), Integer.parseInt(cursor.getString(2)),Long.parseLong(cursor.getString(3)),Integer.parseInt(cursor.getString(4)));
+
         return element;
     }
 
-    // Getting All Shops
     public List<Record> getAll() {
         List<Record> recordsList = new ArrayList<Record>();
         // Select All Query
@@ -97,7 +97,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 element.setName(cursor.getString(1));
                 element.setRssi(Integer.parseInt(cursor.getString(2)));
                 element.setTime(Long.parseLong(cursor.getString(3)));
-                element.setDirection(cursor.getString(4));
+                element.setDirection(Integer.parseInt(cursor.getString(4)));
                 // Adding contact to list
                 recordsList.add(element);
             } while (cursor.moveToNext());

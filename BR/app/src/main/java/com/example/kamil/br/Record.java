@@ -9,13 +9,13 @@ public class Record {
     private String name;
     private int rssi;
     private long time;
-    private String direction;
+    private int direction;
 
     public Record()
     {
     }
 
-    public Record(int id,String name,int rssi, long time, String direction)
+    public Record(int id,String name,int rssi, long time, int direction)
     {
         this.id=id;
         this.name=name;
@@ -24,7 +24,7 @@ public class Record {
         this.direction=direction;
     }
 
-    public Record(String name,int rssi, long time, String direction)
+    public Record(String name,int rssi, long time, int direction)
     {
         this.name=name;
         this.rssi=rssi;
@@ -44,7 +44,7 @@ public class Record {
         this.rssi = rssi;
     }
 
-    public void setDirection(String direction)
+    public void setDirection(int direction)
     {
         this.direction = direction;
     }
@@ -63,7 +63,7 @@ public class Record {
         return name;
     }
 
-    public String getDirection(){
+    public int getDirection(){
         return direction;
     }
 }

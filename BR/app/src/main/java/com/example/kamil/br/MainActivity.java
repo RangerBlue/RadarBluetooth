@@ -1,10 +1,7 @@
 package com.example.kamil.br;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,34 +9,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String LOG_TAG; // Just for logging purposes. Could be anything. Set to app_name
+    private String LOG_TAG;
     private int REQUEST_ENABLE_BT = 99; // Any positive integer should work.
     private BluetoothAdapter mBluetoothAdapter;
 
-    private Button button_enableBT;
-    private Button button_scanBT;
-    private Button button_data;
+    private Button buttonEnableBT;
+    private Button buttonScanBT;
+    private Button buttonData;
+    private Button buttonPath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final DBHandler db = new DBHandler(this);
 
         LOG_TAG = getResources().getString(R.string.app_name);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        buttonEnableBT = (Button) findViewById(R.id.button_enableBT);
+        buttonScanBT = (Button) findViewById(R.id.button_scanBT);
+        buttonData = (Button) findViewById(R.id.button_data) ;
+        buttonPath = (Button) findViewById(R.id.button_path);
 
-        button_enableBT = (Button) findViewById(R.id.button_enableBT);
-        button_scanBT = (Button) findViewById(R.id.button_scanBT);
-        button_data = (Button) findViewById(R.id.button_data) ;
-
-        button_enableBT.setOnClickListener(new View.OnClickListener()
+        buttonEnableBT.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -50,18 +48,45 @@ public class MainActivity extends AppCompatActivity {
 
 
         // In a real app you should check first if bluetooth is enabled first
-        button_scanBT.setOnClickListener(new View.OnClickListener() {
+        buttonScanBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scanForBluetoothDevices();
             }
         });
 
-        button_data.setOnClickListener(new View.OnClickListener() {
+        buttonPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawPath();
+            }
+        });
+
+        buttonData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                showDatabase();
+                int i=0;
+                List<Record> elements = db.getAll();
+                for (Record r : elements)
+                {
+                    if(r.getDirection()==0)
+                        i++;
+                }
+                if(i==5)
+                {
+                    Log.d("open baza activivty","udało sie");
+                    showDatabase();
+                }
+                else
+                {
+                    Log.d("open baza activivty","nie udało sie");
+                    for (Record item : elements)
+                    {
+                        db.delete(item);
+                    }
+                    Toast.makeText(MainActivity.this, "Błąd w bazie, wyczyszczono", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }//end onCreate
@@ -104,32 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<BluetoothObject> getArrayOfAlreadyPairedBluetoothDevices()
-    {
-        ArrayList<BluetoothObject> arrayOfAlreadyPairedBTDevices = null;
-
-        // Query paired devices
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        // If there are any paired devices
-        if (pairedDevices.size() > 0)
-        {
-            arrayOfAlreadyPairedBTDevices = new ArrayList<BluetoothObject>();
-
-            // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices)
-            {
-                // Create the device object and add it to the arrayList of devices
-                BluetoothObject bluetoothObject = new BluetoothObject();
-                bluetoothObject.setBluetooth_name(device.getName());
-                bluetoothObject.setBluetooth_address(device.getAddress());
-                arrayOfAlreadyPairedBTDevices.add(bluetoothObject);
-            }
-        }
-
-        return arrayOfAlreadyPairedBTDevices;
-    }
-
-
 
     private void scanForBluetoothDevices()
     {
@@ -141,6 +140,12 @@ public class MainActivity extends AppCompatActivity {
     private void showDatabase()
     {
         Intent intent = new Intent(this, DataBaseValues.class);
+        startActivity(intent);
+    }
+
+    private void drawPath()
+    {
+        Intent intent = new Intent(this, CreatePath.class);
         startActivity(intent);
     }
 

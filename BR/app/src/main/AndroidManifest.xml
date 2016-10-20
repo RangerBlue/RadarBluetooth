@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".FoundBTDevices" />
-
-        <activity android:name=".DataBaseValues"></activity>
+        <activity android:name=".DataBaseValues" />
+        <activity android:name=".CreatePath"></activity>
     </application>
 
 </manifest>

@@ -1,39 +1,36 @@
 package com.example.kamil.br;
 
 import android.os.Parcel;
-import android.os.ParcelUuid;
 import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class BluetoothObject implements Parcelable
 {
-    private String bluetooth_name;
-    private String bluetooth_address;
-    private int bluetooth_rssi;
+    private String bluetoothName;
+    private String bluetoothAddress;
+    private int bluetoothRSSI;
 
-    public String getBluetooth_name() {
-        return bluetooth_name;
+    public String getBluetoothName() {
+        return bluetoothName;
     }
 
-    public void setBluetooth_name(String bluetooth_name) {
-        this.bluetooth_name = bluetooth_name;
+    public void setBluetoothName(String bluetoothName) {
+        this.bluetoothName = bluetoothName;
     }
 
-    public String getBluetooth_address() {
-        return bluetooth_address;
+    public String getBluetoothAddress() {
+        return bluetoothAddress;
     }
 
-    public void setBluetooth_address(String bluetooth_address) {
-        this.bluetooth_address = bluetooth_address;
+    public void setBluetoothAddress(String bluetoothAddress) {
+        this.bluetoothAddress = bluetoothAddress;
     }
 
-    public int getBluetooth_rssi() {
-        return bluetooth_rssi;
+    public int getBluetoothRssi() {
+        return bluetoothRSSI;
     }
 
-    public void setBluetooth_rssi(int bluetooth_rssi) {
-        this.bluetooth_rssi = bluetooth_rssi;
+    public void setBluetoothRssi(int bluetoothRssi) {
+        this.bluetoothRSSI = bluetoothRssi;
     }
 
     // Parcelable stuff
@@ -48,7 +45,7 @@ public class BluetoothObject implements Parcelable
 
     public void readFromParcel(Parcel in)
     {
-        bluetooth_name = in.readString();
+        bluetoothName = in.readString();
     }
 
     public static final Parcelable.Creator<BluetoothObject> CREATOR = new Parcelable.Creator<BluetoothObject>()
@@ -72,7 +69,7 @@ public class BluetoothObject implements Parcelable
     @Override
     public void writeToParcel(Parcel out, int flags)
     {
-        out.writeString(bluetooth_name);
+        out.writeString(bluetoothName);
     }
 
 

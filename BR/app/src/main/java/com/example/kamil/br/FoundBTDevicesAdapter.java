@@ -1,9 +1,6 @@
 package com.example.kamil.br;
 
 import android.content.Context;
-import android.os.ParcelUuid;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +38,9 @@ public class FoundBTDevicesAdapter extends ArrayAdapter<BluetoothObject>
         TextView bt_signal_strength = (TextView) rowView.findViewById(R.id.textview_bt_scan_signal_strength);
 
         // 4. Set the text for each widget
-        bt_name.setText(bluetoothObject.getBluetooth_name());
-        bt_address.setText("address: " + bluetoothObject.getBluetooth_address());
-        bt_signal_strength.setText("RSSI: " + bluetoothObject.getBluetooth_rssi() + "dbm");
+        bt_name.setText(bluetoothObject.getBluetoothName());
+        bt_address.setText("address: " + bluetoothObject.getBluetoothAddress());
+        bt_signal_strength.setText("RSSI: " + bluetoothObject.getBluetoothRssi() + "dbm");
 
 
 
@@ -53,4 +50,4 @@ public class FoundBTDevicesAdapter extends ArrayAdapter<BluetoothObject>
     }//end getView()
 
 
-}//end class AlreadyPairedAdapter
+}
