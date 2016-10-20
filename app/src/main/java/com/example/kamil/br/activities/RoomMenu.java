@@ -19,6 +19,9 @@ public class RoomMenu extends AppCompatActivity {
      * Przycisk do utworzenia pokoju
      */
     private Button buttonCreate;
+    /**
+     * Przycisk do utworzenia widoku
+     */
     private Button buttonView;
 
     @Override
