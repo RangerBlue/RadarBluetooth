@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.database.DBHandler;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,13 +24,17 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonScanBT;
     private Button buttonData;
     private Button buttonPath;
+    private Button buttonSearchDevices;
+    private Button buttonRadar;
+    private Button buttonMap;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final DBHandler db = new DBHandler(this);
+
+
 
         LOG_TAG = getResources().getString(R.string.app_name);
 
@@ -39,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         buttonScanBT = (Button) findViewById(R.id.button_scanBT);
         buttonData = (Button) findViewById(R.id.button_edit_room) ;
         buttonPath = (Button) findViewById(R.id.button_path);
+        buttonSearchDevices = (Button) findViewById(R.id.button_search_devices);
+        buttonRadar = (Button) findViewById(R.id.buttton_radar);
+        buttonMap = (Button) findViewById(R.id.button_map);
+
+        buttonRadar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radar();
+            }
+        });
 
         buttonEnableBT.setOnClickListener(new View.OnClickListener()
         {
@@ -49,12 +63,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // In a real app you should check first if bluetooth is enabled first
         buttonScanBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scanForBluetoothDevices();
+                measurement();
             }
         });
 
@@ -69,6 +81,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editRoom();
+            }
+        });
+
+        buttonSearchDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchDevices();
+            }
+        });
+
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                map();
             }
         });
 
@@ -143,18 +169,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void scanForBluetoothDevices()
+    private void measurement()
     {
-        // Start this on a new activity without passing any data to it
-        Intent intent = new Intent(this, BluetoothResultCreate.class);
+
+        Intent intent = new Intent(this, MeasurementEditor.class);
         startActivity(intent);
     }
 
-    private void showDatabase()
-    {
-        Intent intent = new Intent(this, PathViewer.class);
-        startActivity(intent);
-    }
 
     private void drawPath()
     {
@@ -165,6 +186,23 @@ public class MainActivity extends AppCompatActivity {
     private void editRoom()
     {
         Intent intent = new Intent(this, RoomEditor.class);
+        startActivity(intent);
+    }
+
+    private void searchDevices()
+    {
+        Intent intent = new Intent(this, BluetoothFinder.class);
+        startActivity(intent);
+    }
+    private void radar()
+    {
+        Intent intent = new Intent(this, Radar.class);
+        startActivity(intent);
+    }
+
+    private void map()
+    {
+        Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
         startActivity(intent);
     }
 

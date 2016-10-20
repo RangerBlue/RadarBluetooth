@@ -37,11 +37,10 @@
         android:id="@+id/button_scanBT"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SCAN FOR BT DEVICES"
+        android:text="@string/measurement"
         android:background="@color/colorPrimaryDark"
         android:layout_below="@+id/button_enableBT"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="fill_parent"
@@ -50,8 +49,7 @@
         android:id="@+id/button_edit_room"
         android:background="@color/colorPrimaryDark"
         android:layout_below="@+id/button_scanBT"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="fill_parent"
@@ -60,9 +58,34 @@
         android:id="@+id/button_path"
         android:background="@color/colorPrimaryDark"
         android:layout_below="@+id/button_edit_room"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"  />
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/map"
+        android:id="@+id/button_map"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/button_path"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/radar"
+        android:id="@+id/buttton_radar"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/button_map"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_devices"
+        android:id="@+id/button_search_devices"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/buttton_radar"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
 

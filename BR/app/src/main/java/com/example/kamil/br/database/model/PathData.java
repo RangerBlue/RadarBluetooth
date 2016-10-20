@@ -48,6 +48,24 @@ public class PathData implements Serializable
 
     private static int roomNumber;
 
+    public PathData(float a, float b, float p1, float p2) {
+        this.a = a;
+        this.b = b;
+        this.x = 0;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.ifLinear=1;
+    }
+
+    public PathData(float xp1, float p2) {
+        this.a = 0;
+        this.b = 0;
+        this.x = xp1;
+        this.p1 = xp1;
+        this.p2 = p2;
+        this.ifLinear=0;
+    }
+
     public static int getRoomNumber() {
         return roomNumber;
     }
@@ -139,23 +157,7 @@ public class PathData implements Serializable
         this.x = x;
     }
 
-    public PathData(float a, float b, float p1, float p2) {
-        this.a = a;
-        this.b = b;
-        this.x = 0;
-        this.p1 = p1;
-        this.p2 = p2;
-        this.ifLinear=1;
-    }
 
-    public PathData(float xp1, float p2) {
-        this.a = 0;
-        this.b = 0;
-        this.x = xp1;
-        this.p1 = xp1;
-        this.p2 = p2;
-        this.ifLinear=0;
-    }
 
     public float getB() {
         return b;
@@ -173,15 +175,8 @@ public class PathData implements Serializable
         this.b = b;
     }
 
-    /**
-     * Ustawia nowy punkt w drugiej wartości w zależności w jakiej odległości
-     * jest od punktu w wartości pierwszej, uwzględniając fukcje przechodzącą
-     * przez te dwa punkty
-     * @param time czas w ms ile zajmuje "przejście" po wybranej krawędzi
-     * @param firstValue pierwszy rekord do przetworzenia
-     * @param secondValue drugi rekord do przetworzenia
-     */
-    public static void setNewPoint(long time, PathData firstValue, PathData secondValue )
+
+    public static void calculateNewPoint(long time, PathData firstValue, PathData secondValue )
     {
         float oldlenght = getSegmentLenght(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG+" oldLength",Float.toString(oldlenght) );
         float newLenght = time/ratio;  Log.d(TAG+" newLength",Float.toString(newLenght) );
@@ -224,6 +219,7 @@ public class PathData implements Serializable
         float quadraticFunctionA = (1+a*a); Log.d(TAG+" qFA", Float.toString(quadraticFunctionA));
         float quadraticFunctionB = 2*(a*(b-y1)-x1);  Log.d(TAG+" qFB", Float.toString(quadraticFunctionB));
         float quadraticFunctionC = (float) (Math.pow((y1-b),2)+Math.pow(x1,2)-Math.pow(d,2)); Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
+        //float quadraticFunctionC = (float) (Math.pow((b),2)+Math.pow(x1,2)-Math.pow(d,2)-2*(b*y1)); Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
         QuadraticFunction function = new QuadraticFunction(quadraticFunctionA, quadraticFunctionB, quadraticFunctionC);
 
 
@@ -421,6 +417,5 @@ public class PathData implements Serializable
         }
 
     }
-
 
 }

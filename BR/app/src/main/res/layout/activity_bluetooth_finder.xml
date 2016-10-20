@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bright_foreground_inverse_material_dark">
+    android:background="@color/bright_foreground_inverse_material_dark">>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list"
+        android:id="@+id/listBluetoothFinder"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:background="@color/colorPrimaryDark" />
@@ -15,19 +15,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Szukaj"
+        android:text="@string/search"
         android:id="@+id/button_search"
-        android:layout_below="@+id/list"
+        android:layout_below="@+id/listBluetoothFinder"
         android:layout_alignParentLeft="true"
-        android:background="@color/colorPrimaryDark" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zakręt"
-        android:id="@+id/button_corner"
-        android:layout_below="@+id/list"
-        android:layout_alignParentRight="true"
         android:background="@color/colorPrimaryDark" />
 
 </RelativeLayout>

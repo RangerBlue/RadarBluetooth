@@ -8,13 +8,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.RoomViewerAdapter;
+import com.example.kamil.br.adapters.RoomViewerAdapter;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class BluetoothResultChooseRoom extends AppCompatActivity {
+public class BluetoothResultsChooseRoom extends AppCompatActivity {
 
     private ListView list;
     private RoomViewerAdapter adapter;
@@ -22,9 +22,8 @@ public class BluetoothResultChooseRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_result_choose_room);
-
-        list = (ListView) findViewById(R.id.listViewPathChooseRoom);
+        setContentView(R.layout.activity_bluetooth_results_choose_room);
+        list = (ListView) findViewById(R.id.listViewBluetoothResultChooseRoom);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
 
         adapter = new RoomViewerAdapter(this, all);
@@ -37,10 +36,12 @@ public class BluetoothResultChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(BluetoothResultChooseRoom.this, BluetoothResultCreate.class);
-                intent.putExtra("id", idToPass);
+                Intent intent = new Intent(BluetoothResultsChooseRoom.this, BluetoothResultsChooseMeasurement.class);
+                intent.putExtra("idRooms", idToPass);
                 startActivity(intent);
             }
         });
     }
+
+
 }

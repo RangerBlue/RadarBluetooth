@@ -1,4 +1,4 @@
-package com.example.kamil.br;
+package com.example.kamil.br.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by kamil on 07.05.16.
  */
-public class MapDraw extends View
+public class PathDrawView extends View
 {
 
     private static ArrayList<PathData> data;
     private Paint p;
     private static int number;
-    private static String TAG = "MapDraw";
+    private static String TAG = PathDrawView.class.getSimpleName();
 
 
 
@@ -32,22 +32,22 @@ public class MapDraw extends View
     }
     public void setNumber(int number){this.number=number;}
 
-    public MapDraw(Context context)
+    public PathDrawView(Context context)
     {
         super(context);
         setWillNotDraw(false);
     }
 
-    public MapDraw(Context context, AttributeSet attrs) {
+    public PathDrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
     }
 
-    public MapDraw(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PathDrawView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
     }
-
+    /*
     public int[] getCornerTime(List<Record> elements)//zwraca 4 wartosci czasu w narożnikach
     {
         int[] corners = new int[5];
@@ -67,7 +67,8 @@ public class MapDraw extends View
 
         return corners;
     }
-
+*/
+    /*
     public long[] getEdgeDuration(int tab[], List<Record> elements)
     {
         long[] edges = new long[4];
@@ -123,7 +124,7 @@ public class MapDraw extends View
 
         return names;
     }
-
+*/
     @Override
     protected void dispatchDraw(Canvas canvas) {
         /* warzywne obliczenia

@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.RoomViewerAdapter;
+import com.example.kamil.br.adapters.RoomViewerAdapter;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
 

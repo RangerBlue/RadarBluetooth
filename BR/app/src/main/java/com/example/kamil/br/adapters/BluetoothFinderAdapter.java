@@ -1,4 +1,4 @@
-package com.example.kamil.br;
+package com.example.kamil.br.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;

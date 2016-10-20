@@ -13,6 +13,15 @@ public class Measurements {
     //nazwy pól
     private int idMeasurements;
     private String name;
+    private int idRooms;
+
+    public int getIdRooms() {
+        return idRooms;
+    }
+
+    public void setIdRooms(int idRooms) {
+        this.idRooms = idRooms;
+    }
 
     public int getIdMeasurements() {
         return idMeasurements;

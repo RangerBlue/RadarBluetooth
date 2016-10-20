@@ -40,8 +40,8 @@ public class PathEditor extends AppCompatActivity {
         });
 
         //wypisanie Tabeli pathdata
-        List<PathData> all = new PathDataController().selectAll(getApplicationContext());
-        PathDataController.printAllTableToLog((ArrayList<PathData>) all);
+       // List<PathData> all = new PathDataController().selectAll(getApplicationContext());
+       // PathDataController.printAllTableToLog((ArrayList<PathData>) all);
 
 
     }

@@ -6,13 +6,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.kamil.br.MapDraw;
+import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
 
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.PathData;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -26,7 +25,7 @@ public class PathViewer extends AppCompatActivity  {
     private Button buttonSave;
     private int counter=0;
     private int counterLimit;
-    private MapDraw map;
+    private PathDrawView map;
     private long timeStart;
     private long timeStop;
     private boolean ifTheClockIsTicking = false;
@@ -50,7 +49,7 @@ public class PathViewer extends AppCompatActivity  {
             Log.d(TAG, "Z tworzenia ścieżki");
             ArrayList<PathData> passedData = new ArrayList<>();
             passedData = (ArrayList<PathData>) getIntent().getSerializableExtra("drawData");
-            map = (MapDraw) findViewById(R.id.viewDrawMap);
+            map = (PathDrawView) findViewById(R.id.viewDrawMap);
             map.setData(passedData);
 
 
@@ -59,7 +58,7 @@ public class PathViewer extends AppCompatActivity  {
         {
             Log.d(TAG, "Z bazy danych");
             list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
-            map = (MapDraw) findViewById(R.id.viewDrawMap);
+            map = (PathDrawView) findViewById(R.id.viewDrawMap);
             map.setData(list);
             map.setNumber(counter);
             counterLimit = list.get(list.size()-1).getEdgeNumber();
@@ -223,7 +222,7 @@ public class PathViewer extends AppCompatActivity  {
             Log.d(TAG,"sprawdzenie counter i getCounter "+ counter +","+getCounterIncrement());
             Log.d(TAG, "Ratio: "+PathData.getRatio());
 
-            PathData.setNewPoint(time, list.get(counter), list.get(getCounterIncrement()));
+            PathData.calculateNewPoint(time, list.get(counter), list.get(getCounterIncrement()));
 
         }
 

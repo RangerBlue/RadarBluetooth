@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.BluetoothResultCreate" />
+        <activity android:name=".activities.MeasurementCreate" />
         <activity android:name=".activities.PathViewer" />
         <activity android:name=".activities.PathCreator" />
         <activity android:name=".activities.RoomCreator" />
@@ -30,8 +30,17 @@
         <activity android:name=".activities.RoomEditor" />
         <activity android:name=".activities.PathEditor" />
         <activity android:name=".activities.PathChooseRoom" />
-        <activity android:name=".activities.BluetoothResultEditor" />
-        <activity android:name=".activities.BluetoothResultChooseRoom"></activity>
+        <activity android:name=".activities.MeasurementEditor" />
+        <activity android:name=".activities.MeasurementChooseRoom" />
+        <activity android:name=".activities.BluetoothFinder" />
+        <activity android:name=".activities.Radar" />
+        <activity
+            android:name=".activities.BluetoothResultsEditor"
+            android:label="@string/title_activity_bluetooth_results_editor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.BluetoothResultsChooseRoom" />
+        <activity android:name=".activities.BluetoothResultsChooseMeasurement" />
+        <activity android:name=".activities.BluetoothResultsView"></activity>
     </application>
 
 </manifest>
