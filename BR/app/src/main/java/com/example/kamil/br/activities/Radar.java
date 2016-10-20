@@ -21,6 +21,9 @@ import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;
 
+/**
+ * sprawdzamy czydziała
+ */
 public class Radar extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
