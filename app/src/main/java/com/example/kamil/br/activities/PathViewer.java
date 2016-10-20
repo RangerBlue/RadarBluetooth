@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class PathViewer extends AppCompatActivity  {
 
 
-    private String TAG="PathViewer";
+    private final String TAG = PathViewer.class.getSimpleName();
     private Button buttonNext;
     private Button buttonStopStart;
     private Button buttonSave;
