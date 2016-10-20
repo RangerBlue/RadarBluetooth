@@ -8,17 +8,25 @@ import android.widget.Button;
 
 import com.example.kamil.br.R;
 
-public class MeasurementEditor extends AppCompatActivity {
+/**
+ * Aktywność służaca do wyboru opcji związanych z pokojami czyli
+ * utworzenie, wyświetlenie, edycja, usunięcie
+ * Created by Kamil
+ */
+public class RoomMenu extends AppCompatActivity {
 
+    /**
+     * Przycisk do utworzenia pokoju
+     */
     private Button buttonCreate;
     private Button buttonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_measurement_editor);
+        setContentView(R.layout.activity_room_menu);
 
-        buttonCreate = (Button) findViewById(R.id.buttonCreateBluetoothResultsEditor);
+        buttonCreate = (Button) findViewById(R.id.buttonCreate);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -26,7 +34,7 @@ public class MeasurementEditor extends AppCompatActivity {
             }
         });
 
-        buttonView = (Button) findViewById(R.id.buttonViewBluetoothResultsEditor);
+        buttonView = (Button) findViewById(R.id.buttonView);
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,15 +46,13 @@ public class MeasurementEditor extends AppCompatActivity {
 
     private void create()
     {
-        Intent intent = new Intent(this, MeasurementChooseRoom.class);
+        Intent intent = new Intent(this, RoomCreator.class);
         startActivity(intent);
     }
 
     private void view()
     {
-        Intent intent = new Intent(this, MeasurementChooseRoom.class);
+        Intent intent = new Intent(this, RoomChoose.class);
         startActivity(intent);
     }
-
-
 }

@@ -25,9 +25,8 @@
         <activity android:name=".activities.PathViewer" />
         <activity android:name=".activities.PathCreator" />
         <activity android:name=".activities.RoomCreator" />
-        <activity android:name=".activities.CreateRoom" />
         <activity android:name=".activities.RoomChoose" />
-        <activity android:name=".activities.RoomEditor" />
+        <activity android:name=".activities.RoomMenu" />
         <activity android:name=".activities.PathEditor" />
         <activity android:name=".activities.PathChooseRoom" />
         <activity android:name=".activities.MeasurementEditor" />

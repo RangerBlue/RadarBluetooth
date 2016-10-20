@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: document your custom view class.
+ * Widok w którym pokazywane jest odległość znalezionych urządzeń przez
+ * nasze urzadzenie w formie graficznej
  */
 public class RadarDrawView extends View {
     private static ArrayList<BluetoothResults> data;
@@ -60,8 +61,6 @@ public class RadarDrawView extends View {
         p.setAntiAlias(true);
         //figura wypełniona
         p.setStyle(Paint.Style.STROKE);
-        //p.setStrokeWidth(1);
-        //
         p.setColor(Color.BLUE);
 
         //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
@@ -71,10 +70,12 @@ public class RadarDrawView extends View {
         int canvasWidth = this.getMeasuredWidth();
         int canvasHeight = this.getMeasuredHeight();
 
+        //rysowanie punktu na środku, pozycja naszego urządzenia
         canvas.drawCircle(canvasWidth/2,canvasHeight/2,radius,p);
 
-        //rysowanie punktów
 
+
+        //rysowanie punktów
         for(BluetoothResults e : data )
         {
             p.setColor(Color.RED);

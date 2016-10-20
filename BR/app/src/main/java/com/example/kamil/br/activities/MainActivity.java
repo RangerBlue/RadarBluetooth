@@ -1,7 +1,6 @@
 package com.example.kamil.br.activities;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,15 +11,28 @@ import android.widget.Toast;
 
 import com.example.kamil.br.R;
 
-
+/**
+ * Menu główne, tutaj znajduje się całe sterowanie aplikacji
+ * Created by Kamil
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private static Context context;
-    private String LOG_TAG;
-    private int REQUEST_ENABLE_BT = 99; // Any positive integer should work.
+    private String TAG = MainActivity.class.getSimpleName();
+    /**
+     * Zmienna całkowitoliczbowa do włączenia bluetooth, powinna być większa niż 0
+     */
+    private int REQUEST_ENABLE_BT = 99;
+    /**
+     * Adapter bluetooth
+     */
     private BluetoothAdapter mBluetoothAdapter;
-
+    /**
+     * Przycisk do włączenia bluetoth
+     */
     private Button buttonEnableBT;
+    /**
+     * Przycisk do przejścia do aktwności szukania urządzeń
+     */
     private Button buttonScanBT;
     private Button buttonData;
     private Button buttonPath;
@@ -33,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-        LOG_TAG = getResources().getString(R.string.app_name);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonEnableBT = (Button) findViewById(R.id.button_enableBT);
@@ -98,53 +106,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        buttonData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-               int i=0;
-                List<Record> elements = db.getAll();
-                for (Record r : elements)
-                {
-                    if(r.getDirection()==0)
-                        i++;
-                }
-                if(i==5)
-                {
-                    Log.d("open baza activivty","udało sie");
-                    showDatabase();
-                }
-                else
-                {
-                    Log.d("open baza activivty","nie udało sie");
-                    for (Record item : elements)
-                    {
-                        db.delete(item);
-                    }
-                    Toast.makeText(MainActivity.this, "Błąd w bazie, wyczyszczono", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        */
     }//end onCreate
 
+    /**
+     * Włącza bluetooth jeśli nie jest włączony, jeśli urządzenie go nie posiada zamyka aplikację
+     */
     private void enableBluetoothOnDevice()
     {
+        //jeśli nie istnieje
         if (mBluetoothAdapter == null)
         {
-            Log.e(LOG_TAG, "This device does not have a bluetooth adapter");
+            Log.e(TAG, String.valueOf(R.string.no_bluetooth));
+            Toast.makeText(this,R.string.no_bluetooth , Toast.LENGTH_LONG).show();
             finish();
-            // If the android device does not have bluetooth, just return and get out.
-            // There's nothing the app can do in this case. Closing app.
         }
 
-        // Check to see if bluetooth is enabled. Prompt to enable it
+        // jeślii nie jest włączony to go włącza
         if( !mBluetoothAdapter.isEnabled())
         {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+        else
+        {
+            Toast.makeText(this, R.string.enabled_bluetooth, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -157,14 +142,12 @@ public class MainActivity extends AppCompatActivity {
         {
             if (resultCode == 0)
             {
-                // If the resultCode is 0, the user selected "No" when prompt to
-                // allow the app to enable bluetooth.
-                // You may want to display a dialog explaining what would happen if
-                // the user doesn't enable bluetooth.
-                Toast.makeText(this, "The user decided to deny bluetooth access", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,R.string.not_allow_bluetooth, Toast.LENGTH_LONG).show();
             }
             else
-                Log.i(LOG_TAG, "User allowed bluetooth access!");
+            {
+                Toast.makeText(this,R.string.enabling_bluetooth , Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -185,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void editRoom()
     {
-        Intent intent = new Intent(this, RoomEditor.class);
+        Intent intent = new Intent(this, RoomMenu.class);
         startActivity(intent);
     }
 
@@ -206,7 +189,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static Context getContext() {
-        return context;
-    }
 }

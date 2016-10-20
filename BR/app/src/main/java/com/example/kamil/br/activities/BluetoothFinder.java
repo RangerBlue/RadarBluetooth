@@ -22,121 +22,137 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * Aktywność, w której ma miejsce szukanie dostępnych urządzeń bluetooth,
+ * podobnie jak w aplikacji systemowej, ale zwracana jest dodatkowo informacja o
+ * wielkości RSSI oraz odległości od naszego urządzenia. Zwrócone informacje
+ * nie są nigdzie zapisywane.
+ * Created by Kamil
+ */
 public class BluetoothFinder extends AppCompatActivity {
 
     private String TAG = BluetoothFinder.class.getSimpleName();
-    private BluetoothAdapter mBluetoothAdapter;
-    private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
-    private Button buttonSearch;
-    private BluetoothFinderAdapter adapter;
-    private ProgressDialog progressBar;
 
+    /**
+     * Adapter bluetooth
+     */
+    private BluetoothAdapter mBluetoothAdapter;
+    /**
+     * Lista znalezionych urządzeń
+     */
+    private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
+    /**
+     * Przycisk rozpoczynający szukanie urządzeń
+     */
+    private Button buttonSearch;
+    /**
+     * Adapter do listy
+     */
+    private BluetoothFinderAdapter adapter;
+    /**
+     * Kólko postępu
+     */
+    private ProgressDialog progressCircle;
+    /**
+     * Obiekt, który reaguje na powiadomienie, w tym przypadku bluetooth
+     */
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            String action = intent.getAction();
+            // znaleziono urządzenie
+            if (BluetoothDevice.ACTION_FOUND.equals(action))
+            {
+
+                // pobranie urządzenia bluetooth
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                // pobranie rssi
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+                Log.d(TAG, "znaleziono urządzenie: "+device.getName()+" o rssi: "+rssi+" dB");
+
+                // stworzenie obiektu opisującego pomiar
+                BluetoothResults bluetoothResults = new BluetoothResults();
+
+                DecimalFormat format = new DecimalFormat();
+                format.setMinimumFractionDigits(2);
+
+                bluetoothResults.setName(device.getName()+" is "+Float.toString(BluetoothDistance.getDistance(rssi)).substring(0,4)+" from here");
+                bluetoothResults.setAddress(device.getAddress());
+                bluetoothResults.setRssi(rssi);
+                bluetoothResults.setTime(System.currentTimeMillis());
+
+                BluetoothDistance.getDistance(rssi);
+
+                //wstawianie do listy
+                arrayOfFoundBTDevices.add(bluetoothResults);
+
+                // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
+                adapter = new BluetoothFinderAdapter(getApplicationContext(), arrayOfFoundBTDevices);
+                ListView lista = (ListView) findViewById(R.id.listBluetoothFinder);
+                lista.setAdapter(adapter);
+            }
+            //zakończono szukanie
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
+            {
+                Log.i(TAG, "zakończono szukanie");
+                progressCircle.dismiss();
+                unregisterReceiver(this);
+
+            }
+            //rozpoczęto szukanie
+            else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
+            {
+                Log.i(TAG, "rozpoczęto szukanie");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Log.i(TAG, "wywołanie onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_finder);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         arrayOfFoundBTDevices = new ArrayList<>();
 
+        //obsługa przycisku search
         buttonSearch = (Button) findViewById(R.id.button_search);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                progressBar = new ProgressDialog(v.getContext());
-                progressBar.setMessage(getResources().getString(R.string.progress_scanning));
-                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressBar.show();
-                progressBar.setCanceledOnTouchOutside(false);
-                Log.d("Wywołanie funkcji", "Wywoływanie display ..");
+                Log.i(TAG, "Wciśnięto przycisk search");
+                progressCircle = new ProgressDialog(v.getContext());
+                progressCircle.setMessage(getResources().getString(R.string.progress_scanning));
+                progressCircle.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressCircle.show();
+                progressCircle.setCanceledOnTouchOutside(false);
                 getFoundDevices();
-
             }
         });
-
-
-
-
-
-
     }
-
+    /**
+     * Szuka dostępnych urządzeń i wyświetla je na liście
+     */
     private void getFoundDevices()
     {
-        Log.d("DisplayList", "W środku ");
-
+        Log.i(TAG,"wywołanie getFoundDevices");
+        //wyczyszczenie listy
         arrayOfFoundBTDevices.clear();
         // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
         adapter = new BluetoothFinderAdapter(getApplicationContext(), arrayOfFoundBTDevices);
         ListView lista = (ListView) findViewById(R.id.listBluetoothFinder);
         lista.setAdapter(adapter);
 
-        // rozpocznij szukanie
-
+        // rozpoczęcie szukania
         mBluetoothAdapter.startDiscovery();
 
-        // Discover new devices
-        // Create a BroadcastReceiver for ACTION_FOUND
-        final BroadcastReceiver mReceiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Log.d("OnReceive", "W środku ");
-
-                String action = intent.getAction();
-                // When discovery finds a device
-                if (BluetoothDevice.ACTION_FOUND.equals(action))
-                {
-
-                    // Get the bluetoothDevice object from the Intent
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-
-                    // Get the "RSSI" to get the signal strength as integer,
-                    // but should be displayed in "dBm" units
-                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-                    Log.d(TAG,"rssi: "+Integer.toString(rssi));
-                    Log.d(TAG,"DUA");
-                    // Create the device object and add it to the arrayList of devices
-                    BluetoothResults bluetoothResults = new BluetoothResults();
-
-                    DecimalFormat format = new DecimalFormat();
-                    format.setMinimumFractionDigits(2);
-
-                    bluetoothResults.setName(device.getName()+" is "+Float.toString(BluetoothDistance.getDistance(rssi)).substring(0,4)+" from here");
-                    bluetoothResults.setAddress(device.getAddress());
-                    bluetoothResults.setRssi(rssi);
-                    bluetoothResults.setTime(System.currentTimeMillis());
-
-                    BluetoothDistance.getDistance(rssi);
-
-                    //wstawianie do listy
-                    arrayOfFoundBTDevices.add(bluetoothResults);
-
-                    // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
-                    adapter = new BluetoothFinderAdapter(getApplicationContext(), arrayOfFoundBTDevices);
-                    ListView lista = (ListView) findViewById(R.id.listBluetoothFinder);
-                    lista.setAdapter(adapter);
-                }
-                else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
-                {
-                    progressBar.dismiss();
-                    unregisterReceiver(this);
-
-                }
-                else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
-                {
-                    Log.d("BluetoothAdapter", "Starting discovery ");
-                }
-            }
-        };
-        // Register the BroadcastReceiver
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        //nowe rzeczy
+        // zarejestrowanie broadcastreceiver
+        IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
@@ -148,8 +164,25 @@ public class BluetoothFinder extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        mBluetoothAdapter.cancelDiscovery();
+        if(mBluetoothAdapter != null)
+        {
+            mBluetoothAdapter.cancelDiscovery();
+        }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+       // unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
 }
