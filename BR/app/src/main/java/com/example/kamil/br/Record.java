@@ -7,15 +7,15 @@ public class Record {
 
     private int id;
     private String name;
-    private String rssi;
-    private String time;
+    private int rssi;
+    private long time;
     private String direction;
 
     public Record()
     {
     }
 
-    public Record(int id,String name,String rssi, String time, String direction)
+    public Record(int id,String name,int rssi, long time, String direction)
     {
         this.id=id;
         this.name=name;
@@ -24,7 +24,7 @@ public class Record {
         this.direction=direction;
     }
 
-    public Record(String name,String rssi, String time, String direction)
+    public Record(String name,int rssi, long time, String direction)
     {
         this.name=name;
         this.rssi=rssi;
@@ -40,7 +40,7 @@ public class Record {
         this.name = name;
     }
 
-    public void setRssi(String rssi) {
+    public void setRssi(int rssi) {
         this.rssi = rssi;
     }
 
@@ -49,13 +49,13 @@ public class Record {
         this.direction = direction;
     }
 
-    public void setTime(String time) {this.time = time;}
+    public void setTime(long time) {this.time = time;}
 
     public int getId() {return id;}
 
-    public String getTime() {return time;}
+    public long getTime() {return time;}
 
-    public String getRssi() {
+    public int getRssi() {
         return rssi;
     }
 

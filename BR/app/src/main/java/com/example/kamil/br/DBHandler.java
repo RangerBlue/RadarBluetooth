@@ -18,10 +18,10 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "dataDB_3";
+    private static final String DATABASE_NAME = "dataDB_5";
 
     // Contacts table name
-    public final String TABLE_DB = "tableDB_3";
+    public final String TABLE_DB = "tableDB_5";
 
     // Shops Table Columns names
     public static final String ID = "id";
@@ -50,7 +50,6 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Adding new shop/*
     public void insert(Record record) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -76,7 +75,7 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Record element = new Record(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4));
+                cursor.getString(1), Integer.parseInt(cursor.getString(2)),Long.parseLong(cursor.getString(3)),cursor.getString(4));
         // return shop
         return element;
     }
@@ -96,8 +95,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 Record element = new Record();
                 element.setId(Integer.parseInt(cursor.getString(0)));
                 element.setName(cursor.getString(1));
-                element.setRssi(cursor.getString(2));
-                element.setTime(cursor.getString(3));
+                element.setRssi(Integer.parseInt(cursor.getString(2)));
+                element.setTime(Long.parseLong(cursor.getString(3)));
                 element.setDirection(cursor.getString(4));
                 // Adding contact to list
                 recordsList.add(element);

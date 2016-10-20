@@ -36,11 +36,15 @@ public class FoundBTDevices extends AppCompatActivity
         setContentView(R.layout.found_devices);
         db = new DBHandler(this);
         List<Record> elements = db.getAll();
-        String time = DateFormat.getTimeInstance().format(new Date());
+        long time = System.currentTimeMillis();
         if(elements.isEmpty()==true)
         {
-            db.insert(new Record(null,null,time,"stop"));
+            db.insert(new Record(null,0,time,"stop"));
         }
+
+
+
+
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //        Log.d("Wywołanie funkcji", "Wywoływanie display ..");
@@ -63,10 +67,13 @@ public class FoundBTDevices extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                String time = DateFormat.getTimeInstance().format(new Date());
-                db.insert(new Record(null,null,time,"stop"));
+                long time = System.currentTimeMillis();
+                db.insert(new Record(null,0,time,"stop"));
             }
         });
+
+
+
 
 
     }
@@ -106,8 +113,8 @@ public class FoundBTDevices extends AppCompatActivity
                     bluetoothObject.setBluetooth_rssi(rssi);
 
                     arrayOfFoundBTDevices.add(bluetoothObject);
-                    String rssi_string = Integer.toString(rssi);
-                    dodajWartosc(device.getName(), rssi_string);
+                    //String rssi_string = Integer.toString(rssi);
+                    dodajWartosc(device.getName(), rssi);
 
                     // 1. Pass context and data to the custom adapter
                     FoundBTDevicesAdapter adapter = new FoundBTDevicesAdapter(getApplicationContext(), arrayOfFoundBTDevices);
@@ -120,7 +127,7 @@ public class FoundBTDevices extends AppCompatActivity
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
         //Unregister
-        //unregisterReceiver(mReceiver);
+        unregisterReceiver(mReceiver);
 
 
     }
@@ -129,14 +136,13 @@ public class FoundBTDevices extends AppCompatActivity
     protected void onPause()
     {
         super.onPause();
-
         mBluetoothAdapter.cancelDiscovery();
     }
 
-    private void dodajWartosc(String nazwa, String rssi)
+    private void dodajWartosc(String nazwa, int rssi)
     {
         Log.d("Insert: ", "Inserting ..");
-        String time = DateFormat.getTimeInstance().format(new Date());
+        long time = System.currentTimeMillis();
         db.insert(new Record(nazwa,rssi,time,direction));
     }
 }
