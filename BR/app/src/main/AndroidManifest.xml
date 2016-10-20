@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".FoundBTDevices" />
-        <activity android:name=".AlreadyPairedAdapter" />
+
         <activity android:name=".DataBaseValues"></activity>
     </application>
 

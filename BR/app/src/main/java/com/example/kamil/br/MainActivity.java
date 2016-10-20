@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button button_enableBT;
     private Button button_scanBT;
+    private Button button_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         button_enableBT = (Button) findViewById(R.id.button_enableBT);
         button_scanBT = (Button) findViewById(R.id.button_scanBT);
-
+        button_data = (Button) findViewById(R.id.button_data) ;
 
         button_enableBT.setOnClickListener(new View.OnClickListener()
         {
@@ -53,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 scanForBluetoothDevices();
+            }
+        });
+
+        button_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                showDatabase();
             }
         });
     }//end onCreate
@@ -120,10 +129,19 @@ public class MainActivity extends AppCompatActivity {
         return arrayOfAlreadyPairedBTDevices;
     }
 
+
+
     private void scanForBluetoothDevices()
     {
         // Start this on a new activity without passing any data to it
         Intent intent = new Intent(this, FoundBTDevices.class);
         startActivity(intent);
     }
+
+    private void showDatabase()
+    {
+        Intent intent = new Intent(this, DataBaseValues.class);
+        startActivity(intent);
+    }
+
 }

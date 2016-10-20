@@ -33,5 +33,13 @@
         android:text="SCAN FOR BT DEVICES"
         android:layout_below="@id/button_enableBT" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Database"
+        android:id="@+id/button_data"
+        android:layout_below="@+id/button_scanBT"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
 
