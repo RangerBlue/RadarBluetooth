@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Przycisk do włączenia bluetoth
      */
-    private Button buttonEnableBT;
+    private ImageButton buttonEnableBT;
     /**
      * Przycisk do przejścia do aktwności szukania urządzeń
      */
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        buttonEnableBT = (Button) findViewById(R.id.button_enableBT);
+        buttonEnableBT = (ImageButton) findViewById(R.id.button_enableBT);
         buttonScanBT = (Button) findViewById(R.id.button_scanBT);
         buttonData = (Button) findViewById(R.id.button_edit_room) ;
         buttonPath = (Button) findViewById(R.id.button_path);
@@ -70,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
                 enableBluetoothOnDevice();
             }
         });
+        if(mBluetoothAdapter.isEnabled())
+        {
+            buttonEnableBT.setImageResource(R.drawable.bt_icon_blue);
+        }
+        else
+        {
+            buttonEnableBT.setImageResource(R.drawable.bt_icon_red);
+        }
 
         buttonScanBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 Toast.makeText(this,R.string.enabling_bluetooth , Toast.LENGTH_LONG).show();
+                buttonEnableBT.setImageResource(R.drawable.bt_icon_blue);
             }
         }
     }
