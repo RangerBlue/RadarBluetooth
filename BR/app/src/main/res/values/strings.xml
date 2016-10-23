@@ -25,4 +25,14 @@
     <string name="show">Show</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="room_type_prompt">Choose a type of room</string>
+
+    <string-array name="room_type_arrays">
+        <item>Empty</item>
+        <item>Office</item>
+        <item>Classroom</item>
+        <item>Gym</item>
+    </string-array>
 </resources>

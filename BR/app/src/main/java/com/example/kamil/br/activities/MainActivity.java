@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Adapter bluetooth
      */
+
+    private TextView appName ;
     private BluetoothAdapter mBluetoothAdapter;
     /**
      * Przycisk do włączenia bluetoth
@@ -46,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //ustawienie tekstu w dobrej wielkosci w zaleznosci od wielkosci urządzenia, trzeba sprawdzic na prawdziwym, na podglądzie nie widać
+        appName = (TextView) findViewById(R.id.textview_title);
+        appName.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.fab_margin));
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonEnableBT = (ImageButton) findViewById(R.id.button_enableBT);
