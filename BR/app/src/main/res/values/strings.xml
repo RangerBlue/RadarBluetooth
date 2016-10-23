@@ -22,4 +22,7 @@
     <string name="enabling_bluetooth">Bluetooth is enabled now</string>
     <string name="enabled_bluetooth">Bluetooth is already enabled</string>
     <string name="not_allow_bluetooth">The user decided to deny bluetooth access</string>
+    <string name="show">Show</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

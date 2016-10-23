@@ -9,10 +9,13 @@ import android.widget.ListView;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.adapters.RoomViewerAdapter;
+import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.RoomsController;
+import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BluetoothResultsChooseRoom extends AppCompatActivity {
 
@@ -41,6 +44,9 @@ public class BluetoothResultsChooseRoom extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+       List<BluetoothResults> allTable = new BluetoothResultsController().selectAll(getApplicationContext());
+       BluetoothResultsController.printAllTableToLog((ArrayList<BluetoothResults>) allTable);
     }
 
 

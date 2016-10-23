@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Path;
 import android.util.Log;
 
 import com.example.kamil.br.activities.MainActivity;
@@ -144,6 +145,22 @@ public class PathDataController {
         cursor.close();
 
         return pathData;
+    }
+
+    /**
+     * Usuwa ścieżkę danego pokoju
+     * @param idRoom id pokoju do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereIdRooms(int idRoom, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + PathData.TABLE +
+                        " WHERE PathData." + PathData.ID_ROOMS+"="+Integer.toString(idRoom);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in pathdata");
+        db.close(); // Closing database connection
     }
 
     //debug only

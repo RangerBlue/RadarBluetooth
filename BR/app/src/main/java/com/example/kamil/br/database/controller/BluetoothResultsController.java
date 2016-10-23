@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class BluetoothResultsController {
 
-
+    private final static String TAG = BluetoothResultsController.class.getSimpleName();
 
     public static String createTable() {
         return "CREATE TABLE " + BluetoothResults.TABLE + "(" +
@@ -48,6 +48,43 @@ public class BluetoothResultsController {
         values.put(BluetoothResults.ID_ROOMS, bluetoothResult.getIdRooms());
         db.insert(BluetoothResults.TABLE, null, values);
         db.close(); // Closing database connection
+    }
+
+    public List<BluetoothResults> selectAll(Context context)
+    {
+        List<BluetoothResults> bluetoothResult = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "BluetoothResults." + BluetoothResults.ID_BLUETOOTHRESULTS +
+                        ", BluetoothResults." + BluetoothResults.NAME +
+                        ", BluetoothResults." + BluetoothResults.ADDRESS +
+                        ", BluetoothResults." + BluetoothResults.RSSI +
+                        ", BluetoothResults." + BluetoothResults.TIME +
+                        ", BluetoothResults." + BluetoothResults.EGDENUMBER +
+                        ", BluetoothResults." + BluetoothResults.ID_MEASUREMENTS +
+                        ", BluetoothResults." + BluetoothResults.ID_ROOMS +
+                        " FROM " + BluetoothResults.TABLE ;
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                BluetoothResults result = new BluetoothResults();
+                result.setIdBluetoothResults(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_BLUETOOTHRESULTS)));
+                result.setName(cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME)));
+                result.setAddress(cursor.getString(cursor.getColumnIndex(BluetoothResults.ADDRESS)));
+                result.setRssi(cursor.getInt(cursor.getColumnIndex(BluetoothResults.RSSI)));
+                result.setTime(cursor.getLong(cursor.getColumnIndex(BluetoothResults.TIME)));
+                result.setEdgeNumber(cursor.getInt(cursor.getColumnIndex(BluetoothResults.EGDENUMBER)));
+                result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_MEASUREMENTS)));
+                result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_ROOMS)));
+                bluetoothResult.add(result);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return bluetoothResult;
     }
 
     public List<BluetoothResults> selectBluetoothResultsWhereIdRoomsAndIdMeasurements(Context context, int idRooms, int idMeasurement)
@@ -111,6 +148,22 @@ public class BluetoothResultsController {
         cursor.close();
 
         return results;
+    }
+
+    /**
+     * Usuwa ścieżkę danego pokoju
+     * @param idRoom id pokoju do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereIdRooms(int idRoom, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + BluetoothResults.TABLE +
+                        " WHERE BluetoothResults." + BluetoothResults.ID_ROOMS+"="+Integer.toString(idRoom);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in bluetoothResults");
+        db.close(); // Closing database connection
     }
 
     //debug only

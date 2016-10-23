@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.MeasurementsController;
+import com.example.kamil.br.database.model.Measurements;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MeasurementEditor extends AppCompatActivity {
 
@@ -33,6 +38,9 @@ public class MeasurementEditor extends AppCompatActivity {
                 view();
             }
         });
+
+        List<Measurements> all = new MeasurementsController().selectAll(getApplicationContext());
+        MeasurementsController.printAllTableToLog((ArrayList<Measurements>) all);
 
     }
 

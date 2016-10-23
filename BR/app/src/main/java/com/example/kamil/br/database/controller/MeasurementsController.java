@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class MeasurementsController {
 
+    private final static String TAG = MeasurementsController.class.getSimpleName();
 
     public static String createTable() {
         return "CREATE TABLE " + Measurements.TABLE + "(" +
@@ -118,6 +119,22 @@ public class MeasurementsController {
         cursor.close();
 
         return measurement.get(0);
+    }
+
+    /**
+     * Usuwa ścieżkę danego pokoju
+     * @param idRoom id pokoju do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereIdRooms(int idRoom, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + Measurements.TABLE +
+                        " WHERE Measurements." + Measurements.ID_ROOMS+"="+Integer.toString(idRoom);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in measuements");
+        db.close(); // Closing database connection
     }
 
     //debug only

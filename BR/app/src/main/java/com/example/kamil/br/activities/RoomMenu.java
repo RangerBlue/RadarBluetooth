@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.RoomsController;
+import com.example.kamil.br.database.model.Rooms;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Aktywność służaca do wyboru opcji związanych z pokojami czyli
@@ -41,6 +46,9 @@ public class RoomMenu extends AppCompatActivity {
                 view();
             }
         });
+
+        List<Rooms> all = new RoomsController().selectAll(getApplicationContext());
+        RoomsController.printAllTableToLog((ArrayList<Rooms>) all);
 
     }
 

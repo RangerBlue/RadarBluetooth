@@ -22,7 +22,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     // wersja bazy
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     // nazwa bazy
     private static final String DATABASE_NAME = "BTDB";

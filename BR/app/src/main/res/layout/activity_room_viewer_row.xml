@@ -18,4 +18,5 @@
         android:id="@+id/textViewName"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textViewNumber" />
+
 </RelativeLayout>

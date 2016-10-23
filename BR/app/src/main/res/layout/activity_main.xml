@@ -11,6 +11,8 @@
     tools:context=".activities.MainActivity"
     android:background="@color/bright_foreground_inverse_material_dark">
 
+
+
     <TextView
         android:id="@+id/textview_title"
         android:text="RadarBluetooth"
