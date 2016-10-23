@@ -21,7 +21,7 @@ import com.example.kamil.br.database.model.Rooms;
 import java.util.ArrayList;
 
 /**
- * fdffgdfg
+ * fdffgdfgdfgfdssg
  */
 public class RoomChoose extends AppCompatActivity {
 
