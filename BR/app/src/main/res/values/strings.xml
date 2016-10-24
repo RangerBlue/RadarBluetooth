@@ -24,6 +24,7 @@
     <string name="not_allow_bluetooth">The user decided to deny bluetooth access</string>
     <string name="wrong_input">You typed wrong input</string>
     <string name="added_room">Room is just added</string>
+    <string name="deleted_room">Room is just deleted</string>
     <string name="show">Show</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>

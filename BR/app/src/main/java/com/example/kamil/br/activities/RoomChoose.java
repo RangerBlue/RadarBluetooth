@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.adapters.RoomViewerAdapter;
@@ -59,19 +60,17 @@ public class RoomChoose extends AppCompatActivity {
         int idToPass = room.getIdRooms();
         switch (item.getItemId())
         {
-            case R.id.menu_show:
-                Intent intent = new Intent(RoomChoose.this, PathViewer.class);
-                intent.putExtra("id", idToPass);
-                startActivity(intent);
-                Log.d(TAG, "show");
-                return true;
             case R.id.menu_edit:
                 Log.d(TAG, "edit");
                 return true;
             case R.id.menu_delete:
                 RoomsController controller = new RoomsController();
                 controller.deleteRoomAndAllDependences(idToPass, getApplicationContext());
+                Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "delete");
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
                 return true;
             default:
                 return super.onContextItemSelected(item);
