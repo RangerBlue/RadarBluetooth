@@ -25,52 +25,61 @@ public class MainActivity extends AppCompatActivity {
      * Zmienna całkowitoliczbowa do włączenia bluetooth, powinna być większa niż 0
      */
     private int REQUEST_ENABLE_BT = 99;
+
     /**
      * Adapter bluetooth
      */
-
-    private TextView appName ;
     private BluetoothAdapter mBluetoothAdapter;
+
+    /**
+     * Przycisk do przejścia do menu mapowania
+     */
+    private ImageButton buttonMapping;
+
     /**
      * Przycisk do włączenia bluetoth
      */
     private ImageButton buttonEnableBT;
+
+    /**
+     * Przycisk to aktywności śledzenia urządzeń
+     */
+    private ImageButton buttonTracking;
+
+    /**
+     * Przycisk do włączenia radaru
+     */
+    private ImageButton buttonRadar;
+
     /**
      * Przycisk do przejścia do aktwności szukania urządzeń
      */
-    private ImageButton buttonScanBT;
-    private Button buttonData;
-    private Button buttonPath;
     private ImageButton buttonSearchDevices;
-    private ImageButton buttonRadar;
-    private ImageButton buttonMap;
+
+    /**
+     * Przycisk do przejścia do ustawień
+     */
+    private ImageButton buttonSettings;
+
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //ustawienie tekstu w dobrej wielkosci w zaleznosci od wielkosci urządzenia, trzeba sprawdzic na prawdziwym, na podglądzie nie widać
-       // appName = (TextView) findViewById(R.id.textview_title);
-        //appName.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_margin));
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        buttonEnableBT = (ImageButton) findViewById(R.id.button_enableBT);
-        //buttonScanBT = (ImageButton) findViewById(R.id.button_scanBT);
-        //buttonData = (Button) findViewById(R.id.button_edit_room) ;
-        //buttonPath = (Button) findViewById(R.id.button_path);
-        buttonSearchDevices = (ImageButton) findViewById(R.id.button_search_devices);
-        buttonRadar = (ImageButton) findViewById(R.id.buttton_radar);
-        buttonMap = (ImageButton) findViewById(R.id.button_map);
 
-        buttonRadar.setOnClickListener(new View.OnClickListener() {
+
+        buttonMapping = (ImageButton) findViewById(R.id.button_map);
+        buttonMapping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                radar();
+                mappingMenu();
             }
         });
 
+        buttonEnableBT = (ImageButton) findViewById(R.id.button_enableBT);
         buttonEnableBT.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -79,36 +88,23 @@ public class MainActivity extends AppCompatActivity {
                 enableBluetoothOnDevice();
             }
         });
-        if(mBluetoothAdapter.isEnabled())
-        {
-            buttonEnableBT.setImageResource(R.drawable.bt_icon_blue);
-        }
-        else
-        {
-            buttonEnableBT.setImageResource(R.drawable.bt_icon_red);
-        }
-        /*
-        buttonScanBT.setOnClickListener(new View.OnClickListener() {
+        buttonTracking = (ImageButton) findViewById(R.id.button_tracking_device);
+        buttonTracking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                measurement();
+                trackingActivity();
             }
         });
 
-        buttonPath.setOnClickListener(new View.OnClickListener() {
+        buttonRadar = (ImageButton) findViewById(R.id.buttton_radar);
+        buttonRadar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawPath();
+                radar();
             }
         });
 
-        buttonData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editRoom();
-            }
-        });
-
+        buttonSearchDevices = (ImageButton) findViewById(R.id.button_search_devices);
         buttonSearchDevices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,14 +112,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonMap.setOnClickListener(new View.OnClickListener() {
+        buttonSettings = (ImageButton) findViewById(R.id.button_settings);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                map();
+                settings();
             }
         });
- */
-    }//end onCreate
+
+        checkBluetoothState();
+    }
 
     /**
      * Włącza bluetooth jeśli nie jest włączony, jeśli urządzenie go nie posiada zamyka aplikację
@@ -170,24 +168,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void measurement()
+
+    private void trackingActivity()
     {
 
-        Intent intent = new Intent(this, MeasurementEditor.class);
-        startActivity(intent);
-    }
-
-
-    private void drawPath()
-    {
-        Intent intent = new Intent(this, PathEditor.class);
-        startActivity(intent);
-    }
-
-    private void editRoom()
-    {
-        Intent intent = new Intent(this, RoomMenu.class);
-        startActivity(intent);
     }
 
     private void searchDevices()
@@ -201,10 +185,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void map()
+    private void mappingMenu()
     {
-        Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
+        Intent intent = new Intent(this, MappingMenu.class);
         startActivity(intent);
+    }
+
+    private void settings()
+    {
+
+    }
+
+    private void checkBluetoothState()
+    {
+        if(mBluetoothAdapter.isEnabled())
+        {
+            buttonEnableBT.setImageResource(R.drawable.bt_icon_blue);
+        }
+        else
+        {
+            buttonEnableBT.setImageResource(R.drawable.bt_icon_red);
+        }
     }
 
 }

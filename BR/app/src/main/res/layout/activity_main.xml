@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:stretchColumns="*"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -15,6 +14,7 @@
     >
 
     <TableRow
+        android:background="@color/colorPrimaryDark"
         >
 
         <TextView
@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@string/mapping"
             android:id="@+id/textView_mapping"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,6 +45,8 @@
             android:background="@null"
             android:id="@+id/button_map"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
 
 
@@ -56,10 +59,13 @@
             android:src = "@drawable/bt_icon_red"
             android:background="@null"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,7 +95,8 @@
             android:src = "@drawable/tracking_icon"
             android:background="@null"
             android:layout_gravity="center"
-
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
 
         <ImageButton
@@ -99,11 +106,14 @@
             android:id="@+id/buttton_radar"
             android:src = "@drawable/radar_icon"
             android:background="@null"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,7 +141,9 @@
             android:id="@+id/button_search_devices"
             android:src = "@drawable/search_devices_icon"
             android:background="@null"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
 
 
@@ -142,6 +154,8 @@
             android:src = "@drawable/settings_icon"
             android:background="@null"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
 
     </TableRow>

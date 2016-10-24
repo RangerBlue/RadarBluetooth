@@ -40,10 +40,7 @@
         <activity android:name=".activities.BluetoothResultsChooseRoom" />
         <activity android:name=".activities.BluetoothResultsChooseMeasurement" />
         <activity android:name=".activities.BluetoothResultsView" />
-        <activity
-            android:name=".activities.MappingMenu"
-            android:label="@string/title_activity_mapping_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.MappingMenu"></activity>
     </application>
 
 </manifest>

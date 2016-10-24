@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.RoomsController;
@@ -23,15 +24,15 @@ public class RoomMenu extends AppCompatActivity {
     /**
      * Przycisk do utworzenia pokoju
      */
-    private Button buttonCreate;
-    private Button buttonView;
+    private ImageButton buttonCreate;
+    private ImageButton buttonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_menu);
 
-        buttonCreate = (Button) findViewById(R.id.buttonCreate);
+        buttonCreate = (ImageButton) findViewById(R.id.buttonCreate);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +40,7 @@ public class RoomMenu extends AppCompatActivity {
             }
         });
 
-        buttonView = (Button) findViewById(R.id.buttonView);
+        buttonView = (ImageButton) findViewById(R.id.buttonEdit);
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
