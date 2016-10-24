@@ -41,12 +41,10 @@ public class RoomViewerAdapter extends ArrayAdapter<Rooms>
         View rowView = inflater.inflate(R.layout.activity_room_viewer_row, parent, false);
 
         // Pobierz textview
-        TextView number = (TextView) rowView.findViewById(R.id.textViewNumber);
         TextView name = (TextView) rowView.findViewById(R.id.textViewName);
 
 
         // Ustaw text
-        number.setText(String.valueOf(room.getIdRooms()));
         name.setText(room.getName());
 
         // Zwróć rowview

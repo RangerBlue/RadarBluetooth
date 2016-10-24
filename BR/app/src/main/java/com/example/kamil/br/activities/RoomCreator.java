@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.RoomsController;
@@ -21,7 +23,7 @@ import java.util.List;
 
 public class RoomCreator extends AppCompatActivity {
 
-    private Button confirmButton;
+    private ImageButton confirmButton;
     private EditText roomNameEditText;
     private Spinner roomTypeSpinner;
 
@@ -45,15 +47,29 @@ public class RoomCreator extends AppCompatActivity {
 
         roomTypeSpinner.setSelection(valueList.size()-1);
 
-        confirmButton = (Button) findViewById(R.id.buttonConfirm);
+        confirmButton = (ImageButton) findViewById(R.id.buttonConfirm);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                Rooms room = new Rooms();
-                room.setName(roomNameEditText.getText().toString());
-                RoomsController roomController = new RoomsController();
-                roomController.insert(room, getApplicationContext());
+                if(!roomNameEditText.getText().toString().isEmpty())
+                {
+                    Rooms room = new Rooms();
+                    room.setName(roomNameEditText.getText().toString());
+                    RoomsController roomController = new RoomsController();
+                    roomController.insert(room, getApplicationContext());
+                    Toast.makeText(getApplicationContext(), R.string.added_room, Toast.LENGTH_SHORT).show();
+                    roomNameEditText.setFocusable(false);
+                    roomNameEditText.setClickable(false);
+                    roomTypeSpinner.setFocusableInTouchMode(false);
+                    roomTypeSpinner.setFocusable(false);
+                    roomTypeSpinner.setClickable(false);
+                    v.setClickable(false);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), R.string.wrong_input, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

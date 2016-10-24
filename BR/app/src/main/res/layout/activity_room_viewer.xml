@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.RoomChoose">
+    tools:context=".activities.RoomChoose"
+    android:background="@color/colorBackground">
 
     <ListView
         android:layout_width="fill_parent"
