@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Przycisk do przejścia do aktwności szukania urządzeń
      */
-    private Button buttonScanBT;
+    private ImageButton buttonScanBT;
     private Button buttonData;
     private Button buttonPath;
-    private Button buttonSearchDevices;
-    private Button buttonRadar;
-    private Button buttonMap;
+    private ImageButton buttonSearchDevices;
+    private ImageButton buttonRadar;
+    private ImageButton buttonMap;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -52,18 +52,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //ustawienie tekstu w dobrej wielkosci w zaleznosci od wielkosci urządzenia, trzeba sprawdzic na prawdziwym, na podglądzie nie widać
-        appName = (TextView) findViewById(R.id.textview_title);
-        appName.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                getResources().getDimension(R.dimen.fab_margin));
+       // appName = (TextView) findViewById(R.id.textview_title);
+        //appName.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_margin));
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonEnableBT = (ImageButton) findViewById(R.id.button_enableBT);
-        buttonScanBT = (Button) findViewById(R.id.button_scanBT);
-        buttonData = (Button) findViewById(R.id.button_edit_room) ;
-        buttonPath = (Button) findViewById(R.id.button_path);
-        buttonSearchDevices = (Button) findViewById(R.id.button_search_devices);
-        buttonRadar = (Button) findViewById(R.id.buttton_radar);
-        buttonMap = (Button) findViewById(R.id.button_map);
+        //buttonScanBT = (ImageButton) findViewById(R.id.button_scanBT);
+        //buttonData = (Button) findViewById(R.id.button_edit_room) ;
+        //buttonPath = (Button) findViewById(R.id.button_path);
+        buttonSearchDevices = (ImageButton) findViewById(R.id.button_search_devices);
+        buttonRadar = (ImageButton) findViewById(R.id.buttton_radar);
+        buttonMap = (ImageButton) findViewById(R.id.button_map);
 
         buttonRadar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         {
             buttonEnableBT.setImageResource(R.drawable.bt_icon_red);
         }
-
+        /*
         buttonScanBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 map();
             }
         });
-
+ */
     }//end onCreate
 
     /**

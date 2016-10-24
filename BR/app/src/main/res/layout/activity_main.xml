@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:shrinkColumns="*"
+
     android:stretchColumns="*"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -14,102 +14,136 @@
     tools:context=".activities.MainActivity"
     >
 
-
     <TableRow
-        android:padding="5dp"
-        android:layout_weight="2">
+        >
 
         <TextView
-            android:id="@+id/textview_title"
-            android:text="Radar Bluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_column="0"
-            android:layout_gravity="center"
-            android:textSize="20sp"/>
+            android:text="@string/mapping"
+            android:id="@+id/textView_mapping"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth"
+            android:id="@+id/textView_enable_bt"
+            android:layout_gravity="center" />
+    </TableRow>
+    <TableRow
+        android:padding="5dp"
+        android:layout_weight="1"
+        >
 
         <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/map"
+            android:src = "@drawable/mapping_icon"
+            android:background="@null"
+            android:id="@+id/button_map"
+            android:layout_gravity="center"
+            />
+
+
+
+        <ImageButton
+
             android:id="@+id/button_enableBT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src = "@drawable/bt_icon_red"
             android:background="@null"
-            android:layout_column="1" />
-    </TableRow>
-
-    <TableRow
-        android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
-            android:id="@+id/button_scanBT"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/measurement"
-            android:background="@drawable/curved_button"
-            android:layout_span="2"
+            android:layout_gravity="center"
             />
     </TableRow>
 
-    <TableRow
-        android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
-            android:layout_width="fill_parent"
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_edit_room"
-            android:id="@+id/button_edit_room"
-            android:background="@drawable/curved_button"
-            android:layout_span="2" />
+            android:text="@string/tracking"
+            android:id="@+id/textView_tracking"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radar"
+            android:id="@+id/textView_radar"
+            android:layout_gravity="center" />
     </TableRow>
 
     <TableRow
         android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
+        android:layout_weight="1"
+        >
+
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Path"
-            android:id="@+id/button_path"
-            android:background="@drawable/curved_button"
-            android:layout_span="2" />
-    </TableRow>
+            android:text="@string/search_devices"
+            android:id="@+id/button_tracking_device"
+            android:src = "@drawable/tracking_icon"
+            android:background="@null"
+            android:layout_gravity="center"
 
-    <TableRow
-        android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/map"
-            android:id="@+id/button_map"
-            android:background="@drawable/curved_button"
-            android:layout_span="2" />
-    </TableRow>
+            />
 
-    <TableRow
-        android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/radar"
             android:id="@+id/buttton_radar"
-            android:background="@drawable/curved_button"
-            android:layout_span="2" />
+            android:src = "@drawable/radar_icon"
+            android:background="@null"
+            android:layout_gravity="center"/>
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_devices"
+            android:id="@+id/textView_search_devices"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"
+            android:id="@+id/textView_settings"
+            android:layout_gravity="center" />
     </TableRow>
 
     <TableRow
         android:paddingBottom="5dp"
-        android:layout_weight="1">
-        <Button
+        android:layout_weight="1"
+        >
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/search_devices"
             android:id="@+id/button_search_devices"
-            android:background="@drawable/curved_button"
-            android:layout_span="2" />
+            android:src = "@drawable/search_devices_icon"
+            android:background="@null"
+            android:layout_gravity="center"/>
+
+
+
+        <ImageButton
+            android:id="@+id/button_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/settings_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            />
+
     </TableRow>
 
 </TableLayout>

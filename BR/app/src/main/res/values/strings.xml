@@ -13,9 +13,9 @@
     <string name="start">Start</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
-    <string name="radar">Radar</string>
+    <string name="radar">RADAR</string>
     <string name="map">Map</string>
-    <string name="search_devices">Search for devices</string>
+    <string name="search_devices">SEARCH FOR DEVICES</string>
     <string name="measurement">Measurement</string>
     <string name="title_activity_bluetooth_results_editor">BluetoothResultsEditor</string>
     <string name="no_bluetooth">This device does not have a bluetooth adapter</string>
@@ -27,6 +27,10 @@
     <string name="edit">Edit</string>
     <string name="name">Name</string>
     <string name="type">Type</string>
+    <string name="mapping">MAPPING</string>
+    <string name="tracking">TRACKING</string>
+    <string name="bluetooth">BLUETOOTH</string>
+    <string name="settings">SETTINGS</string>
     <string name="room_type_prompt">Choose a type of room</string>
 
     <string-array name="room_type_arrays">
@@ -35,4 +39,5 @@
         <item>Classroom</item>
         <item>Gym</item>
     </string-array>
+    <string name="title_activity_mapping_menu">MappingMenu</string>
 </resources>
