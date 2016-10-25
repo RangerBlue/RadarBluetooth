@@ -10,6 +10,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.PathDataController;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 public class PathCreator extends AppCompatActivity {
 
+    private ImageButton buttonNext;
     private int numberOfVertex = 0;
     private Button[] cells;
     private ArrayList<Integer> position;//lista z pozycja( np. 43)
@@ -41,8 +43,8 @@ public class PathCreator extends AppCompatActivity {
 
 
 
-        Button przycisk = (Button) findViewById(R.id.button);
-        przycisk.setOnClickListener(new View.OnClickListener() {
+        buttonNext = (ImageButton) findViewById(R.id.buttonPathCreaterNext);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PathData.calculateFunctions(position, pathData, getApplicationContext() );
@@ -70,14 +72,15 @@ public class PathCreator extends AppCompatActivity {
         Button[] cells = new Button[gridsCells];
         for (int i = 0; i < cells.length; i++) {
             cells[i] = new Button(this);
-
+            cells[i].setBackground(getResources().getDrawable(R.drawable.curved_button));
+            cells[i].setBackground(null);
             grid.addView(cells[i], (int) ((fieldWidthRatio * width) / grid.getColumnCount()), (int) ((fieldHeightRatio * height)) / grid.getColumnCount());
             final int i_ = i;
             cells[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     v.setEnabled(false);
-                    v.setBackgroundColor(Color.GREEN);
+                    v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     Log.d("Numer", String.valueOf(i_));
                     position.add(i_);
                     numberOfVertex++;

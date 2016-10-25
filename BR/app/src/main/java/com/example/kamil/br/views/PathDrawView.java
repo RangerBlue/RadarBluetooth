@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
@@ -47,84 +48,7 @@ public class PathDrawView extends View
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
     }
-    /*
-    public int[] getCornerTime(List<Record> elements)//zwraca 4 wartosci czasu w narożnikach
-    {
-        int[] corners = new int[5];
-        corners[0] = 0;
-        int i=1;
-        int j=1;
-        while( i<elements.size() )
-        {
-            if(elements.get(i).getEdgeNumber() == 0)   //jesli przerwa
-            {
-                corners[j] = i;
-                j++;
-                Log.d("Pozycje narożników", String.valueOf(i));
-            }
-            i++;
-        }
 
-        return corners;
-    }
-*/
-    /*
-    public long[] getEdgeDuration(int tab[], List<Record> elements)
-    {
-        long[] edges = new long[4];
-        for(int i=0;i<4;i++)
-        {
-            edges[i] = elements.get(tab[i+1]).getTime()-elements.get(tab[i]).getTime();
-            Log.d("Czas trwania krawędzi", String.valueOf(edges[i]));
-        }
-
-        return edges;
-    }
-
-    public List<String> getNumberOfDevices(List<Record> e)//lista nazw wyszukanych urządzeń
-    {
-        List<String> names = new ArrayList<String>();
-        int i=2;
-        int j,k;
-        names.add(e.get(1).getName());
-        Log.d("dlugosc e", String.valueOf(e.size()));
-        while( i<e.size() )//przelatujemy przez wszystkie recordy
-        {
-            k=0;
-            Log.d("Sprawdzenie nazwy", String.valueOf(e.get(i).getName()));
-            if(e.get(i).getName()==null)
-            {
-                Log.d("Sprawdzenie nulla", "null");
-            }
-            else
-            {
-                for(j=0;j<names.size();j++)//przelatujemy po wszystkich elementach nazw które wystapiły
-                {
-                    if( (e.get(i).getName().equals(names.get(j))))
-                    {
-                        k++; //licznik wystąpień
-                    }
-                }
-
-                if(k == 0)
-                {
-                    names.add(e.get(i).getName());//dodajemy nową nazwe
-                    Log.d("Add values to name", String.valueOf(e.get(i).getName()));
-                }
-            }
-
-
-
-
-            Log.d("wartosc k=0", String.valueOf(k));
-
-            Log.d("liczymy pętle", String.valueOf(i));
-            i++;
-        }
-
-        return names;
-    }
-*/
     @Override
     protected void dispatchDraw(Canvas canvas) {
         /* warzywne obliczenia
@@ -288,12 +212,13 @@ public class PathDrawView extends View
         p = new Paint();
         p.setAntiAlias(true);
         p.setStyle(Paint.Style.FILL);
-        p.setStrokeWidth(1);
+        p.setStrokeWidth(5);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLUE);
+        p.setColor(Color.BLACK);
 
         //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
         int ratio = 44;
+        //moraczowe
         int radius = 3;
         //rysowanie punktów
         for(PathData e : data )
@@ -305,17 +230,17 @@ public class PathDrawView extends View
 
         //rysowanie lini, od pierwszej do ostatniej
 
-        p.setColor(Color.BLUE);
+        p.setColor(Color.BLACK);
         for(int i = 0 ; i < data.size()-1; i++)
         {
             if(data.get(i).getEdgeNumber()==number)
             {
-                p.setColor(Color.YELLOW);
+                p.setColor(getResources().getColor(R.color.colorPrimaryDark));
                 canvas.drawLine(data.get(i).getP1()*ratio,data.get(i).getP2Reverse()*ratio,data.get(i+1).getP1()*ratio,data.get(i+1).getP2Reverse()*ratio,p);
             }
             else
             {
-                p.setColor(Color.BLUE);
+                p.setColor(Color.BLACK);
                 canvas.drawLine(data.get(i).getP1()*ratio,data.get(i).getP2Reverse()*ratio,data.get(i+1).getP1()*ratio,data.get(i+1).getP2Reverse()*ratio,p);
             }
 
@@ -324,12 +249,12 @@ public class PathDrawView extends View
         //rysowanie lini ostatniej z pierwszą
         if(data.get(data.size()-1).getEdgeNumber()==number)
         {
-            p.setColor(Color.YELLOW);
+            p.setColor(getResources().getColor(R.color.colorPrimaryDark));
             canvas.drawLine(data.get(data.size()-1).getP1()*ratio,data.get(data.size()-1).getP2Reverse()*ratio,data.get(0).getP1()*ratio,data.get(0).getP2Reverse()*ratio,p);
         }
         else
         {
-            p.setColor(Color.BLUE);
+            p.setColor(Color.BLACK);
             canvas.drawLine(data.get(data.size()-1).getP1()*ratio,data.get(data.size()-1).getP2Reverse()*ratio,data.get(0).getP1()*ratio,data.get(0).getP2Reverse()*ratio,p);
         }
 

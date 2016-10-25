@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:stretchColumns="*"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackground"
     tools:context=".activities.PathCreator"
-    android:columnCount="20"
-    android:rowCount="20">
+    >
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/grid">
+    <TableRow
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark">
 
-    </GridLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_corners"
+            android:id="@+id/textView"
+            android:layout_gravity="center"
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+            android:layout_column="0" />
+    </TableRow>
 
-</RelativeLayout>
+    <TableRow
+        android:layout_weight="12">
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/grid">
+        </GridLayout>
+    </TableRow>
+
+    <TableRow>
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
+    </TableRow>
+
+    <TableRow
+        android:layout_weight="1">
+        <ImageButton
+
+            android:text="test"
+            android:id="@+id/buttonPathCreaterNext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/next_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            />
+    </TableRow>
+</TableLayout>

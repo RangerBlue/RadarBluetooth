@@ -13,15 +13,18 @@ import com.example.kamil.br.database.model.PathData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathEditor extends AppCompatActivity {
+public class PathMenu extends AppCompatActivity {
 
     private Button buttonCreate;
     private Button buttonView;
+    private int idRooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_editor);
+
+        idRooms = getIntent().getIntExtra("id",-1);
 
         buttonCreate = (Button) findViewById(R.id.buttonCreateInPath);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -52,13 +55,17 @@ public class PathEditor extends AppCompatActivity {
 
     private void create()
     {
-        Intent intent = new Intent(this, PathChooseRoom.class);
+
+        Intent intent = new Intent(this, PathCreator.class);
+        intent.putExtra("id", idRooms);
         startActivity(intent);
     }
 
     private void view()
     {
-        Intent intent = new Intent(this, RoomChoose.class);
+        Intent intent = new Intent(this, PathViewer.class);
+        intent.putExtra("id", idRooms);
+        intent.putExtra("option", 1);
         startActivity(intent);
     }
 

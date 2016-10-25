@@ -37,7 +37,7 @@ public class PathChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(PathChooseRoom.this, PathCreator.class);
+                Intent intent = new Intent(PathChooseRoom.this, PathMenu.class);
                 intent.putExtra("id", idToPass);
                 startActivity(intent);
             }

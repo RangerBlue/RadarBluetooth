@@ -40,6 +40,7 @@
     <string name="path">PATH</string>
     <string name="add">ADD</string>
     <string name="edit_big">EDIT</string>
+    <string name="pick_corners">PICK CORNERS BELOW</string>
 
     <string-array name="room_type_arrays">
         <item>Empty</item>

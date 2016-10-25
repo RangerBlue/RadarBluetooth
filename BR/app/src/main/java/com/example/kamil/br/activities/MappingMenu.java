@@ -53,8 +53,20 @@ public class MappingMenu extends AppCompatActivity {
         });
 
         buttonMeasurement = (ImageButton) findViewById(R.id.button_measurement);
+        buttonMeasurement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         buttonPath = (ImageButton) findViewById(R.id.button_path);
+        buttonPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchPathMenu();
+            }
+        });
 
         buttonMap = (ImageButton) findViewById(R.id.button_map);
     }
@@ -62,6 +74,12 @@ public class MappingMenu extends AppCompatActivity {
     private void launchRoomMenu()
     {
         Intent intent = new Intent(this, RoomMenu.class);
+        startActivity(intent);
+    }
+
+    private void launchPathMenu()
+    {
+        Intent intent = new Intent(this, PathChooseRoom.class);
         startActivity(intent);
     }
 }

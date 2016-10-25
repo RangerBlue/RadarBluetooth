@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
@@ -20,9 +21,9 @@ public class PathViewer extends AppCompatActivity  {
 
 
     private String TAG="PathViewer";
-    private Button buttonNext;
-    private Button buttonStopStart;
-    private Button buttonSave;
+    private ImageButton buttonNext;
+    private ImageButton buttonStopStart;
+    private ImageButton buttonSave;
     private int counter=0;
     private int counterLimit;
     private PathDrawView map;
@@ -38,6 +39,7 @@ public class PathViewer extends AppCompatActivity  {
         //odebranie paczki
         //odebranie paczki
         int idRooms = getIntent().getIntExtra("id",-1);
+        int option = getIntent().getIntExtra("option", -1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
         //wyzerowanie ratia
@@ -56,6 +58,7 @@ public class PathViewer extends AppCompatActivity  {
         }
         else//tu z bazy danych
         {
+
             Log.d(TAG, "Z bazy danych");
             list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
             map = (PathDrawView) findViewById(R.id.viewDrawMap);
@@ -65,12 +68,13 @@ public class PathViewer extends AppCompatActivity  {
 
             PathDataController.printAllTableToLog(list);
 
-            buttonNext = (Button) findViewById(R.id.buttonPathViewerNext);
+            buttonNext = (ImageButton) findViewById(R.id.buttonPathViewerNext);
             hideButtonIfRatioIsNotSet(buttonNext);
             buttonNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
                 {
+                    Log.d(TAG, "next");
                     counterIncrement();
                     map.setNumber(counter);
                     map.invalidate();
@@ -80,14 +84,15 @@ public class PathViewer extends AppCompatActivity  {
                 }
             });
 
-            buttonStopStart = (Button) findViewById(R.id.buttonPathViewerStartStop);
+            buttonStopStart = (ImageButton) findViewById(R.id.buttonPathViewerStartStop);
             buttonStopStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
                 {
+                    Log.d(TAG, "stopstart");
                     if(ifTheClockIsTicking)
                     {
-                        buttonStopStart.setText(R.string.start);
+                        buttonStopStart.setImageResource(R.drawable.start_process_icon);
                         timeStop = System.currentTimeMillis();
                         getTimeDifference(timeStart, timeStop);
                         ifTheClockIsTicking = false;
@@ -96,7 +101,7 @@ public class PathViewer extends AppCompatActivity  {
                     }
                     else
                     {
-                        buttonStopStart.setText(R.string.stop);
+                        buttonStopStart.setImageResource(R.drawable.stop_icon);
                         timeStart = System.currentTimeMillis();
                         ifTheClockIsTicking = true;
                         buttonNext.setVisibility(View.INVISIBLE);
@@ -105,11 +110,12 @@ public class PathViewer extends AppCompatActivity  {
                 }
             });
 
-            buttonSave = (Button) findViewById(R.id.buttonPathViewerSave);
+            buttonSave = (ImageButton) findViewById(R.id.buttonPathViewerSave);
             buttonSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
                 {
+                    Log.d(TAG, "save");
                     int listLength = list.size();
                     //uaktualnienie wpółczynników funkcji
                     for (int i = 0; i < listLength - 1; i++)
@@ -130,53 +136,10 @@ public class PathViewer extends AppCompatActivity  {
 
                 }
             });
+
+
         }
 
-
-
-
-
-
-        /*
-        List<Record> elements = db.getAll();
-
-        for (Record item : elements) {
-            String log = "Id: " + item.getId()
-                    + " ,Name: " + item.getName()
-                    + " ,RSSI: " + item.getRssi()
-                    + " ,Time: " + item.getTime()
-                    + " ,Direction: " + item.getDirection();
-            // Writing shops  to log
-            Log.d("Item: : ", log);
-        }
-        */
-
-        //jesli usunac baze programowo
-        /*for (Record item : elements)
-        {
-            db.delete(item);
-            Toast.makeText(PathViewer.this, "Usunięto rekordy", Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-
-
-/*
-        przyciskDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                List<Record> elements = db.getAll();
-                for (Record item : elements)
-                {
-                    db.delete(item);
-                    Toast.makeText(PathViewer.this, "Usunięto rekordy", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-*/
     }
 
 
@@ -228,7 +191,7 @@ public class PathViewer extends AppCompatActivity  {
 
     }
 
-    public void hideButtonIfRatioIsNotSet(Button button)
+    public void hideButtonIfRatioIsNotSet(ImageButton button)
     {
         if(PathData.getRatio() == 0)
         {
@@ -236,7 +199,7 @@ public class PathViewer extends AppCompatActivity  {
         }
     }
 
-    public void hideButtonOnMainEdgeIfRatioIsSet(Button button)
+    public void hideButtonOnMainEdgeIfRatioIsSet(ImageButton button)
     {
         if(PathData.getRatio()!=0 && counter == 0)
         {
