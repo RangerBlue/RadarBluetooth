@@ -14,9 +14,18 @@ import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
+/**
+ * Aktywność służaca do wyboru ścieżki z danego pokju
+ * Created by Kamil
+ */
 public class PathChooseRoom extends AppCompatActivity {
-
+    /**
+     * Lista elementów
+     */
     private ListView list;
+    /**
+     * Adapter listy
+     */
     private RoomViewerAdapter adapter;
 
     @Override
@@ -24,7 +33,9 @@ public class PathChooseRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_choose_room);
 
+        //incijalizacja listy
         list = (ListView) findViewById(R.id.listViewMeasurementChooseRoom);
+        //kolekcja do wyświetlenia
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
 
         adapter = new RoomViewerAdapter(this, all);
@@ -38,6 +49,7 @@ public class PathChooseRoom extends AppCompatActivity {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
                 Intent intent = new Intent(PathChooseRoom.this, PathMenu.class);
+                //przekazanie id pokoju do kolejnej aktywności
                 intent.putExtra("id", idToPass);
                 startActivity(intent);
             }

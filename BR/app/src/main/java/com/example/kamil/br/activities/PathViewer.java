@@ -39,7 +39,6 @@ public class PathViewer extends AppCompatActivity  {
         //odebranie paczki
         //odebranie paczki
         int idRooms = getIntent().getIntExtra("id",-1);
-        int option = getIntent().getIntExtra("option", -1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
         //wyzerowanie ratia

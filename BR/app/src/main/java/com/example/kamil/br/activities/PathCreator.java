@@ -1,11 +1,14 @@
 package com.example.kamil.br.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -13,35 +16,70 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
 
+/**
+ * Aktywność służaca do utowrzenia ścieżki, towrzy się ją
+ * zaznaczając kolejne narożniki pomieszczenia
+ * Created by Kamil
+ */
 public class PathCreator extends AppCompatActivity {
-
+    /**
+     * Przycisk przejścia do kolejnego okna
+     */
     private ImageButton buttonNext;
+
+    /**
+     * Ilość narożników pomieszczenia
+     */
     private int numberOfVertex = 0;
+
+    /**
+     * Tablica pól, na których zaznaczamy kształt, mają numery od 0 do gridCells
+     */
     private Button[] cells;
-    private ArrayList<Integer> position;//lista z pozycja( np. 43)
-    private ArrayList<PathData> pathData;//lista z współczynnikami a,b, opcjonalnym x i logicznym czy funkcja jest liniowa
+
+    /**
+     * Lista z pozycjami zaznaczonych narożników, np 43
+     */
+    private ArrayList<Integer> position;
+
+    /**
+     * Lista ze obiektami PathData, opisująca krawędzie
+     */
+    private ArrayList<PathData> pathData;
+
+    /**
+     * Ilośc pól na planszy do zaznaczania kształtu, liczba z kórej można zpierwiastkowac
+     */
     private int gridsCells = 100; //ilosc pól w planszy do zaznaczania kształtu
+
+    /**
+     * Numer pokoju, do ktorego chcemy dodać ścieżkę
+     */
     private int idRooms ;
-    //korzystamy z 4 ćwiartki osi
+
+    /**
+     * Szerokość ekranu horyzontalna lub wertykalna
+     */
+    private int screenWidth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_creator);
+        //ustawienie ilości pól
         PathData.setGridCells(gridsCells);
         //odebranie paczki
         idRooms = getIntent().getIntExtra("id",-1);
+        //ustawienie id pokoju
         PathData.setRoomNumber(idRooms);
-
         position = new ArrayList<>();
         pathData = new ArrayList<>();
+        setScreenWidth();
         drawGrid();
-
-
 
         buttonNext = (ImageButton) findViewById(R.id.buttonPathCreaterNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -57,25 +95,26 @@ public class PathCreator extends AppCompatActivity {
 
     }
 
-    //rysowanie pól na których zaznaczamy kształt
-    public void drawGrid() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        float fieldWidthRatio = 0.9f;
-        float fieldHeightRatio = 0.5f;
+    /**
+     * Rysowanie pól, na których zaznaczamy kształ
+     */
+    public void drawGrid()
+    {
+
         GridLayout grid = (GridLayout) findViewById(R.id.grid);
-        grid.setColumnCount((int) Math.sqrt(gridsCells));
-        grid.setRowCount((int) Math.sqrt(gridsCells));
-        Button[] cells = new Button[gridsCells];
-        for (int i = 0; i < cells.length; i++) {
+        int columnAndRowCount = (int) Math.sqrt(gridsCells);
+        grid.setColumnCount(columnAndRowCount);
+        grid.setRowCount(columnAndRowCount);
+        cells = new Button[gridsCells];
+        for (int i = 0; i < cells.length; i++)
+        {
             cells[i] = new Button(this);
             cells[i].setBackground(getResources().getDrawable(R.drawable.curved_button));
             cells[i].setBackground(null);
-            grid.addView(cells[i], (int) ((fieldWidthRatio * width) / grid.getColumnCount()), (int) ((fieldHeightRatio * height)) / grid.getColumnCount());
+            //dodawanie pola
+            grid.addView(cells[i], screenWidth / grid.getColumnCount(), screenWidth / grid.getColumnCount());
             final int i_ = i;
+            //czynności wykonane po kliknięciu pola
             cells[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +128,40 @@ public class PathCreator extends AppCompatActivity {
         }
     }
 
+    /**
+     * Konwetowanie wartości dip na pixele
+     * @param dip wartość w dip
+     * @return wartość w pixelach
+     */
+    public float dipToPixels(int dip)
+    {
+        Resources res = getResources();
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, res.getDisplayMetrics());
+        return pixels;
+    }
 
+    /**
+     * Ustawienie szerokości pola wyboru narożników zależności od orientacji ekranu
+     */
+    public void setScreenWidth()
+    {
+        //pobranie wymiaru wyświetlacza
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
 
+        Configuration newConfig = getResources().getConfiguration();
 
+        if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            //odjęcie od szerokości paddingu layoutu i paddingu theme
+            screenWidth = (int) (size.x-dipToPixels(20)-dipToPixels(32));
+        }
+        else if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+
+            float ratio = 0.6f;
+            screenWidth = (int) (size.y * ratio);
+        }
+    }
 }

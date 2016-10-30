@@ -79,7 +79,7 @@ public class BluetoothFinder extends AppCompatActivity {
                 DecimalFormat format = new DecimalFormat();
                 format.setMinimumFractionDigits(2);
 
-                //bluetoothResults.setName(device.getName()+" is "+Float.toString(BluetoothDistance.getDistance(rssi)).substring(0,4)+" from here");
+                bluetoothResults.setName(device.getName()+" is "+Float.toString(BluetoothDistance.getDistance(rssi)).substring(0,4)+" from here");
                 bluetoothResults.setName(device.getName());
                 bluetoothResults.setAddress(device.getAddress());
                 bluetoothResults.setRssi(rssi);

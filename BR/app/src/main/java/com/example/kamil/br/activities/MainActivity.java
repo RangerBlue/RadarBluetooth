@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        checkBluetoothState();
+        //checkBluetoothState();
     }
 
     /**
@@ -168,34 +168,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Przechodzi do aktywności śledzenia urządzenia
+     */
     private void trackingActivity()
     {
 
     }
 
+    /**
+     * Przechodzi do aktywności szukania urządzenia
+     */
     private void searchDevices()
     {
         Intent intent = new Intent(this, BluetoothFinder.class);
         startActivity(intent);
     }
+
+    /**
+     * Przechodzi do aktywności szukania urządzeń na radarze
+     */
     private void radar()
     {
         Intent intent = new Intent(this, Radar.class);
         startActivity(intent);
     }
 
+    /**
+     * Przechodzi do aktywności mapowania
+     */
     private void mappingMenu()
     {
         Intent intent = new Intent(this, MappingMenu.class);
         startActivity(intent);
     }
 
+    /**
+     * Przechodzi do aktywności ustawień użytkownika
+     */
     private void settings()
     {
 
     }
 
+    /**
+     * Sprawdza stan modułu bluetooth, jeśli jest włączony ikonka staje się niebieska,
+     * jeśli jest wyłączony czerwona
+     */
     private void checkBluetoothState()
     {
         if(mBluetoothAdapter.isEnabled())

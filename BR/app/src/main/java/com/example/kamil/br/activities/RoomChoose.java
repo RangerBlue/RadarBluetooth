@@ -21,11 +21,18 @@ import com.example.kamil.br.database.model.Rooms;
 import java.util.ArrayList;
 
 /**
- * fdffgdfgdfgfdssg
+ * Aktywność służaca wybrania pokoju, który chcemy edytować: zmienić nazwę, typ lub usunąć
+ * Created by Kamil
  */
 public class RoomChoose extends AppCompatActivity {
 
+    /**
+     * Lista elementów
+     */
     private ListView list;
+    /**
+     * Adapter listy
+     */
     private RoomViewerAdapter adapter;
     private static String TAG = RoomChoose.class.getSimpleName();
 
@@ -45,6 +52,7 @@ public class RoomChoose extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        //ustawienie menu
         if(v.getId() == R.id.listViewRoomViewer)
         {
             MenuInflater inflater = getMenuInflater();
@@ -54,6 +62,7 @@ public class RoomChoose extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        //obłsuga menu
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Rooms room = adapter.getItem(info.position);
         int idToPass = room.getIdRooms();

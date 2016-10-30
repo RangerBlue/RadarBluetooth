@@ -22,7 +22,9 @@
         </activity>
         <activity android:name=".activities.MeasurementCreate" />
         <activity android:name=".activities.PathViewer" />
-        <activity android:name=".activities.PathCreator" />
+        <activity android:name=".activities.PathCreator"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".activities.RoomCreator" />
         <activity android:name=".activities.RoomChoose" />
         <activity android:name=".activities.RoomMenu" />

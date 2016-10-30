@@ -25,7 +25,10 @@ public class RoomMenu extends AppCompatActivity {
      * Przycisk do utworzenia pokoju
      */
     private ImageButton buttonCreate;
-    private ImageButton buttonView;
+    /**
+     * Przycisk do edycji pokoju
+     */
+    private ImageButton buttonEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +43,33 @@ public class RoomMenu extends AppCompatActivity {
             }
         });
 
-        buttonView = (ImageButton) findViewById(R.id.buttonEdit);
-        buttonView.setOnClickListener(new View.OnClickListener() {
+        buttonEdit = (ImageButton) findViewById(R.id.buttonEdit);
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view();
+                edit();
             }
         });
 
+        //wypisanie całej tabeli Rooms
         List<Rooms> all = new RoomsController().selectAll(getApplicationContext());
         RoomsController.printAllTableToLog((ArrayList<Rooms>) all);
 
     }
 
+    /**
+     * Przejście do aktwyności dodawania pokoju
+     */
     private void create()
     {
         Intent intent = new Intent(this, RoomCreator.class);
         startActivity(intent);
     }
 
-    private void view()
+    /**
+     * Przycisk do aktywności edycji pokoju
+     */
+    private void edit()
     {
         Intent intent = new Intent(this, RoomChoose.class);
         startActivity(intent);

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="*"
+    android:shrinkColumns="*"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,31 +14,30 @@
     >
 
     <TableRow
-        android:layout_weight="1"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimaryDark"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_corners"
             android:id="@+id/textView"
-            android:layout_gravity="center"
-
-            android:layout_column="0" />
+            android:layout_gravity="center" />
     </TableRow>
 
     <TableRow
-        android:layout_weight="12">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
         <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/grid">
+
+            android:id="@+id/grid"
+            android:layout_gravity="center">
         </GridLayout>
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:layout_weight="1">
         <View
             android:layout_height="2dip"
             android:background="@color/colorPrimaryDark" />
@@ -46,16 +46,14 @@
     <TableRow
         android:layout_weight="1">
         <ImageButton
-
-            android:text="test"
             android:id="@+id/buttonPathCreaterNext"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src = "@drawable/next_icon"
             android:background="@null"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            />
+            android:contentDescription="Next button" />
     </TableRow>
 </TableLayout>

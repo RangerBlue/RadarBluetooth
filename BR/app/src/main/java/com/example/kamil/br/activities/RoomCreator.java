@@ -21,10 +21,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Aktywność służaca do dodania nowego pokouju
+ * Created by Kamil
+ */
 public class RoomCreator extends AppCompatActivity {
-
+    /**
+     * Przycisk do potwierdzenia dodania pokoju
+     */
     private ImageButton confirmButton;
+    /**
+     * Pole tekstowe na nazwę pokoju
+     */
     private EditText roomNameEditText;
+    /**
+     * Rozwijana lista na typ pokoju
+     */
     private Spinner roomTypeSpinner;
 
     @Override
@@ -72,16 +84,6 @@ public class RoomCreator extends AppCompatActivity {
                 }
             }
         });
-
-
-        //wypisanie całej bazy
-        List<Rooms> all = new RoomsController().selectAll(getApplicationContext());
-        for ( Rooms element : all )
-        {
-            Log.d("Elementy: ", "ID "+String.valueOf(element.getIdRooms()) + " Name "+ element.getName() ) ;
-        }
-
-
 
     }
 }

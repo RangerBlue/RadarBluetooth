@@ -13,6 +13,11 @@ import com.example.kamil.br.database.model.PathData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Aktywność służaca do wyboru opcji związanych z pokojami czyli
+ * utworzenie, wyświetlenie, edycja, usunięcie
+ * Created by Kamil
+ */
 public class PathMenu extends AppCompatActivity {
 
     private Button buttonCreate;
@@ -38,21 +43,21 @@ public class PathMenu extends AppCompatActivity {
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view();
+                edit();
             }
         });
 
-
+        //drukowanie
        List<PathData> all = new PathDataController().selectAll(getApplicationContext());
        PathDataController.printAllTableToLog((ArrayList<PathData>) all);
-
-
     }
 
 
 
 
-
+    /**
+     * Przejście do aktywności dodawania śćieżki
+     */
     private void create()
     {
 
@@ -61,7 +66,10 @@ public class PathMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void view()
+    /**
+     * Przejście do aktywności edycji ścieżki
+     */
+    private void edit()
     {
         Intent intent = new Intent(this, PathViewer.class);
         intent.putExtra("id", idRooms);
