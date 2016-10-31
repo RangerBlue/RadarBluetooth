@@ -3,7 +3,6 @@ package com.example.kamil.br.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -66,6 +65,8 @@ public class PathCreator extends AppCompatActivity {
      */
     private int screenWidth;
 
+    private String TAG = PathCreator.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +121,7 @@ public class PathCreator extends AppCompatActivity {
                 public void onClick(View v) {
                     v.setEnabled(false);
                     v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    Log.d("Numer", String.valueOf(i_));
+                    Log.d(TAG, "Numer pola: "+String.valueOf(i_));
                     position.add(i_);
                     numberOfVertex++;
                 }

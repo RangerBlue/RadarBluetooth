@@ -126,7 +126,7 @@ public class MapDrawView extends View {
             BluetoothResultsController.printAllTableToLog(sublist);
             durationTime = getEdgeDurationTime(sublist);
             Log.d(TAG, "durationTime "+durationTime );
-            edgeLength = PathData.getSegmentLenght(
+            edgeLength = PathData.getSegmentLength(
                     path.get(edgeNumbers).getP1(),
                     path.get(0).getP1(),
                     path.get(edgeNumbers).getP2(),
@@ -150,7 +150,7 @@ public class MapDrawView extends View {
                     clone.setP1(path.get(0).getP1());
                     clone.setP2(path.get(0).getP2());
                     clone.setIfLinear(path.get(0).getIsIfLinear());
-                    PathData.calculateNewPoint(elapsedTime,path.get(edgeNumbers), clone );
+                    PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone );
                     drawMeasure(canvas, clone, sublist.get(j).getRssi());
                 }
             }
@@ -162,7 +162,7 @@ public class MapDrawView extends View {
                 BluetoothResultsController.printAllTableToLog(sublist);
                 durationTime = getEdgeDurationTime(sublist);
                 Log.d(TAG, "durationTime "+durationTime );
-                edgeLength = PathData.getSegmentLenght(
+                edgeLength = PathData.getSegmentLength(
                         path.get(i).getP1(),
                         path.get(i+1).getP1(),
                         path.get(i).getP2(),
@@ -186,7 +186,7 @@ public class MapDrawView extends View {
                         clone.setP1(path.get(i+1).getP1());
                         clone.setP2(path.get(i+1).getP2());
                         clone.setIfLinear(path.get(i+1).getIsIfLinear());
-                        PathData.calculateNewPoint(elapsedTime,path.get(i), clone );
+                        PathData.setNewLength(elapsedTime,path.get(i), clone );
                         drawMeasure(canvas, clone, sublist.get(j).getRssi());
                     }
                 }

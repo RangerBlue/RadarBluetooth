@@ -1,9 +1,6 @@
 package com.example.kamil.br.database.model;
 
 import android.content.Context;
-import android.nfc.Tag;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.kamil.br.QuadraticFunction;
@@ -13,11 +10,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
+ * Klasa służąca do opisu krawędzi danego pokoju, każda krawędź jest opisana w postaci półprostej,
+ * punkt początkowy, oraz funkcja przechodząca przez ten punkt, punktem końcowym danej krawędzi jest
+ * punkt początkowy następnej
  * Created by kamil on 30.07.16.
  */
 public class PathData implements Serializable
 {
-    public static final String TAG = "PathData";
+    public static final String TAG = PathData.class.getSimpleName();
     public static final String TABLE = "PathData";
 
     public static final String ID_PATHDATA = "idpathadata";
@@ -30,24 +30,75 @@ public class PathData implements Serializable
     public static final String EDGENUMBER = "edgenumber";
     public static final String ID_ROOMS = "idrooms";
 
-    //nazwy pól
+    /**
+     * Identyfikator w bazie
+     */
     private int idPathData;
+
+    /**
+     * Wspólczynnik przy x w funkcji liniowej
+     */
     private float a;
+
+    /**
+     * Wolny wyraz w funkcji liniowej
+     */
     private float b;
+
+    /**
+     * Współczynnik funkcji jeśli nie jest liniowa
+     */
     private float x;
+
+    /**
+     * Wspólczynnik mówiący o tym czy funkcja jest liniowa
+     */
     private int ifLinear;
+
+    /**
+     * Wpółrzędna x punktu początkowego
+     */
     private float p1;
+
+    /**
+     * Wpółrzędna y punktu początkowego
+     */
     private float p2;
+
+    /**
+     * Numer krawędzi, liczony od 0
+     */
     private int edgeNumber;
+
+    /**
+     * Identyfikator pokoju, do którego krawędzie się odnoszą
+     */
     private int idRooms;
 
-    //stosunek dlugosc 0 odcinka/czas trwania pierwszego odcinka
+    /**
+     * Stosunek długości krawędzi nr 0 przez czas trwania przejścia tej krawędzi przez
+     * użytkownika
+     */
     private static float ratio;
 
+    /**
+     * Ilość komórek w polu wyboru narożników
+     */
     private static int gridCells;
 
+    /**
+     * nie wiem do czego to
+     */
+    //Todo: ogarnąc do czego jest zdublowany
     private static int roomNumber;
 
+    /**
+     * Konstruktor obiektu funkcji liniowej
+     * @param a Współczynnik przy x
+     * @param b Wolny wyraz funkcji liniowej
+     * @param p1 Wpólrzędna x pounktu startowego
+     * @param p2 Wpólrzędna y pounktu startowego
+     */
     public PathData(float a, float b, float p1, float p2) {
         this.a = a;
         this.b = b;
@@ -57,6 +108,11 @@ public class PathData implements Serializable
         this.ifLinear=1;
     }
 
+    /**
+     * Konstrukor obiektu funkcji nieliniowej
+     * @param xp1 Wspólczynnik x punktu początkowego(wsółczynnik funkcji nielniowej)
+     * @param p2  Wspólczynnik y punktu początkowego
+     */
     public PathData(float xp1, float p2) {
         this.a = 0;
         this.b = 0;
@@ -98,8 +154,6 @@ public class PathData implements Serializable
         this.idPathData = idPathData;
     }
 
-
-
     public  int getIdRooms() {
         return idRooms;
     }
@@ -113,8 +167,6 @@ public class PathData implements Serializable
 
     public int getEdgeNumber() {
         return edgeNumber;
-
-
     }
 
     public void setEdgeNumber(int edgeNumber) {
@@ -157,8 +209,6 @@ public class PathData implements Serializable
         this.x = x;
     }
 
-
-
     public float getB() {
         return b;
     }
@@ -175,19 +225,25 @@ public class PathData implements Serializable
         this.b = b;
     }
 
-
-    public static void calculateNewPoint(long time, PathData firstValue, PathData secondValue )
+    /**
+     * Zmienia długość krawędzi, w zależności od czasu jej przejścia
+     * @param time Czas potrzebny na przebycie danej krawędzi
+     * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
+     * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
+     */
+    public static void setNewLength(long time, PathData firstValue, PathData secondValue )
     {
-        float oldlenght = getSegmentLenght(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG+" oldLength",Float.toString(oldlenght) );
-        float newLenght = time/ratio;  Log.d(TAG+" newLength",Float.toString(newLenght) );
-        Log.d(TAG+" starting point","("+(Float.toString(firstValue.getP1()))+","+Float.toString(firstValue.getP2())+")");
-        Log.d(TAG+" stary punkt","("+(Float.toString(secondValue.getP1()))+","+Float.toString(secondValue.getP2())+")");
+        float oldLength = getSegmentLength(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG," oldLength: "+Float.toString(oldLength) );
+        float newLength = time/ratio;  Log.d(TAG+" newLength",Float.toString(newLength) );
+        Log.d(TAG,"Punkt startowy: "+"("+(Float.toString(firstValue.getP1()))+","+Float.toString(firstValue.getP2())+")");
+        Log.d(TAG+"Punkt przed zmianą","("+(Float.toString(secondValue.getP1()))+","+Float.toString(secondValue.getP2())+")");
 
+        //sprawdzenie czy liniowa czy nie
         if(firstValue.getIsIfLinear()==1)
-            getNewPoint(newLenght, firstValue, secondValue);
+            getNewPoint(newLength, firstValue, secondValue);
         else
-            getNewPointNotLinear(newLenght, firstValue, secondValue);
-
+            getNewPointNotLinear(newLength, firstValue, secondValue);
+        //wypisanie zmienonego wiersza
         Log.d(TAG,
                     "ID "+String.valueOf(secondValue.getIdPathData()) +
                             " A "+ secondValue.getA() +
@@ -200,17 +256,30 @@ public class PathData implements Serializable
                             " IdRooms "+ secondValue.getIdRooms()
             ) ;
 
-
     }
 
-    public static float getSegmentLenght(float x1, float x2, float y1, float y2)
+    /**
+     * Oblicza odległość między dwoma punktami
+     * @param x1 wspólrzędna x pierwszego punktu
+     * @param x2 współrzędna y pierwszego punktu
+     * @param y1 wspólrzędna x drugiego punktu
+     * @param y2 wspołrzędna y drugiego punktu
+     * @return odległośc
+     */
+    public static float getSegmentLength(float x1, float x2, float y1, float y2)
     {
         return (float) Math.sqrt(Math.abs(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))) ;
     }
 
-    public static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)
+    /**
+     * Obliczenie punktu, który znajduje się w podanej odległości od punktu startowego, korzystając z funkcji liniowej
+     * @param newLength Podana odległość
+     * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
+     * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
+     */
+    private static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)
     {
-        Log.d(TAG+"getNewPoint","wywołanie");
+        Log.d(TAG,"getNewPoint wywołanie");
         float a = firstValue.getA(); Log.d(TAG+ " a", Float.toString(a));
         float b = firstValue.getB(); Log.d(TAG+" b", Float.toString(b));
         float x1 = firstValue.getP1(); Log.d(TAG+ " x1", Float.toString(x1));
@@ -219,33 +288,40 @@ public class PathData implements Serializable
         float quadraticFunctionA = (1+a*a); Log.d(TAG+" qFA", Float.toString(quadraticFunctionA));
         float quadraticFunctionB = 2*(a*(b-y1)-x1);  Log.d(TAG+" qFB", Float.toString(quadraticFunctionB));
         float quadraticFunctionC = (float) (Math.pow((y1-b),2)+Math.pow(x1,2)-Math.pow(d,2)); Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
-        //float quadraticFunctionC = (float) (Math.pow((b),2)+Math.pow(x1,2)-Math.pow(d,2)-2*(b*y1)); Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
         QuadraticFunction function = new QuadraticFunction(quadraticFunctionA, quadraticFunctionB, quadraticFunctionC);
 
-
+        //obliczenie rozwiązań równania okręgu
         Point solution1 = new Point(function.getX1(), firstValue.getA(), firstValue.getB()); Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
         Point solution2 = new Point(function.getX2(), firstValue.getA(), firstValue.getB()); Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
 
-        //ustawienie odległosci od nowego punktu to strego punktu
-        solution1.setLength(getSegmentLenght(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
-        solution2.setLength(getSegmentLenght(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
+        //ustawienie odległosci od nowego punktu to starego punktu
+        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
+        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
 
+        //wybranie punktu znajdującego się bliżej staregp
         Point closerPoint = Point.getCloserSolution(solution1, solution2);
 
+        //ustawienie nowego punktu
         secondValue.setP1(closerPoint.x); Log.d(TAG+"wynik x", Float.toString(closerPoint.x));
         secondValue.setP2(closerPoint.y); Log.d(TAG+"wynik y", Float.toString(closerPoint.y));
 
     }
 
-    public static void getNewPointNotLinear(float newLength, PathData firstValue,PathData secondValue)
+    /**
+     * Obliczenie punktu, który znajduje się w podanej odległości od punktu startowego, korzystając z nie funkcji
+     * @param newLength Podana odległość
+     * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
+     * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
+     */
+    private static void getNewPointNotLinear(float newLength, PathData firstValue,PathData secondValue)
     {
         Log.d(TAG,"getNewPointNotLinear wywołanie");
 
         Point solution1 = new Point(secondValue.getP1(), firstValue.getP2()+newLength); Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
         Point solution2 = new Point(secondValue.getP1(), firstValue.getP2()-newLength); Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
 
-        solution1.setLength(getSegmentLenght(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
-        solution2.setLength(getSegmentLenght(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
+        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
+        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
 
         Point closerPoint = Point.getCloserSolution(solution1, solution2);
 
@@ -255,7 +331,9 @@ public class PathData implements Serializable
     }
 
 
-    //klasa wewnętrzna
+    /**
+     * Klasa opisująca punkt i przechowywująca długośc odcinka
+     */
     public static class Point
     {
         private float x;
@@ -290,16 +368,21 @@ public class PathData implements Serializable
     }
 
 
-
-    //obliczanie funkcji liniowych
-    public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, Context applicationContext) {
-        int listLenght = source.size();
+    /**
+     * Zamiana numerów pól na punkty w IV ćwiartce(obiekt PathData)
+     * @param source
+     * @param target
+     * @param applicationContext
+     */
+    public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, Context applicationContext)
+    {
+        int listLength = source.size();
         //zamiana numeru i kolejnosci dwóch pól(punktów) na funkcje liniową przechodzącą przez 2 punkty
-        for (int i = 0; i < listLenght - 1; i++) {
+        for (int i = 0; i < listLength - 1; i++) {
             target.add(positionAndOrderToCoefficients(source.get(i), source.get(i + 1)));
         }
         //ostatni punkt z pierwszym
-        target.add(positionAndOrderToCoefficients(source.get(listLenght - 1), source.get(0)));
+        target.add(positionAndOrderToCoefficients(source.get(listLength - 1), source.get(0)));
 
 
         PathDataController pathDataController = new PathDataController();

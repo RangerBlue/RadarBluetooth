@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.views.PathDrawView;
@@ -15,21 +14,64 @@ import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
 
-
+/**
+ * Aktywność do pokazania oraz edytowania ścieżki, po edytowaniu ścieżki można ją nadpisać
+ * Created by Kamil
+ */
 
 public class PathViewer extends AppCompatActivity  {
 
 
-    private String TAG="PathViewer";
+    private String TAG=PathViewer.class.getSimpleName();
+
+    /**
+     * Przycisk do wybrania kolejnej krawędzi
+     */
     private ImageButton buttonNext;
+
+    /**
+     * Przycisk do wystartowania lub zastopowania licznika
+     */
     private ImageButton buttonStopStart;
+
+    /**
+     * Przycisk do zapisania wyników edycji
+     */
     private ImageButton buttonSave;
+
+    /**
+     * Licznik wskazujący na wybraną krawędź
+     */
     private int counter=0;
+
+    /**
+     * Maksymalny zakres licznika
+     */
     private int counterLimit;
+
+    /**
+     * Mapa do rysowania ścieżki
+     */
     private PathDrawView map;
+
+    /**
+     * Czas wystartowania licznika
+     */
     private long timeStart;
+
+    /**
+     * Czas zastopowania licznika
+     */
     private long timeStop;
-    private boolean ifTheClockIsTicking = false;
+
+    /**
+     * Zmienna logiczna wskazująca czy czas jest mierzony
+     */
+    private boolean isTheClockTicking = false;
+
+    /**
+     * Lista danych z krawędziami do narysowania
+     */
     private ArrayList<PathData> list;
 
     @Override
@@ -89,12 +131,12 @@ public class PathViewer extends AppCompatActivity  {
                 public void onClick(View v)
                 {
                     Log.d(TAG, "stopstart");
-                    if(ifTheClockIsTicking)
+                    if(isTheClockTicking)
                     {
                         buttonStopStart.setImageResource(R.drawable.start_process_icon);
                         timeStop = System.currentTimeMillis();
                         getTimeDifference(timeStart, timeStop);
-                        ifTheClockIsTicking = false;
+                        isTheClockTicking = false;
                         buttonNext.setVisibility(View.VISIBLE);
                         hideButtonIfRatioIsNotSet(buttonNext);
                     }
@@ -102,7 +144,7 @@ public class PathViewer extends AppCompatActivity  {
                     {
                         buttonStopStart.setImageResource(R.drawable.stop_icon);
                         timeStart = System.currentTimeMillis();
-                        ifTheClockIsTicking = true;
+                        isTheClockTicking = true;
                         buttonNext.setVisibility(View.INVISIBLE);
                         hideButtonIfRatioIsNotSet(buttonNext);
                     }
@@ -173,7 +215,7 @@ public class PathViewer extends AppCompatActivity  {
 
         if(counter == 0)
         {
-            float segmentLength = PathData.getSegmentLenght(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
+            float segmentLength = PathData.getSegmentLength(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
             float ratio = time/ segmentLength;
             PathData.setRatio(ratio);
             Log.d(TAG, "Ratio: "+ratio);
@@ -184,7 +226,7 @@ public class PathViewer extends AppCompatActivity  {
             Log.d(TAG,"sprawdzenie counter i getCounter "+ counter +","+getCounterIncrement());
             Log.d(TAG, "Ratio: "+PathData.getRatio());
 
-            PathData.calculateNewPoint(time, list.get(counter), list.get(getCounterIncrement()));
+            PathData.setNewLength(time, list.get(counter), list.get(getCounterIncrement()));
 
         }
 
