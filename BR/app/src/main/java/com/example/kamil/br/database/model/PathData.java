@@ -369,35 +369,39 @@ public class PathData implements Serializable
 
 
     /**
-     * Zamiana numerów pól na punkty w IV ćwiartce(obiekt PathData)
-     * @param source
-     * @param target
+     * Zamiana numerów pól na punkty w IV ćwiartce(obiekt PathData) i zapisanie ich do bazy,
+     * używana po wybraniu narożnków pomieszczenia w tworzeniu ścieżki
+     * @param source lista z numerami pól
+     * @param target lista do, której zapisywane są obiekty pathData
      * @param applicationContext
      */
     public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, Context applicationContext)
     {
         int listLength = source.size();
+        PathDataController pathDataController = new PathDataController();
+        PathData record;
         //zamiana numeru i kolejnosci dwóch pól(punktów) na funkcje liniową przechodzącą przez 2 punkty
-        for (int i = 0; i < listLength - 1; i++) {
-            target.add(positionAndOrderToCoefficients(source.get(i), source.get(i + 1)));
+
+        for (int i = 0; i < listLength - 1; i++)
+        {
+            target.add(positionToCoefficients(source.get(i), source.get(i + 1)));
+            record = target.get(i);
+            record.setEdgeNumber(i);
+            record.setIdRooms(roomNumber);
+            pathDataController.insert(record, applicationContext);
         }
         //ostatni punkt z pierwszym
-        target.add(positionAndOrderToCoefficients(source.get(listLength - 1), source.get(0)));
+        target.add(positionToCoefficients(source.get(listLength - 1), source.get(0)));
+        record = target.get(listLength-1);
+        record.setEdgeNumber(listLength-1);
+        record.setIdRooms(roomNumber);
+        pathDataController.insert(record, applicationContext);
 
 
-        PathDataController pathDataController = new PathDataController();
 
         //wypisanie w logu calej listy funkcji
-        int i=0;
         for (PathData item : target)
         {
-            //dodanie klucza obcego oraz edgeNumber do obiektu room
-            item.setEdgeNumber(i); i++;
-            item.setIdRooms(roomNumber);
-            //umieszczenie wszystkich danych w bazie
-
-            pathDataController.insert(item, applicationContext);
-
             Log.d("Dane: : ",
                     "a:" + Float.toString(item.getA()) +
                             "|b:" + Float.toString(item.getB()) +
@@ -410,67 +414,87 @@ public class PathData implements Serializable
         }
     }
 
-    //zamienia pozycje dwóch pól na współczynniki funkcji liniowej
-    public static PathData positionAndOrderToCoefficients(int position1, int position2) {
+    /**
+     * Zamienia pozycje narożników, na ich opis w ukłądzie współzędnych-półprostą(obiekt PathData)
+     * @param position1 Pozycja pierwszego narożnika
+     * @param position2 Pozycja drugiego narożnika
+     * @return obekt pathData opsujacy daną zależność
+     */
+    public static PathData positionToCoefficients(int position1, int position2)
+    {
         Log.d("Positions", Integer.toString(position1) + ", " + Integer.toString(position2));
-        int xposition1 = getXAxis(position1);
-        int yposition1 = getYAxis(xposition1, position1);
-        int xposition2 = getXAxis(position2);
-        int yposition2 = getYAxis(xposition2, position2);
+        int xPosition1 = getXAxis(position1);
+        int yPosition1 = getYAxis(xPosition1, position1);
+        int xPosition2 = getXAxis(position2);
+        int yPosition2 = getYAxis(xPosition2, position2);
 
         //sprawdzanie czy funkcja jest "pionowa"
-        if (xposition1 == xposition2) {
-            PathData result = new PathData(xposition1, yposition1);
+        if (xPosition1 == xPosition2) {
+            PathData result = new PathData(xPosition1, yPosition1);
             return result;
         }
         else
         {
             //wzor na funkcję przechodzącą przez 2 punkty
-            float a = (yposition1 - yposition2) / (float) (xposition1 - xposition2);
-            float b = (yposition1 - a * xposition1);
-            PathData result = new PathData(a, b, xposition1, yposition1);
+            float a = (yPosition1 - yPosition2) / (float) (xPosition1 - xPosition2);
+            float b = (yPosition1 - a * xPosition1);
+            PathData result = new PathData(a, b, xPosition1, yPosition1);
 
             return result;
         }
 
     }
 
-    //oblicza współrzędną na osi x
-    public static int getXAxis(int order) {
+    /**
+     * Zamienia pozycje narożnika na jego miejsce na osi x
+     * @param position pozycja narożnika
+     * @return pozycja na osi x
+     */
+    public static int getXAxis(int position) {
         int divider = gridCells;
         int step = (int) Math.sqrt(gridCells);
 
-        if (order == 0)
+        if (position == 0)
         {
             return 0;
         }
         else
-        if (order < 10)
+        if (position < 10)
         {
-            return order;
+            return position;
         }
         else
         {
-            while ((order % divider) > step) {
+            while ((position % divider) > step) {
                 divider -= step;
             }
-            return order - divider;
+            return position - divider;
         }
 
 
     }
 
-    //oblicza współrzedna na osi y
-    public static int getYAxis(int xposition, int order) {
+    /**
+     * Zamienia pozycje narożnika na jego miejsce na osi y
+     * @param xPosition wspólrzędna x narożnika na osi x
+     * @param order pozcyja narożnika
+     * @return współrzędna narożnika na osi y
+     */
+    public static int getYAxis(int xPosition, int order) {
         int step = (int) Math.sqrt(gridCells);
         if (order < step - 1) {
             return 0;
         } else {
             //pobranie pierwszej cyfry z integera
-            return -Integer.parseInt(Integer.toString(order - xposition).substring(0, 1));
+            return -Integer.parseInt(Integer.toString(order - xPosition).substring(0, 1));
         }
     }
 
+    /**
+     * Uaktualnienie wsółczynników funkcji w obiekcie pathData po zmienianiu długości krawędzi
+     * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
+     * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
+     */
     public static void setNewCoefficients(PathData firstValue, PathData secondValue) {
         Log.d(TAG, "wywołanie setNewCoefficients");
         float x1 = firstValue.getP1();
