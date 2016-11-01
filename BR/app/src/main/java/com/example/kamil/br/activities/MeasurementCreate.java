@@ -37,7 +37,7 @@ public class MeasurementCreate extends AppCompatActivity
     private String TAG = MeasurementCreate.class.getSimpleName();
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
-    private DBHandler db;
+
     private Button buttonSearch;
     private Button buttonNext;
     private Button buttonStopStart;
@@ -153,12 +153,6 @@ public class MeasurementCreate extends AppCompatActivity
             }
         });
 
-
-
-
-
-
-
     }
 
     public void counterIncrement()
@@ -192,6 +186,7 @@ public class MeasurementCreate extends AppCompatActivity
         return time;
     }
 
+    //Todo: ta sama funkcja jest w BluetoothFinder, spróbować wywołąć ją z tamtad
     private void displayListOfFoundDevices()
     {
         Log.d("DisplayList", "W środku ");

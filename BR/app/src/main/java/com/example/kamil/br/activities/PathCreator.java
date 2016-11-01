@@ -53,7 +53,7 @@ public class PathCreator extends AppCompatActivity {
     /**
      * Ilośc pól na planszy do zaznaczania kształtu, liczba z kórej można zpierwiastkowac
      */
-    private int gridsCells = 100; //ilosc pól w planszy do zaznaczania kształtu
+    private int gridsCells = 100;
 
     /**
      * Numer pokoju, do ktorego chcemy dodać ścieżkę
@@ -73,10 +73,8 @@ public class PathCreator extends AppCompatActivity {
         setContentView(R.layout.activity_path_creator);
         //ustawienie ilości pól
         PathData.setGridCells(gridsCells);
-        //odebranie paczki
+        //odebranie paczki(id pokoju)
         idRooms = getIntent().getIntExtra("id",-1);
-        //ustawienie id pokoju
-        PathData.setRoomNumber(idRooms);
         position = new ArrayList<>();
         pathData = new ArrayList<>();
         setScreenWidth();
@@ -88,7 +86,7 @@ public class PathCreator extends AppCompatActivity {
             public void onClick(View v) {
                 PathData.calculateFunctions(position, pathData, getApplicationContext() );
                 Intent intent = new Intent(PathCreator.this, PathViewer.class);
-                intent.putExtra("drawData", pathData);
+                //intent.putExtra("drawData", pathData);
                 startActivity(intent);
             }
         });

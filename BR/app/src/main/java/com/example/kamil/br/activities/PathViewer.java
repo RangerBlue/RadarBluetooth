@@ -86,104 +86,94 @@ public class PathViewer extends AppCompatActivity  {
         //wyzerowanie ratia
         PathData.setRatio(0);
 
-        //tu dane są pobierane podczas tworzenia ścierzki
-        if(idRooms==-1)
-        {
-            Log.d(TAG, "Z tworzenia ścieżki");
-            ArrayList<PathData> passedData = new ArrayList<>();
-            passedData = (ArrayList<PathData>) getIntent().getSerializableExtra("drawData");
-            map = (PathDrawView) findViewById(R.id.viewDrawMap);
-            map.setData(passedData);
 
+        Log.d(TAG, "Z bazy danych");
+        //lista z danymi o krawędziach
+        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
+        map = (PathDrawView) findViewById(R.id.viewDrawMap);
+        map.setData(list);
+        map.setNumber(counter);
+        counterLimit = list.get(list.size()-1).getEdgeNumber();
 
-        }
-        else//tu z bazy danych
-        {
+        PathDataController.printAllTableToLog(list);
 
-            Log.d(TAG, "Z bazy danych");
-            list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
-            map = (PathDrawView) findViewById(R.id.viewDrawMap);
-            map.setData(list);
-            map.setNumber(counter);
-            counterLimit = list.get(list.size()-1).getEdgeNumber();
+        buttonNext = (ImageButton) findViewById(R.id.buttonPathViewerNext);
+        hideButtonIfRatioIsNotSet(buttonNext);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Log.d(TAG, "next");
+                counterIncrement();
+                map.setNumber(counter);
+                map.invalidate();
 
-            PathDataController.printAllTableToLog(list);
+                Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
+                hideButtonOnMainEdgeIfRatioIsSet(buttonStopStart);
+            }
+        });
 
-            buttonNext = (ImageButton) findViewById(R.id.buttonPathViewerNext);
-            hideButtonIfRatioIsNotSet(buttonNext);
-            buttonNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
+        buttonStopStart = (ImageButton) findViewById(R.id.buttonPathViewerStartStop);
+        buttonStopStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Log.d(TAG, "stopstart");
+                if(isTheClockTicking)
                 {
-                    Log.d(TAG, "next");
-                    counterIncrement();
-                    map.setNumber(counter);
-                    map.invalidate();
-
-                    Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
-                    hideButtonOnMainEdgeIfRatioIsSet(buttonStopStart);
+                    buttonStopStart.setImageResource(R.drawable.start_process_icon);
+                    timeStop = System.currentTimeMillis();
+                    getTimeDifference(timeStart, timeStop);
+                    isTheClockTicking = false;
+                    buttonNext.setVisibility(View.VISIBLE);
+                    hideButtonIfRatioIsNotSet(buttonNext);
                 }
-            });
-
-            buttonStopStart = (ImageButton) findViewById(R.id.buttonPathViewerStartStop);
-            buttonStopStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
+                else
                 {
-                    Log.d(TAG, "stopstart");
-                    if(isTheClockTicking)
-                    {
-                        buttonStopStart.setImageResource(R.drawable.start_process_icon);
-                        timeStop = System.currentTimeMillis();
-                        getTimeDifference(timeStart, timeStop);
-                        isTheClockTicking = false;
-                        buttonNext.setVisibility(View.VISIBLE);
-                        hideButtonIfRatioIsNotSet(buttonNext);
-                    }
-                    else
-                    {
-                        buttonStopStart.setImageResource(R.drawable.stop_icon);
-                        timeStart = System.currentTimeMillis();
-                        isTheClockTicking = true;
-                        buttonNext.setVisibility(View.INVISIBLE);
-                        hideButtonIfRatioIsNotSet(buttonNext);
-                    }
+                    buttonStopStart.setImageResource(R.drawable.stop_icon);
+                    timeStart = System.currentTimeMillis();
+                    isTheClockTicking = true;
+                    buttonNext.setVisibility(View.INVISIBLE);
+                    hideButtonIfRatioIsNotSet(buttonNext);
                 }
-            });
+            }
+        });
 
-            buttonSave = (ImageButton) findViewById(R.id.buttonPathViewerSave);
-            buttonSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
+        buttonSave = (ImageButton) findViewById(R.id.buttonPathViewerSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Log.d(TAG, "save");
+                int listLength = list.size();
+                //uaktualnienie wpółczynników funkcji
+                for (int i = 0; i < listLength - 1; i++)
                 {
-                    Log.d(TAG, "save");
-                    int listLength = list.size();
-                    //uaktualnienie wpółczynników funkcji
-                    for (int i = 0; i < listLength - 1; i++)
-                    {
-                        PathData.setNewCoefficients(list.get(i), list.get(i+1));
-                    }
-                    //ostatni punkt z pierwszym
-                    PathData.setNewCoefficients(list.get(listLength-2), list.get(0));
-
-                    //uaktualnienie ich w bazie
-                    for( PathData item : list)
-                    {
-                        PathDataController controller = new PathDataController();
-                        controller.update(item, getApplicationContext());
-                    }
-
-                    PathDataController.printAllTableToLog(list);
-
+                    PathData.setNewCoefficients(list.get(i), list.get(i+1));
                 }
-            });
+                //ostatni punkt z pierwszym
+                PathData.setNewCoefficients(list.get(listLength-2), list.get(0));
+
+                //uaktualnienie ich w bazie
+                for( PathData item : list)
+                {
+                    PathDataController controller = new PathDataController();
+                    controller.update(item, getApplicationContext());
+                }
+
+                PathDataController.printAllTableToLog(list);
+
+            }
+        });
 
 
-        }
+
 
     }
 
-
+    /**
+     * Inkrementuje licznik, jeśli przekroczy swój zakres, zaczyna od nowa
+     */
     public void counterIncrement()
     {
         if(counter == counterLimit)
@@ -194,6 +184,10 @@ public class PathViewer extends AppCompatActivity  {
             counter++;
     }
 
+    /**
+     * Zwraca licznik powiękoszony o jeden
+     * @return zinkrementowany licznik
+     */
     public int getCounterIncrement()
     {
         if(counter == counterLimit)
@@ -208,6 +202,12 @@ public class PathViewer extends AppCompatActivity  {
 
     }
 
+    /**
+     * Oblicza czas między stop a start, jeśli jest wywołana na pierwszej krawędzi ustawia ratio,
+     * jeśli na innych to ustawia ich długość
+     * @param start czas rozpoczęcia odliczania
+     * @param stop czas zakończenia odliczania
+     */
     public void getTimeDifference(long start, long stop)
     {
         long time = stop-start;
@@ -232,6 +232,10 @@ public class PathViewer extends AppCompatActivity  {
 
     }
 
+    /**
+     * Jeśli ratio nie jest ustawione, ukrywa przekazany przycisk
+     * @param button przycisk, który chcemy ukryć
+     */
     public void hideButtonIfRatioIsNotSet(ImageButton button)
     {
         if(PathData.getRatio() == 0)
@@ -240,6 +244,10 @@ public class PathViewer extends AppCompatActivity  {
         }
     }
 
+    /**
+     * Ukrywa przycisk podczas wybrania pierwszej krawędzi, jeśli ratio jest już ustawione
+     * @param button przycisk, który chcey ukryć
+     */
     public void hideButtonOnMainEdgeIfRatioIsSet(ImageButton button)
     {
         if(PathData.getRatio()!=0 && counter == 0)
