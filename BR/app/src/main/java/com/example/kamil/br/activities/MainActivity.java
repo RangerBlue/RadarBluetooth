@@ -208,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void settings()
     {
-
+        Intent intent = new Intent(this, UserSpeed.class);
+        startActivity(intent);
     }
 
     /**

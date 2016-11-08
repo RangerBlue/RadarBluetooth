@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -17,14 +22,15 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.MeasurementCreate" />
         <activity android:name=".activities.PathViewer" />
-        <activity android:name=".activities.PathCreator"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".activities.PathCreator"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.RoomCreator" />
         <activity android:name=".activities.RoomChoose" />
         <activity android:name=".activities.RoomMenu" />
@@ -41,7 +47,8 @@
         <activity android:name=".activities.BluetoothResultsChooseRoom" />
         <activity android:name=".activities.BluetoothResultsChooseMeasurement" />
         <activity android:name=".activities.BluetoothResultsView" />
-        <activity android:name=".activities.MappingMenu"></activity>
+        <activity android:name=".activities.MappingMenu" />
+        <activity android:name=".activities.UserSpeed"></activity>
     </application>
 
 </manifest>
