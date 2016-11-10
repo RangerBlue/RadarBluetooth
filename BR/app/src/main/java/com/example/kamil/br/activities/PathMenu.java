@@ -3,6 +3,7 @@ package com.example.kamil.br.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public class PathMenu extends AppCompatActivity {
 
+    private String TAG = PathMenu.class.getSimpleName();
     private Button buttonCreate;
     private Button buttonView;
     private int idRooms;
@@ -30,6 +32,7 @@ public class PathMenu extends AppCompatActivity {
         setContentView(R.layout.activity_path_editor);
 
         idRooms = getIntent().getIntExtra("id",-1);
+        Log.d(TAG, String.valueOf(idRooms));
 
         buttonCreate = (Button) findViewById(R.id.buttonCreateInPath);
         buttonCreate.setOnClickListener(new View.OnClickListener() {

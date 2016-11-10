@@ -373,9 +373,10 @@ public class PathData implements Serializable
      * używana po wybraniu narożnków pomieszczenia w tworzeniu ścieżki
      * @param source lista z numerami pól
      * @param target lista do, której zapisywane są obiekty pathData
+     * @param idRooms id pokoju
      * @param applicationContext
      */
-    public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, Context applicationContext)
+    public static void calculateFunctions(ArrayList<Integer> source, ArrayList<PathData> target, int idRooms , Context applicationContext)
     {
         int listLength = source.size();
         PathDataController pathDataController = new PathDataController();
@@ -387,14 +388,14 @@ public class PathData implements Serializable
             target.add(positionToCoefficients(source.get(i), source.get(i + 1)));
             record = target.get(i);
             record.setEdgeNumber(i);
-            record.setIdRooms(roomNumber);
+            record.setIdRooms(idRooms);
             pathDataController.insert(record, applicationContext);
         }
         //ostatni punkt z pierwszym
         target.add(positionToCoefficients(source.get(listLength - 1), source.get(0)));
         record = target.get(listLength-1);
         record.setEdgeNumber(listLength-1);
-        record.setIdRooms(roomNumber);
+        record.setIdRooms(idRooms);
         pathDataController.insert(record, applicationContext);
 
 

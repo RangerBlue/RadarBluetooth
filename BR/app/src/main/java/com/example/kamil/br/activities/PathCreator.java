@@ -84,9 +84,9 @@ public class PathCreator extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PathData.calculateFunctions(position, pathData, getApplicationContext() );
+                PathData.calculateFunctions(position, pathData, idRooms,  getApplicationContext() );
                 Intent intent = new Intent(PathCreator.this, PathViewer.class);
-                //intent.putExtra("drawData", pathData);
+                intent.putExtra("id", idRooms);
                 startActivity(intent);
             }
         });

@@ -56,7 +56,7 @@ public class MappingMenu extends AppCompatActivity {
         buttonMeasurement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                launchMeasurementMenu();
             }
         });
 
@@ -69,6 +69,12 @@ public class MappingMenu extends AppCompatActivity {
         });
 
         buttonMap = (ImageButton) findViewById(R.id.button_map);
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchBluetoothResult();
+            }
+        });
     }
 
     private void launchRoomMenu()
@@ -80,6 +86,18 @@ public class MappingMenu extends AppCompatActivity {
     private void launchPathMenu()
     {
         Intent intent = new Intent(this, PathChooseRoom.class);
+        startActivity(intent);
+    }
+
+    private void launchMeasurementMenu()
+    {
+        Intent intent = new Intent(this, MeasurementEditor.class);
+        startActivity(intent);
+    }
+
+    private void launchBluetoothResult()
+    {
+        Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
         startActivity(intent);
     }
 }
