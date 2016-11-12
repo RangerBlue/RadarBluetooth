@@ -46,7 +46,7 @@ public class BluetoothResultsChooseRoom extends AppCompatActivity {
         });
 
        List<BluetoothResults> allTable = new BluetoothResultsController().selectAll(getApplicationContext());
-       BluetoothResultsController.printAllTableToLog((ArrayList<BluetoothResults>) allTable);
+    //   BluetoothResultsController.printAllTableToLog((ArrayList<BluetoothResults>) allTable);
     }
 
 

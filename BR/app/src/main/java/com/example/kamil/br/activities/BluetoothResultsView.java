@@ -29,10 +29,12 @@ public class BluetoothResultsView extends AppCompatActivity {
         int idMeasurement = getIntent().getIntExtra("idMeasurement",-1);
         int idRooms = getIntent().getIntExtra("idRooms",-1);
 
+
+
         BluetoothResultsController btController = new BluetoothResultsController();
         ArrayList<BluetoothResults> bluetoothResultsList;
         bluetoothResultsList = (ArrayList<BluetoothResults>) btController.selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurement );
-        btController.printAllTableToLog(bluetoothResultsList);
+        //btController.printAllTableToLog(bluetoothResultsList);
 
         PathDataController pdController = new PathDataController();
         ArrayList<PathData> pathDataList ;

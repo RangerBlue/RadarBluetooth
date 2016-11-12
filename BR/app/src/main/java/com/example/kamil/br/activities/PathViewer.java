@@ -84,7 +84,7 @@ public class PathViewer extends AppCompatActivity  {
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
         //wyzerowanie ratia
-        PathData.setRatio(0);
+        PathData.setWalkRatio(0);
 
 
         Log.d(TAG, "Z bazy danych");
@@ -217,7 +217,7 @@ public class PathViewer extends AppCompatActivity  {
         {
             float segmentLength = PathData.getSegmentLength(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
             float ratio = time/ segmentLength;
-            PathData.setRatio(ratio);
+            PathData.setWalkRatio(ratio);
             Log.d(TAG, "Ratio: "+ratio);
             Log.d(TAG, "Długość pierwszego(0) odcinka: "+Float.toString(segmentLength));
         }
@@ -264,8 +264,8 @@ public class PathViewer extends AppCompatActivity  {
     protected void onStop() {
         super.onStop();
         //wyzerowanie ratia
-        PathData.setRatio(0);
-        Log.d(TAG, "wyzerowanie ratia");
+        //PathData.setRatio(0);
+       // Log.d(TAG, "wyzerowanie ratia");
     }
 
 

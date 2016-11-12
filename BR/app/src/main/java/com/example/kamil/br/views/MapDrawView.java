@@ -33,6 +33,10 @@ public class MapDrawView extends View {
 
     //ratio ustawione na pałe
     private float walkRatio = 0.1f;
+    /**
+     * prędkość chodu użytkownika w m/s
+     */
+    private float walkVelocity = 1f;
 
 
 
@@ -207,7 +211,10 @@ public class MapDrawView extends View {
 
     private float getConvertedValue(float result)
     {
-        return result/walkRatio;
+        Log.d(TAG, "pathdata ratio"+ PathData.getWalkRatio());
+        Log.d(TAG, "result/walk"+ (result/walkVelocity)*1000);
+        Log.d(TAG, "convertedvalue"+ ((result/walkVelocity)*1000)/PathData.getWalkRatio());
+        return ((result/walkVelocity)*1000)/PathData.getWalkRatio();
     }
 
     /**

@@ -76,10 +76,19 @@ public class PathData implements Serializable
     private int idRooms;
 
     /**
-     * Stosunek długości krawędzi nr 0 przez czas trwania przejścia tej krawędzi przez
-     * użytkownika
+     * wStosunek długości krawędzi przez czas trwania przejścia tej krawędzi przez
+     * użytkownika, używany przy rysowaniu punktów
      */
     private static float ratio;
+
+
+
+    /**
+     * Stosunek długości krawędzi nr 0  przez czas trwania przejścia tej krawędzi przez
+     * użytkownika, używany przy konwertowaniu odległości od urządzenia w metrach do jednostek
+     * ukłądy współrzędnych
+     */
+    private static float walkRatio;
 
     /**
      * Ilość komórek w polu wyboru narożników
@@ -223,6 +232,14 @@ public class PathData implements Serializable
 
     public void setB(float b) {
         this.b = b;
+    }
+
+    public static float getWalkRatio() {
+        return walkRatio;
+    }
+
+    public static void setWalkRatio(float walkRatio) {
+        PathData.walkRatio = walkRatio;
     }
 
     /**
