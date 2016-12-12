@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
     private void mappingMenu()
     {
         Intent intent = new Intent(this, MappingMenu.class);
+        Bundle bundle = new Bundle();
         startActivity(intent);
     }
 

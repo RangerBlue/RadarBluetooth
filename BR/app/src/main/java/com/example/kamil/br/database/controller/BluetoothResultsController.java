@@ -151,7 +151,7 @@ public class BluetoothResultsController {
     }
 
     /**
-     * Usuwa ścieżkę danego pokoju
+     * Usuwa pomiary danego pokoju
      * @param idRoom id pokoju do usunięcia
      * @param context kontekst aplikacji
      */
@@ -161,6 +161,22 @@ public class BluetoothResultsController {
         String delete =
                 " DELETE FROM " + BluetoothResults.TABLE +
                         " WHERE BluetoothResults." + BluetoothResults.ID_ROOMS+"="+Integer.toString(idRoom);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in bluetoothResults");
+        db.close(); // Closing database connection
+    }
+
+    /**
+     * Usuwa pomiary mapowania
+     * @param idMeasurement id pokoju do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereIdMeasurement(int idMeasurement, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + BluetoothResults.TABLE +
+                        " WHERE BluetoothResults." + BluetoothResults.ID_MEASUREMENTS+"="+Integer.toString(idMeasurement);
         db.execSQL(delete);
         Log.d(TAG, "deleted record in bluetoothResults");
         db.close(); // Closing database connection

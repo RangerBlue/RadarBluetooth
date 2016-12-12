@@ -53,9 +53,21 @@ public class PathMenu extends AppCompatActivity {
         //drukowanie
        List<PathData> all = new PathDataController().selectAll(getApplicationContext());
        PathDataController.printAllTableToLog((ArrayList<PathData>) all);
+
+        hideButtonIfPathAlreadyExists();
+
     }
 
-
+    /**
+     * nie można kliknąć przycisku jeśli już istnieje ścieżka tego pokoju
+     */
+    private void hideButtonIfPathAlreadyExists()
+    {
+        if(!(PathDataController.selectPathDataWhereId(getApplicationContext(), idRooms).isEmpty()))
+        {
+            buttonCreate.setClickable(false);
+        }
+    }
 
 
     /**

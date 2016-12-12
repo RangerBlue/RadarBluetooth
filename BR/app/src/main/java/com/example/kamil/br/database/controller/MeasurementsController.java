@@ -66,7 +66,7 @@ public class MeasurementsController {
         return measurement;
     }
 
-    public List<Measurements> selectMeasurementWhereIdRoom(Context context, int id)
+    public static List<Measurements> selectMeasurementWhereIdRoom(Context context, int id)
     {
         List<Measurements> measurement = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -94,7 +94,7 @@ public class MeasurementsController {
         return measurement;
     }
 
-    public Measurements getLastRecord(Context context)
+    public static Measurements getLastRecord(Context context)
     {
         List<Measurements> measurement = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -136,6 +136,35 @@ public class MeasurementsController {
         Log.d(TAG, "deleted record in measuements");
         db.close(); // Closing database connection
     }
+
+    /**
+     * Usuwa pomiar o dannym id
+     * @param idMeasurement id pomiaru do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereIdMeasurement(int idMeasurement, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + Measurements.TABLE +
+                        " WHERE Measurements." + Measurements.ID_MEASUREMENTS+"="+Integer.toString(idMeasurement);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in measuements");
+        db.close(); // Closing database connection
+    }
+
+
+    /**
+     * Usuwa mapowanie wraz ze wszystkimi kluczami obcymi w innych tabelach
+     * @param idMeasurement do usunięcia mapowania
+     * @param context aplikacji
+     */
+    public void deleteMeasurementAndAllDependencies(int idMeasurement, Context context)
+    {
+        BluetoothResultsController.deleteWhereIdMeasurement(idMeasurement, context);
+        MeasurementsController.deleteWhereIdMeasurement(idMeasurement, context);
+    }
+
 
     //debug only
     public static void printAllTableToLog(ArrayList<Measurements> list)

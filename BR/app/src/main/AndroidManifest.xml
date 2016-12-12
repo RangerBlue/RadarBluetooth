@@ -7,11 +7,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -36,7 +36,7 @@
         <activity android:name=".activities.RoomMenu" />
         <activity android:name=".activities.PathMenu" />
         <activity android:name=".activities.PathChooseRoom" />
-        <activity android:name=".activities.MeasurementEditor" />
+        <activity android:name=".activities.MeasurementChooseOption" />
         <activity android:name=".activities.MeasurementChooseRoom" />
         <activity android:name=".activities.BluetoothFinder" />
         <activity android:name=".activities.Radar" />
@@ -48,7 +48,8 @@
         <activity android:name=".activities.BluetoothResultsChooseMeasurement" />
         <activity android:name=".activities.BluetoothResultsView" />
         <activity android:name=".activities.MappingMenu" />
-        <activity android:name=".activities.UserSpeed"></activity>
+        <activity android:name=".activities.UserSpeed" />
+        <activity android:name=".activities.MeasurementEditor"></activity>
     </application>
 
 </manifest>

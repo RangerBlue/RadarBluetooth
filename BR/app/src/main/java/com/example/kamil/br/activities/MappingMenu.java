@@ -91,7 +91,7 @@ public class MappingMenu extends AppCompatActivity {
 
     private void launchMeasurementMenu()
     {
-        Intent intent = new Intent(this, MeasurementEditor.class);
+        Intent intent = new Intent(this, MeasurementChooseRoom.class);
         startActivity(intent);
     }
 

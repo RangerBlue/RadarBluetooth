@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.kamil.br.adapters.BluetoothFinderAdapter;
+import com.example.kamil.br.database.controller.MeasurementsController;
+import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.DBHandler;
@@ -23,6 +25,7 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MeasurementCreate extends AppCompatActivity
 {
@@ -62,8 +65,12 @@ public class MeasurementCreate extends AppCompatActivity
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
+        Log.d("ajdi romms", String.valueOf(idRooms));
         list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
-        idMeasurements = getIntent().getIntExtra("idMeasurements", -1);
+
+        //utworzenie pomiaru
+
+        idMeasurements = MeasurementsController.getLastRecord(getApplicationContext()).getIdMeasurements()+1;
 
 
         arrayOfFoundBTDevices = new ArrayList<>();
@@ -142,6 +149,7 @@ public class MeasurementCreate extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                createMeasurement(idRooms);
                 BluetoothResultsController controller = new BluetoothResultsController();
                 //wstawienie do bazy
                 for( BluetoothResults item : arrayOfFoundBTDevices)
@@ -251,6 +259,18 @@ public class MeasurementCreate extends AppCompatActivity
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(mReceiver, filter);
     }
+
+
+    public void createMeasurement(int idToPass)
+    {
+        Measurements measurement = new Measurements();
+        Date data = new Date();
+        measurement.setName(data.toString());
+        measurement.setIdRooms(idToPass);
+        MeasurementsController controller = new MeasurementsController();
+        controller.insert(measurement, getApplicationContext());
+    }
+
 
     @Override
     protected void onPause()

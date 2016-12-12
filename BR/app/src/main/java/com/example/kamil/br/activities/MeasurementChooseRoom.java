@@ -3,6 +3,7 @@ package com.example.kamil.br.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,7 +16,6 @@ import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MeasurementChooseRoom extends AppCompatActivity {
 
@@ -40,27 +40,15 @@ public class MeasurementChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementCreate.class);
+                Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementChooseOption.class);
                 intent.putExtra("idRooms", idToPass);
-                createMeasurement(idToPass);
-                intent.putExtra("idMeasurements", getLastRecord().getIdMeasurements());
-
-
+                Log.d("tutajkurwa", String.valueOf(idToPass));
                 startActivity(intent);
             }
         });
     }
 
-    public void createMeasurement(int idToPass)
-    {
-        Measurements measurement = new Measurements();
-        Date data = new Date();
-        measurement.setName(data.toString());
-        measurement.setIdRooms(idToPass);
-        MeasurementsController controller = new MeasurementsController();
-        controller.insert(measurement, getApplicationContext());
 
-    }
 
     public Measurements getLastRecord()
     {

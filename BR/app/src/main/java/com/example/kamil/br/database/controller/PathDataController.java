@@ -107,7 +107,7 @@ public class PathDataController {
         return pathData;
     }
 
-    public List<PathData> selectPathDataWhereId(Context context, int id)
+    public static List<PathData> selectPathDataWhereId(Context context, int id)
     {
         List<PathData> pathData = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
