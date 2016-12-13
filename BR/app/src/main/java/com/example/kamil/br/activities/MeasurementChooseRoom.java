@@ -40,7 +40,7 @@ public class MeasurementChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementChooseOption.class);
+                Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementChooser.class);
                 intent.putExtra("idRooms", idToPass);
                 Log.d("tutajkurwa", String.valueOf(idToPass));
                 startActivity(intent);

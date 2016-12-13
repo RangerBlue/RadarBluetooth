@@ -13,9 +13,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.adapters.BluetoothResultsAdapter;
 import com.example.kamil.br.adapters.MeasurementAdapter;
+import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.MeasurementsController;
 import com.example.kamil.br.database.controller.RoomsController;
+import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.database.model.Rooms;
 
@@ -24,8 +27,9 @@ import java.util.ArrayList;
 public class MeasurementEditor extends AppCompatActivity {
 
     private ListView list;
-    private MeasurementAdapter adapter;
+    private BluetoothResultsAdapter adapter;
     private String TAG = getClass().getSimpleName();
+    private int idMeasurements;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +38,14 @@ public class MeasurementEditor extends AppCompatActivity {
 
         //odebranie paczki
         final int idRooms = getIntent().getIntExtra("idRooms",-1);
+        idMeasurements = getIntent().getIntExtra("idMeasurement",-1);
 
         list = (ListView) findViewById(R.id.listViewMeasurementEditor);
         registerForContextMenu(list);
-        ArrayList<Measurements> all = (ArrayList<Measurements>) new MeasurementsController().selectMeasurementWhereIdRoom(getApplicationContext(), idRooms);
-        MeasurementsController.printAllTableToLog(all);
+        ArrayList<BluetoothResults> all = (ArrayList<BluetoothResults>) new BluetoothResultsController().selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurements);
+        BluetoothResultsController.printAllTableToLog(all);
 
-        adapter = new MeasurementAdapter(this, all);
+        adapter = new BluetoothResultsAdapter(this, all);
         list.setAdapter(adapter);
 
        /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,8 +79,9 @@ public class MeasurementEditor extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         //obłsuga menu
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Measurements measurement = adapter.getItem(info.position);
-        int idToPass = measurement.getIdMeasurements();
+        BluetoothResults btResult = adapter.getItem(info.position);
+        int idToPass = btResult.getIdMeasurements();
+        int idbtResult = btResult.getIdBluetoothResults();
         switch (item.getItemId())
         {
             case R.id.menu_edit:
@@ -83,8 +89,8 @@ public class MeasurementEditor extends AppCompatActivity {
                 return true;
             case R.id.menu_delete:
                 Log.d(TAG, "delete");
-                MeasurementsController controller = new MeasurementsController();
-                controller.deleteMeasurementAndAllDependencies(idToPass, getApplicationContext());
+                BluetoothResultsController controller = new BluetoothResultsController();
+                BluetoothResultsController.deleteWhereId(idbtResult, getApplicationContext());
                 Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "delete");
                 Intent intent = getIntent();

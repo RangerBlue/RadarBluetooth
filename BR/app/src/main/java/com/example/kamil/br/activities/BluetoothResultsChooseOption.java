@@ -14,7 +14,7 @@ import com.example.kamil.br.database.model.Measurements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeasurementChooseOption extends AppCompatActivity {
+public class BluetoothResultsChooseOption extends AppCompatActivity {
 
     private Button buttonCreate;
     private Button buttonView;
@@ -23,7 +23,7 @@ public class MeasurementChooseOption extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_measurement_choose_option);
+        setContentView(R.layout.activity_bluetooth_results_choose_option);
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
@@ -44,12 +44,11 @@ public class MeasurementChooseOption extends AppCompatActivity {
             }
         });
 
-        hideButtonIfMeasurementNotExist();
 
         List<Measurements> all = new MeasurementsController().selectAll(getApplicationContext());
         MeasurementsController.printAllTableToLog((ArrayList<Measurements>) all);
 
-        Log.d("dupa", MeasurementsController.selectMeasurementWhereIdRoom(getApplicationContext(), idRooms).get(0).getName());
+       // Log.d("dupa", MeasurementsController.selectMeasurementWhereIdRoom(getApplicationContext(), idRooms).get(0).getName());
 
     }
 
@@ -64,6 +63,7 @@ public class MeasurementChooseOption extends AppCompatActivity {
         }
     }
 
+    //TODO:zmienić podpis klasy
     private void create()
     {
         Intent intent = new Intent(this, MeasurementCreate.class);
@@ -73,7 +73,7 @@ public class MeasurementChooseOption extends AppCompatActivity {
 
     private void view()
     {
-        Intent intent = new Intent(this, MeasurementEditor.class);
+        Intent intent = new Intent(this, BluetoothResultsChooseMeasurement.class);
         intent.putExtra("idRooms", idRooms);
         startActivity(intent);
     }

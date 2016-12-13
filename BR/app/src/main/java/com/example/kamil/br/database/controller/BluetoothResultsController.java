@@ -182,6 +182,22 @@ public class BluetoothResultsController {
         db.close(); // Closing database connection
     }
 
+    /**
+     * Usuwa pomiary mapowania
+     * @param idbtResult id do usunięcia
+     * @param context kontekst aplikacji
+     */
+    public static void deleteWhereId(int idbtResult, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String delete =
+                " DELETE FROM " + BluetoothResults.TABLE +
+                        " WHERE BluetoothResults." + BluetoothResults.ID_BLUETOOTHRESULTS+"="+Integer.toString(idbtResult);
+        db.execSQL(delete);
+        Log.d(TAG, "deleted record in bluetoothResults");
+        db.close(); // Closing database connection
+    }
+
     //debug only
     public static void printAllTableToLog(ArrayList<BluetoothResults> list)
     {

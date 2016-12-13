@@ -39,7 +39,7 @@ public class BluetoothResultsChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(BluetoothResultsChooseRoom.this, BluetoothResultsChooseMeasurement.class);
+                Intent intent = new Intent(BluetoothResultsChooseRoom.this, BluetoothResultsChooseOption.class);
                 intent.putExtra("idRooms", idToPass);
                 startActivity(intent);
             }
