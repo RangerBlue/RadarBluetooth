@@ -46,6 +46,7 @@ public class BluetoothResultsController {
         values.put(BluetoothResults.EGDENUMBER, bluetoothResult.getEdgeNumber());
         values.put(BluetoothResults.ID_MEASUREMENTS, bluetoothResult.getIdMeasurements());
         values.put(BluetoothResults.ID_ROOMS, bluetoothResult.getIdRooms());
+        Log.d("w insercie", String.valueOf(bluetoothResult.getIdRooms()));
         db.insert(BluetoothResults.TABLE, null, values);
         db.close(); // Closing database connection
     }
@@ -117,7 +118,7 @@ public class BluetoothResultsController {
                 result.setTime(cursor.getLong(cursor.getColumnIndex(BluetoothResults.TIME)));
                 result.setEdgeNumber(cursor.getInt(cursor.getColumnIndex(BluetoothResults.EGDENUMBER)));
                 result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_MEASUREMENTS)));
-                result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_ROOMS)));
+                result.setIdRooms(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_ROOMS)));
                 bluetoothResult.add(result);
             } while (cursor.moveToNext());
         }

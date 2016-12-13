@@ -30,7 +30,7 @@ public class BluetoothResultsChooseMeasurement extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth_results_choose_measurement);
         //odebranie paczki
         final int idRooms = getIntent().getIntExtra("idRooms",-1);
-
+        Log.d(TAG, "UWAGAGAAG"+idRooms);
         list = (ListView) findViewById(R.id.listViewBluetoothResultsChooseMeasurement);
         registerForContextMenu(list);
         ArrayList<Measurements> all = (ArrayList<Measurements>) new MeasurementsController().selectMeasurementWhereIdRoom(getApplicationContext(), idRooms);

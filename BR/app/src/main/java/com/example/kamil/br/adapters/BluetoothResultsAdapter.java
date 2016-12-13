@@ -47,7 +47,7 @@ public class BluetoothResultsAdapter  extends ArrayAdapter<BluetoothResults> {
 
         // Ustaw text
         number.setText(String.valueOf(btResutlt.getIdBluetoothResults()));
-        name.setText(btResutlt.getAddress()+", "+btResutlt.getRssi()+","+btResutlt.getTime()+", "+btResutlt.getEdgeNumber());
+        name.setText(btResutlt.getAddress()+", "+btResutlt.getRssi()+","+btResutlt.getTime()+", "+btResutlt.getEdgeNumber()+",idRoom"+btResutlt.getIdRooms());
 
         // Zwróć rowview
         return rowView;

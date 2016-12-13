@@ -27,6 +27,7 @@ public class BluetoothResultsChooseOption extends AppCompatActivity {
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
+        Log.d("odbieranieidz listy v2", String.valueOf(idRooms));
 
         buttonCreate = (Button) findViewById(R.id.buttonCreateBluetoothResultsEditor);
         buttonCreate.setOnClickListener(new View.OnClickListener() {

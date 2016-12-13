@@ -154,6 +154,7 @@ public class MeasurementCreate extends AppCompatActivity
                 //wstawienie do bazy
                 for( BluetoothResults item : arrayOfFoundBTDevices)
                 {
+                    Log.d("ostateczne", String.valueOf(item.getIdRooms()));
                     controller.insert(item, getApplicationContext());
                 }
                 BluetoothResultsController.printAllTableToLog(arrayOfFoundBTDevices);
@@ -231,6 +232,7 @@ public class MeasurementCreate extends AppCompatActivity
                     bluetoothResults.setTime(getTimeDifference(timeStart, timeStop));
                     bluetoothResults.setEdgeNumber(counter);
                     bluetoothResults.setIdMeasurements(idMeasurements);
+                    Log.d(TAG, "halo halo"+idRooms);
                     bluetoothResults.setIdRooms(idRooms);
 
 

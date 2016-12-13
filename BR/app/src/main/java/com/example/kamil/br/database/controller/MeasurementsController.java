@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.kamil.br.activities.MainActivity;
+import com.example.kamil.br.activities.MeasurementEditor;
 import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.database.model.PathData;
@@ -118,7 +119,14 @@ public class MeasurementsController {
         }
         cursor.close();
 
-        return measurement.get(0);
+        if(measurement.isEmpty())
+        {
+            Log.d(TAG, "jestem pusty");
+            Measurements returnMeasurement = new Measurements();
+            returnMeasurement.setIdMeasurements(-1);
+            measurement.add(returnMeasurement);
+        }
+            return measurement.get(0);
     }
 
     /**

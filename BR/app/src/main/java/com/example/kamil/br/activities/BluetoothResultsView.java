@@ -34,7 +34,7 @@ public class BluetoothResultsView extends AppCompatActivity {
         BluetoothResultsController btController = new BluetoothResultsController();
         ArrayList<BluetoothResults> bluetoothResultsList;
         bluetoothResultsList = (ArrayList<BluetoothResults>) btController.selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurement );
-        //btController.printAllTableToLog(bluetoothResultsList);
+        btController.printAllTableToLog(bluetoothResultsList);
 
         PathDataController pdController = new PathDataController();
         ArrayList<PathData> pathDataList ;
