@@ -2,12 +2,15 @@ package com.example.kamil.br.views;
 
 /**
  * Created by Kamil on 2016-10-13.
+ * Rysuje kształt pomieszczenia oraz zaznacza na nim miejsca, w których nastąpił pomiar a nastepnie rysuje w jakim
+ * zasięgu od tego miejsca znajduje się urządzenie
  */
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,7 @@ public class MapDrawView extends View {
     private static ArrayList<BluetoothResults> results;
     private static ArrayList<PathData>  path;
     private static ArrayList<String> distinctDevices;
+    private static ArrayList<BluetoothResults> sublist ;
     private int edgeNumbers;
     private Paint p;
     private int ratio;
@@ -98,7 +102,7 @@ public class MapDrawView extends View {
 
 
         //rysowanie punktów
-        drawPoints(canvas, path, results);
+        drawPoints(canvas);
 
         super.dispatchDraw(canvas);
 
@@ -108,15 +112,15 @@ public class MapDrawView extends View {
     /**
      * Rysuje punkty na krawędziach w miejscach gdzie nastąpił pomiar
      * @param canvas używana kanwa
-     * @param path lista z rekordami PathData
-     * @param results lista z rekordami BluetoothResults
+     *
      */
-    private void drawPoints(Canvas canvas, ArrayList<PathData> path, ArrayList<BluetoothResults> results)
+    private void drawPoints(Canvas canvas)
     {
-        ArrayList<BluetoothResults> sublist ;
-        Random random = new Random();
+        /**
+         * Utowrzenie sublisty
+         */
 
-       // p.setColor(Color.rgb(random.nextInt((255 - 1) + 1) + 1, random.nextInt((255 - 1) + 1) + 1, random.nextInt((255 - 1) + 1) + 1));
+        Random random = new Random();
 
         p.setColor(Color.RED);
 
@@ -126,27 +130,28 @@ public class MapDrawView extends View {
 
         //punkty bez ostaniego i pierwszego
             sublist = (ArrayList<BluetoothResults>) BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
-            Log.d(TAG, "Drukowanie sublisty");
-            BluetoothResultsController.printAllTableToLog(sublist);
+           // Log.d(TAG, "Drukowanie sublisty");
+           // BluetoothResultsController.printAllTableToLog(sublist);
             durationTime = getEdgeDurationTime(sublist);
-            Log.d(TAG, "durationTime "+durationTime );
+            //Log.d(TAG, "durationTime "+durationTime );
             edgeLength = PathData.getSegmentLength(
                     path.get(edgeNumbers).getP1(),
                     path.get(0).getP1(),
                     path.get(edgeNumbers).getP2(),
                     path.get(0).getP2()
             );
-            Log.d(TAG, "edgeLenght"+edgeLength);
+            //Log.d(TAG, "edgeLenght"+edgeLength);
             PathData.setRatio(durationTime/edgeLength);
-            Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
+            //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
             elapsedTime = 0;
             //pętla po oddzielonej liście
+            //TODO w tej pętli jest coś zjebane hej
             for(int j=0 ; j<sublist.size(); j++)
             {
                 if(sublist.get(j).getAddress().equals("NULL"))
                 {
                     elapsedTime+=sublist.get(j).getTime();
-                    Log.d(TAG, "elapsedTime: "+elapsedTime);
+                   // Log.d(TAG, "elapsedTime: "+elapsedTime);
                 }
                 else
                 {
@@ -162,19 +167,19 @@ public class MapDrawView extends View {
             for(int i=0 ; i<edgeNumbers; i++)
             {
                 sublist = (ArrayList<BluetoothResults>) BluetoothResults.getSublistWhereEdgeNumbers(i, results);
-                Log.d(TAG, "Drukowanie sublisty");
+                //Log.d(TAG, "Drukowanie sublisty");
                 BluetoothResultsController.printAllTableToLog(sublist);
                 durationTime = getEdgeDurationTime(sublist);
-                Log.d(TAG, "durationTime "+durationTime );
+                //Log.d(TAG, "durationTime "+durationTime );
                 edgeLength = PathData.getSegmentLength(
                         path.get(i).getP1(),
                         path.get(i+1).getP1(),
                         path.get(i).getP2(),
                         path.get(i+1).getP2()
                 );
-                Log.d(TAG, "edgeLenght"+edgeLength);
+                //Log.d(TAG, "edgeLenght"+edgeLength);
                 PathData.setRatio(durationTime/edgeLength);
-                Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
+                //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
                 elapsedTime = 0;
                 //pętla po oddzielonej liście
                 for(int j=0 ; j<sublist.size(); j++)
@@ -182,7 +187,7 @@ public class MapDrawView extends View {
                     if(sublist.get(j).getAddress().equals("NULL"))
                     {
                         elapsedTime+=sublist.get(j).getTime();
-                        Log.d(TAG, "elapsedTime: "+elapsedTime);
+                       // Log.d(TAG, "elapsedTime: "+elapsedTime);
                     }
                     else
                     {
@@ -191,7 +196,7 @@ public class MapDrawView extends View {
                         clone.setP2(path.get(i+1).getP2());
                         clone.setIfLinear(path.get(i+1).getIsIfLinear());
                         PathData.setNewLength(elapsedTime,path.get(i), clone );
-                        drawMeasure(canvas, clone, sublist.get(j).getRssi());
+                        //drawMeasure(canvas, clone, sublist.get(j).getRssi());
                     }
                 }
 
@@ -211,10 +216,15 @@ public class MapDrawView extends View {
 
     private float getConvertedValue(float result)
     {
-        Log.d(TAG, "pathdata ratio"+ PathData.getWalkRatio());
-        Log.d(TAG, "result/walk"+ (result/walkVelocity)*1000);
-        Log.d(TAG, "convertedvalue"+ ((result/walkVelocity)*1000)/PathData.getWalkRatio());
-        return ((result/walkVelocity)*1000)/PathData.getWalkRatio();
+       // Log.d(TAG, "pathdata ratio"+ PathData.getWalkRatio());
+       // Log.d(TAG, "result/walk"+ (result/walkVelocity)*1000);
+       // Log.d(TAG, "convertedvalue"+ ((result/walkVelocity)*1000)/PathData.getWalkRatio());
+        float walkRatio = 400f;
+        float returnValue = ((result/walkVelocity)*1000)/walkRatio;
+        Log.d(TAG, "result "+String.valueOf(result));
+        Log.d(TAG, "walkWelocity "+String.valueOf(walkVelocity));
+        Log.d(TAG, "walkRatio "+String.valueOf(PathData.getWalkRatio()));
+        return returnValue;
     }
 
     /**

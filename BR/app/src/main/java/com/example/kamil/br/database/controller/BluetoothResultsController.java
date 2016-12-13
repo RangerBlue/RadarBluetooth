@@ -84,7 +84,7 @@ public class BluetoothResultsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
+        db.close();
         return bluetoothResult;
     }
 
@@ -123,7 +123,7 @@ public class BluetoothResultsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
+        db.close();
         return bluetoothResult;
     }
 
@@ -147,7 +147,7 @@ public class BluetoothResultsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
+        db.close();
         return results;
     }
 

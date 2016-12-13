@@ -63,6 +63,7 @@ public class MeasurementsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return measurement;
     }
@@ -91,6 +92,7 @@ public class MeasurementsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return measurement;
     }
@@ -118,6 +120,7 @@ public class MeasurementsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         if(measurement.isEmpty())
         {

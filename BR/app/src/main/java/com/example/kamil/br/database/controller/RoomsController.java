@@ -88,6 +88,7 @@ public class RoomsController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return rooms;
     }

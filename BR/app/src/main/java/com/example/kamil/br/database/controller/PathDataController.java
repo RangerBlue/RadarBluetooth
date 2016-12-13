@@ -103,6 +103,7 @@ public class PathDataController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return pathData;
     }
@@ -143,6 +144,7 @@ public class PathDataController {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return pathData;
     }
