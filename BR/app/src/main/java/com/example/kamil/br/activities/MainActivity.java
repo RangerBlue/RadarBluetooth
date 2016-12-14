@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.WalkRatioController;
+import com.example.kamil.br.database.model.WalkRatio;
+
+import java.util.ArrayList;
 
 /**
  * Menu główne, tutaj znajduje się całe sterowanie aplikacji
@@ -121,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //checkBluetoothState();
+        ArrayList<WalkRatio> list = new ArrayList<>();
+        list = (ArrayList<WalkRatio>) WalkRatioController.selectAll(getApplicationContext());
+        WalkRatioController.printAllTableToLog(list);
     }
 
     /**

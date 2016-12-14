@@ -179,7 +179,7 @@ public class BluetoothResultsController {
                 " DELETE FROM " + BluetoothResults.TABLE +
                         " WHERE BluetoothResults." + BluetoothResults.ID_MEASUREMENTS+"="+Integer.toString(idMeasurement);
         db.execSQL(delete);
-        Log.d(TAG, "deleted record in bluetoothResults");
+        Log.d(TAG, "deleted record iqn bluetoothResults");
         db.close(); // Closing database connection
     }
 

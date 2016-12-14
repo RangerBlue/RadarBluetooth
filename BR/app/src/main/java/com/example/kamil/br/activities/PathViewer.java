@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.kamil.br.database.controller.WalkRatioController;
+import com.example.kamil.br.database.model.WalkRatio;
 import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
 
@@ -74,13 +76,15 @@ public class PathViewer extends AppCompatActivity  {
      */
     private ArrayList<PathData> list;
 
+    private int idRooms;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         //odebranie paczki
         //odebranie paczki
-        int idRooms = getIntent().getIntExtra("id",-1);
+        idRooms = getIntent().getIntExtra("id",-1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
         //wyzerowanie ratia
@@ -218,6 +222,12 @@ public class PathViewer extends AppCompatActivity  {
             float segmentLength = PathData.getSegmentLength(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
             float ratio = time/ segmentLength;
             PathData.setWalkRatio(ratio);
+            WalkRatio item = new WalkRatio();
+            item.setValue(ratio);
+            item.setIdRooms(idRooms);
+            WalkRatioController controller = new WalkRatioController();
+            controller.insert(item, getApplicationContext());
+
             Log.d(TAG, "Ratio: "+ratio);
             Log.d(TAG, "Długość pierwszego(0) odcinka: "+Float.toString(segmentLength));
         }

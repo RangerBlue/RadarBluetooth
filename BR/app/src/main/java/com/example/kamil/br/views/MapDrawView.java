@@ -18,6 +18,7 @@ import android.view.View;
 import com.example.kamil.br.BluetoothDistance;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
+import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
@@ -196,7 +197,7 @@ public class MapDrawView extends View {
                         clone.setP2(path.get(i+1).getP2());
                         clone.setIfLinear(path.get(i+1).getIsIfLinear());
                         PathData.setNewLength(elapsedTime,path.get(i), clone );
-                        //drawMeasure(canvas, clone, sublist.get(j).getRssi());
+                        drawMeasure(canvas, clone, sublist.get(j).getRssi());
                     }
                 }
 
@@ -219,11 +220,12 @@ public class MapDrawView extends View {
        // Log.d(TAG, "pathdata ratio"+ PathData.getWalkRatio());
        // Log.d(TAG, "result/walk"+ (result/walkVelocity)*1000);
        // Log.d(TAG, "convertedvalue"+ ((result/walkVelocity)*1000)/PathData.getWalkRatio());
-        float walkRatio = 400f;
+        ;
+        float walkRatio = WalkRatioController.selectWalkRatioWherePathDataId(getContext(), path.get(0).getIdRooms()).getValue();
         float returnValue = ((result/walkVelocity)*1000)/walkRatio;
         Log.d(TAG, "result "+String.valueOf(result));
         Log.d(TAG, "walkWelocity "+String.valueOf(walkVelocity));
-        Log.d(TAG, "walkRatio "+String.valueOf(PathData.getWalkRatio()));
+        //Log.d(TAG, "walkRatio "+String.valueOf(PathData.getWalkRatio()));
         return returnValue;
     }
 
