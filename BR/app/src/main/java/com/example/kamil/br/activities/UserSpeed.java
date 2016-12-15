@@ -8,20 +8,38 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.kamil.br.R;
 
+import java.util.ArrayList;
+
 public class UserSpeed extends AppCompatActivity {
 
     TextView textViewSpeed;
+    TextView textViewWynik;
+    ArrayList<Float> test;
+    Button wynik;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_speed);
 
+
+
         textViewSpeed = (TextView) findViewById(R.id.speed);
+        textViewWynik = (TextView) findViewById(R.id.textViewwynik);
+
+        wynik = (Button) findViewById(R.id.buttonWynik);
+        wynik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                textViewWynik.setText(getAverage(test).toString());
+            }
+        });
 
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
@@ -29,6 +47,7 @@ public class UserSpeed extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 textViewSpeed.setText(Float.toString(location.getSpeed()));
+                addValue(location.getSpeed());
             }
 
             @Override
@@ -58,5 +77,22 @@ public class UserSpeed extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
+
+    }
+
+    private void addValue( Float value)
+    {
+        test.add(value);
+    }
+
+    private Float getAverage(ArrayList<Float> list)
+    {
+        Float sum = 0f;
+        for( Float item : list)
+        {
+            sum += item;
+        }
+
+        return sum/list.size();
     }
 }

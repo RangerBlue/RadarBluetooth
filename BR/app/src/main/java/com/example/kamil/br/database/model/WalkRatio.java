@@ -8,7 +8,6 @@ package com.example.kamil.br.database.model;
 public class WalkRatio
 {
     public static final String TABLE = "WalkRatio";
-
     public static final String ID_WALKRATIO = "idwalkratio";
     public static final String VALUE = "value";
     public static final String ID_ROOMS = "idrooms";

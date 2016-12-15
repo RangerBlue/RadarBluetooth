@@ -124,10 +124,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //checkBluetoothState();
-        ArrayList<WalkRatio> list = new ArrayList<>();
-        list = (ArrayList<WalkRatio>) WalkRatioController.selectAll(getApplicationContext());
-        WalkRatioController.printAllTableToLog(list);
+        checkBluetoothState();
+
     }
 
     /**
