@@ -28,7 +28,7 @@ public class UserSpeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_speed);
 
-
+        test = new ArrayList<>();
 
         textViewSpeed = (TextView) findViewById(R.id.speed);
         textViewWynik = (TextView) findViewById(R.id.textViewwynik);
@@ -37,7 +37,8 @@ public class UserSpeed extends AppCompatActivity {
         wynik.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textViewWynik.setText(getAverage(test).toString());
+                Float result = getAverage(test);
+                textViewWynik.setText(result.toString());
             }
         });
 
