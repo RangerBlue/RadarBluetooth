@@ -2,6 +2,7 @@ package com.example.kamil.br.database.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,11 +152,13 @@ public class BluetoothResults implements Parcelable
      * @param listToSlice lista zawierająca rekordy z kilku krawędzi
      * @return lista z danymi wybranej krawędzi
      */
-    public static List<BluetoothResults> getSublistWhereEdgeNumbers(int edgeNumber, ArrayList<BluetoothResults> listToSlice)
+    public static ArrayList<BluetoothResults> getSublistWhereEdgeNumbers(int edgeNumber, ArrayList<BluetoothResults> listToSlice)
     {
-        List<BluetoothResults> slicedList ;
+        ArrayList<BluetoothResults> slicedList ;
         int indexOfFirstElement=-1;
         int indexOfLastElement=-1;
+
+        Log.d("krawedz", String.valueOf(edgeNumber));
 
         for(int i=0 ; i<listToSlice.size(); i++)
         {
@@ -165,21 +168,26 @@ public class BluetoothResults implements Parcelable
                 {
                     indexOfFirstElement = i;
                 }
-                else
-                {
-                    indexOfLastElement = i;
-                }
+                indexOfLastElement = i;
+                Log.d("sprawdzene", String.valueOf(indexOfFirstElement));
             }
-            else
-            {
-                if(indexOfLastElement!=-1)
-                    i=listToSlice.size();
-            }
+
         }
 
-        slicedList =  new ArrayList<>(listToSlice.subList(indexOfFirstElement, indexOfLastElement+1));
+        if(indexOfFirstElement != indexOfLastElement)
+        {
+            Log.d("pierwsz", String.valueOf(indexOfFirstElement));
+            Log.d("drug", String.valueOf(indexOfLastElement));
+            slicedList =  new ArrayList<>(listToSlice.subList(indexOfFirstElement, indexOfLastElement+1));
+            return slicedList;
+        }
+        else
+        {
+            slicedList = new ArrayList<>();
+            slicedList.add(listToSlice.get(indexOfFirstElement));
+            return slicedList;
+        }
 
-        return slicedList;
     }
 
 

@@ -121,92 +121,105 @@ public class MapDrawView extends View {
          * Utowrzenie sublisty
          */
 
-        Random random = new Random();
 
         p.setColor(Color.RED);
 
         int durationTime;
-        int elapsedTime ;
+        int elapsedTime = 0 ;
         float edgeLength ;
 
-        //punkty bez ostaniego i pierwszego
-            sublist = (ArrayList<BluetoothResults>) BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
-           // Log.d(TAG, "Drukowanie sublisty");
-           // BluetoothResultsController.printAllTableToLog(sublist);
-            durationTime = getEdgeDurationTime(sublist);
+        /**
+         * Obsłużenie ostaniej krawędzi
+         */
+
+        //ostatni z pierwszym
+        sublist =  BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
+        Log.d(TAG, "Drukowanie sublisty");
+        BluetoothResultsController.printAllTableToLog(sublist);
+        durationTime = getEdgeDurationTime(sublist);
             //Log.d(TAG, "durationTime "+durationTime );
-            edgeLength = PathData.getSegmentLength(
+        edgeLength = PathData.getSegmentLength(
                     path.get(edgeNumbers).getP1(),
                     path.get(0).getP1(),
                     path.get(edgeNumbers).getP2(),
                     path.get(0).getP2()
+                    );
+        elapsedTime = 0;
+
+        for(int j=0 ; j<sublist.size(); j++)
+        {
+            if(sublist.get(j).getAddress().equals("NULL"))
+            {
+                elapsedTime+=sublist.get(j).getTime();
+                // Log.d(TAG, "elapsedTime: "+elapsedTime);
+            }
+            else
+            {
+                PathData clone = new PathData();
+                clone.setP1(path.get(0).getP1());
+                clone.setP2(path.get(0).getP2());
+                clone.setIfLinear(path.get(0).getIsIfLinear());
+                PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone );
+                drawMeasure(canvas, clone, sublist.get(j).getRssi());
+            }
+            elapsedTime = 0;
+        }
+
+
+        //tu przerwa
+
+        /**
+         * Obsłużenie reszty krawędzi
+         */
+        //ostatni z pierwszym
+        for(int i=0 ; i<edgeNumbers; i++)
+        {
+            sublist = BluetoothResults.getSublistWhereEdgeNumbers(i, results);
+            Log.d(TAG, "sublista w pętli" );
+            BluetoothResultsController.printAllTableToLog(sublist);
+            durationTime = getEdgeDurationTime(sublist);
+            Log.d(TAG, "durationTime "+durationTime );
+            edgeLength = PathData.getSegmentLength(
+                    path.get(i).getP1(),
+                    path.get(i+1).getP1(),
+                    path.get(i).getP2(),
+                    path.get(i+1).getP2()
             );
             //Log.d(TAG, "edgeLenght"+edgeLength);
             PathData.setRatio(durationTime/edgeLength);
             //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
             elapsedTime = 0;
             //pętla po oddzielonej liście
-            //TODO w tej pętli jest coś zjebane hej
             for(int j=0 ; j<sublist.size(); j++)
             {
                 if(sublist.get(j).getAddress().equals("NULL"))
                 {
                     elapsedTime+=sublist.get(j).getTime();
-                   // Log.d(TAG, "elapsedTime: "+elapsedTime);
+                    // Log.d(TAG, "elapsedTime: "+elapsedTime);
                 }
                 else
                 {
                     PathData clone = new PathData();
-                    clone.setP1(path.get(0).getP1());
-                    clone.setP2(path.get(0).getP2());
-                    clone.setIfLinear(path.get(0).getIsIfLinear());
-                    PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone );
+                    clone.setP1(path.get(i+1).getP1());
+                    clone.setP2(path.get(i+1).getP2());
+                    clone.setIfLinear(path.get(i+1).getIsIfLinear());
+                    PathData.setNewLength(elapsedTime,path.get(i), clone );
                     drawMeasure(canvas, clone, sublist.get(j).getRssi());
                 }
             }
-            //ostatni z pierwszym
-            for(int i=0 ; i<edgeNumbers; i++)
-            {
-                sublist = (ArrayList<BluetoothResults>) BluetoothResults.getSublistWhereEdgeNumbers(i, results);
-                //Log.d(TAG, "Drukowanie sublisty");
-                BluetoothResultsController.printAllTableToLog(sublist);
-                durationTime = getEdgeDurationTime(sublist);
-                //Log.d(TAG, "durationTime "+durationTime );
-                edgeLength = PathData.getSegmentLength(
-                        path.get(i).getP1(),
-                        path.get(i+1).getP1(),
-                        path.get(i).getP2(),
-                        path.get(i+1).getP2()
-                );
-                //Log.d(TAG, "edgeLenght"+edgeLength);
-                PathData.setRatio(durationTime/edgeLength);
-                //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
-                elapsedTime = 0;
-                //pętla po oddzielonej liście
-                for(int j=0 ; j<sublist.size(); j++)
-                {
-                    if(sublist.get(j).getAddress().equals("NULL"))
-                    {
-                        elapsedTime+=sublist.get(j).getTime();
-                       // Log.d(TAG, "elapsedTime: "+elapsedTime);
-                    }
-                    else
-                    {
-                        PathData clone = new PathData();
-                        clone.setP1(path.get(i+1).getP1());
-                        clone.setP2(path.get(i+1).getP2());
-                        clone.setIfLinear(path.get(i+1).getIsIfLinear());
-                        PathData.setNewLength(elapsedTime,path.get(i), clone );
-                        drawMeasure(canvas, clone, sublist.get(j).getRssi());
-                    }
-                }
-
-            }
-
-
+            elapsedTime = 0;
+        }
 
     }
 
+
+    /**
+     * Rysuje okręgi o środkach w miejscach gdzie nastąpił pomiar,
+     * ich promień pokazuje w jakim zasięgu jest urządzenie
+     * @param canvas kanwa, na której rysujemy
+     * @param record objekt, w którym jest zawarty środek okręgu
+     * @param value odległość od urządzenia wyrażona w pixelach
+     */
     private void drawMeasure(Canvas canvas, PathData record, int value)
     {
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
@@ -215,17 +228,18 @@ public class MapDrawView extends View {
 
     }
 
+    /**
+     * Zamienia odległość od szukanego urządzenia wyrażoną w metrach na
+     * odległość w pixelach, uwzględniając ratio
+     * @param result
+     * @return
+     */
     private float getConvertedValue(float result)
     {
-       // Log.d(TAG, "pathdata ratio"+ PathData.getWalkRatio());
-       // Log.d(TAG, "result/walk"+ (result/walkVelocity)*1000);
-       // Log.d(TAG, "convertedvalue"+ ((result/walkVelocity)*1000)/PathData.getWalkRatio());
-        ;
         float walkRatio = WalkRatioController.selectWalkRatioWherePathDataId(getContext(), path.get(0).getIdRooms()).getValue();
         float returnValue = ((result/walkVelocity)*1000)/walkRatio;
         Log.d(TAG, "result "+String.valueOf(result));
         Log.d(TAG, "walkWelocity "+String.valueOf(walkVelocity));
-        //Log.d(TAG, "walkRatio "+String.valueOf(PathData.getWalkRatio()));
         return returnValue;
     }
 
