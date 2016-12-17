@@ -57,6 +57,7 @@ public class PathDataController {
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PathData.A, pathdata.getA());
+        values.put(PathData.B, pathdata.getB());
         values.put(PathData.X, pathdata.getX());
         values.put(PathData.LINEAR, (pathdata.getIsIfLinear()));
         values.put(PathData.P1, pathdata.getP1());

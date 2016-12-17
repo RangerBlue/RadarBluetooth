@@ -525,8 +525,11 @@ public class PathData implements Serializable
         {
             PathData result = new PathData(x1, y1);
             firstValue.setA(result.getA());
+            Log.d(TAG, "Nowe a" + result.getA());
             firstValue.setB(result.getB());
+            Log.d(TAG, "Nowe b" + result.getB());
             firstValue.setX(result.getX());
+            Log.d(TAG, "Nowe x" + result.getX());
             firstValue.setIfLinear(result.getIsIfLinear());
         }
         else
@@ -536,8 +539,11 @@ public class PathData implements Serializable
             float b = (y1 - a * x1);
             PathData result = new PathData(a, b, x1, y1);
             firstValue.setA(result.getA());
+            Log.d(TAG, "Nowe a" + result.getA());
             firstValue.setB(result.getB());
+            Log.d(TAG, "Nowe b" + result.getB());
             firstValue.setX(result.getX());
+            Log.d(TAG, "Nowe x" + result.getX());;
             firstValue.setIfLinear(result.getIsIfLinear());
         }
 

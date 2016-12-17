@@ -148,9 +148,10 @@ public class PathViewer extends AppCompatActivity  {
                 Log.d(TAG, "save");
                 int listLength = list.size();
                 //uaktualnienie wpółczynników funkcji
-                for (int i = 0; i < listLength - 1; i++)
+                for (int i = 0; i < listLength-1; i++)
                 {
                     PathData.setNewCoefficients(list.get(i), list.get(i+1));
+                    Log.d(TAG, "iterator"+i+", "+i+1);
                 }
                 //ostatni punkt z pierwszym
                 PathData.setNewCoefficients(list.get(listLength-1), list.get(0));
