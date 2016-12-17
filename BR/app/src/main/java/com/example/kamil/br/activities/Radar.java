@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 
 import com.example.kamil.br.adapters.BluetoothFinderAdapter;
@@ -25,7 +25,7 @@ public class Radar extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
-    private Button buttonSearch;
+    private ImageButton buttonSearch;
     private BluetoothFinderAdapter adapter;
     private ProgressDialog progressBar;
     private RadarDrawView radar;
@@ -43,7 +43,7 @@ public class Radar extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 
-        buttonSearch = (Button) findViewById(R.id.buttonRadarSearch);
+        buttonSearch = (ImageButton) findViewById(R.id.buttonRadarSearch);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

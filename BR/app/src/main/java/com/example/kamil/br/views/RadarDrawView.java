@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.kamil.br.BluetoothDistance;
+import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
@@ -27,6 +28,10 @@ public class RadarDrawView extends View {
     private static ArrayList<BluetoothResults> data;
     private Paint p;
     private static String TAG = RadarDrawView.class.getSimpleName();
+    int canvasWidth;
+    int canvasHeight;
+    int ratio = 1000;
+    int radius = 3;
 
 
 
@@ -64,24 +69,22 @@ public class RadarDrawView extends View {
         p.setColor(Color.BLUE);
 
         //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
-        int ratio = 1000;
-        int radius = 3;
-
-        int canvasWidth = this.getMeasuredWidth();
-        int canvasHeight = this.getMeasuredHeight();
-
-        //rysowanie punktu na środku, pozycja naszego urządzenia
-        canvas.drawCircle(canvasWidth/2,canvasHeight/2,radius,p);
 
 
+        canvasWidth = this.getMeasuredWidth();
+        canvasHeight = this.getMeasuredHeight();
+
+
+        drawAxis(canvas, p, canvasWidth, canvasHeight);
 
         //rysowanie punktów
         for(BluetoothResults e : data )
         {
-            p.setColor(Color.RED);
+            p.setStrokeWidth(2);
+            p.setColor(getResources().getColor(R.color.colorPrimaryDark));
             //figura pusta w środku
             p.setStyle(Paint.Style.STROKE);
-            canvas.drawCircle(canvasWidth/2,canvasHeight/2,BluetoothDistance.getDistance(e.getRssi())*ratio,p);
+            canvas.drawCircle(canvasWidth/2,canvasWidth/2,MetersToPixels(BluetoothDistance.getDistance(e.getRssi())),p);
             Log.d(TAG,e.getName()+","+ Integer.toString(e.getRssi()));
          }
 
@@ -103,6 +106,58 @@ public class RadarDrawView extends View {
         int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(parentWidth, parentHeight);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    /**
+     * Rysowanie osi układu
+     * @param canvas kanwa, na której rysujemy
+     */
+    private void drawAxis(Canvas canvas, Paint p, int canvasWidth, int canvasHeight )
+    {
+        p.setColor(Color.BLACK);
+        p.setStyle(Paint.Style.FILL);
+        p.setStrokeWidth(3);
+        p.setStyle(Paint.Style.STROKE);
+        /**
+         * Zapewniamy, że widok jest kwadratowy
+         */
+        canvasWidth-=3;
+        canvasHeight = canvasWidth;
+        int start = 2;
+
+        /**
+         * Oś x dodatnia
+         */
+        canvas.drawLine(canvasWidth/2,canvasHeight/2,canvasWidth,canvasHeight/2, p );
+        canvas.drawLine(canvasWidth*3/4,(canvasWidth/2)+canvasWidth/20,canvasWidth*3/4,(canvasWidth/2)-canvasWidth/20,p );
+        canvas.drawLine(canvasWidth,(canvasWidth/2)+canvasWidth/20,canvasWidth,(canvasWidth/2)-canvasWidth/20,p );
+
+        /**
+         * Oś x ujemna
+         */
+        canvas.drawLine(start,canvasHeight/2,canvasWidth/2,canvasHeight/2,p );
+        canvas.drawLine(start,(canvasWidth/2)+canvasWidth/20,start,(canvasWidth/2)-canvasWidth/20,p );
+        canvas.drawLine(canvasWidth/4,(canvasWidth/2)+canvasWidth/20,canvasWidth/4,(canvasWidth/2)-canvasWidth/20,p );
+
+        /**
+         * Oś y dodatnia
+         */
+        canvas.drawLine(canvasWidth/2,start,canvasWidth/2,canvasHeight/2,p );
+        canvas.drawLine((canvasWidth/2)-canvasWidth/20,canvasHeight/4,(canvasWidth/2)+canvasWidth/20,canvasHeight/4,p );
+        canvas.drawLine((canvasWidth/2)-canvasWidth/20,start,(canvasWidth/2)+canvasWidth/20,start,p );
+
+        /**
+         * Oś y ujemna
+         */
+        canvas.drawLine(canvasWidth/2,start,canvasWidth/2,canvasHeight,p );
+        canvas.drawLine((canvasWidth/2)-canvasWidth/20,canvasHeight*3/4,(canvasWidth/2)+canvasWidth/20,canvasHeight*3/4,p );
+        canvas.drawLine((canvasWidth/2)-canvasWidth/20,canvasHeight,(canvasWidth/2)+canvasWidth/20,canvasHeight,p );
+
+    }
+
+    private float MetersToPixels(float meters)
+    {
+        return ( canvasWidth/2 * meters )/10;
     }
 
 
