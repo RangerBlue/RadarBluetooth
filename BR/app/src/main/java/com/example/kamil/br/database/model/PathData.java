@@ -76,7 +76,7 @@ public class PathData implements Serializable
     private int idRooms;
 
     /**
-     * wStosunek długości krawędzi przez czas trwania przejścia tej krawędzi przez
+     * Stosunek długości krawędzi przez czas trwania przejścia tej krawędzi przez
      * użytkownika, używany przy rysowaniu punktów
      */
     private static float ratio;

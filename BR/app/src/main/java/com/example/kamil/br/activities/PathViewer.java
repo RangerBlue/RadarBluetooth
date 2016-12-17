@@ -82,12 +82,9 @@ public class PathViewer extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //odebranie paczki
-        //odebranie paczki
         idRooms = getIntent().getIntExtra("id",-1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
-        //wyzerowanie ratia
         PathData.setWalkRatio(0);
 
 
@@ -156,7 +153,7 @@ public class PathViewer extends AppCompatActivity  {
                     PathData.setNewCoefficients(list.get(i), list.get(i+1));
                 }
                 //ostatni punkt z pierwszym
-                PathData.setNewCoefficients(list.get(listLength-2), list.get(0));
+                PathData.setNewCoefficients(list.get(listLength-1), list.get(0));
 
                 //uaktualnienie ich w bazie
                 for( PathData item : list)
@@ -222,6 +219,7 @@ public class PathViewer extends AppCompatActivity  {
             float segmentLength = PathData.getSegmentLength(list.get(0).getP1(), list.get(1).getP1(), list.get(0).getP2(), list.get(1).getP2());
             float ratio = time/ segmentLength;
             PathData.setWalkRatio(ratio);
+            PathData.setRatio(ratio);
             WalkRatio item = new WalkRatio();
             item.setValue(ratio);
             item.setIdRooms(idRooms);

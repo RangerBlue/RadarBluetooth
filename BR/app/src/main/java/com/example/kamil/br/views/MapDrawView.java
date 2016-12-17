@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.nfc.Tag;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,7 @@ public class MapDrawView extends View {
      * prędkość chodu użytkownika w m/s
      */
     private float walkVelocity = 1f;
+    private int elapsedTime = 0;
 
 
 
@@ -125,7 +127,7 @@ public class MapDrawView extends View {
         p.setColor(Color.RED);
 
         int durationTime;
-        int elapsedTime = 0 ;
+        //int elapsedTime = 0 ;
         float edgeLength ;
 
         /**
@@ -137,21 +139,24 @@ public class MapDrawView extends View {
         Log.d(TAG, "Drukowanie sublisty");
         BluetoothResultsController.printAllTableToLog(sublist);
         durationTime = getEdgeDurationTime(sublist);
-            //Log.d(TAG, "durationTime "+durationTime );
+        Log.d(TAG, "durationTime "+durationTime );
         edgeLength = PathData.getSegmentLength(
                     path.get(edgeNumbers).getP1(),
                     path.get(0).getP1(),
                     path.get(edgeNumbers).getP2(),
                     path.get(0).getP2()
                     );
+        Log.d(TAG, "edge"+edgeLength);
+        PathData.setRatio(durationTime/edgeLength);
         elapsedTime = 0;
 
         for(int j=0 ; j<sublist.size(); j++)
         {
+            Log.d(TAG, "cyk");
             if(sublist.get(j).getAddress().equals("NULL"))
             {
                 elapsedTime+=sublist.get(j).getTime();
-                // Log.d(TAG, "elapsedTime: "+elapsedTime);
+                Log.d(TAG, "elapsedTime: "+elapsedTime);
             }
             else
             {
@@ -159,10 +164,10 @@ public class MapDrawView extends View {
                 clone.setP1(path.get(0).getP1());
                 clone.setP2(path.get(0).getP2());
                 clone.setIfLinear(path.get(0).getIsIfLinear());
+                Log.d(TAG, "elapsed"+elapsedTime);
                 PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone );
                 drawMeasure(canvas, clone, sublist.get(j).getRssi());
             }
-            elapsedTime = 0;
         }
 
 
