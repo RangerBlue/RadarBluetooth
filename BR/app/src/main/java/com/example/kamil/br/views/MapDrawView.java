@@ -10,8 +10,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.nfc.Tag;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +22,6 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MapDrawView extends View {
     private static ArrayList<BluetoothResults> results;
@@ -84,7 +81,6 @@ public class MapDrawView extends View {
         edgeNumbers = results.get(results.size()-1).getEdgeNumber();
         p = new Paint();
         p.setAntiAlias(true);
-        //figura wypełniona
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.BLUE);
 
@@ -165,7 +161,7 @@ public class MapDrawView extends View {
                 clone.setP2(path.get(0).getP2());
                 clone.setIfLinear(path.get(0).getIsIfLinear());
                 Log.d(TAG, "elapsed"+elapsedTime);
-                PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone );
+                PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone , false);
                 drawMeasure(canvas, clone, sublist.get(j).getRssi());
             }
         }
@@ -208,7 +204,7 @@ public class MapDrawView extends View {
                     clone.setP1(path.get(i+1).getP1());
                     clone.setP2(path.get(i+1).getP2());
                     clone.setIfLinear(path.get(i+1).getIsIfLinear());
-                    PathData.setNewLength(elapsedTime,path.get(i), clone );
+                    PathData.setNewLength(elapsedTime,path.get(i), clone, false);
                     drawMeasure(canvas, clone, sublist.get(j).getRssi());
                 }
             }

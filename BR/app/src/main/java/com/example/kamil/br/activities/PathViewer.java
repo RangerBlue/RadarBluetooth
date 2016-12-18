@@ -145,26 +145,7 @@ public class PathViewer extends AppCompatActivity  {
             @Override
             public void onClick(View v)
             {
-                Log.d(TAG, "save");
-                int listLength = list.size();
-                //uaktualnienie wpółczynników funkcji
-                for (int i = 0; i < listLength-1; i++)
-                {
-                    PathData.setNewCoefficients(list.get(i), list.get(i+1));
-                    Log.d(TAG, "iterator"+i+", "+i+1);
-                }
-                //ostatni punkt z pierwszym
-                PathData.setNewCoefficients(list.get(listLength-1), list.get(0));
-
-                //uaktualnienie ich w bazie
-                for( PathData item : list)
-                {
-                    PathDataController controller = new PathDataController();
-                    controller.update(item, getApplicationContext());
-                }
-
-                PathDataController.printAllTableToLog(list);
-
+                updateData(true);
             }
         });
 
@@ -205,6 +186,25 @@ public class PathViewer extends AppCompatActivity  {
     }
 
     /**
+     * Zwraca licznik powiękoszony o jeden
+     * @param number podana liczba
+     * @return zinkrementowany licznik
+     */
+    public int getCounterIncrement(int number)
+    {
+        if(number == counterLimit)
+        {
+            return 0;
+        }
+        else
+        {
+            int _counter = number;
+            return ++_counter;
+        }
+
+    }
+
+    /**
      * Oblicza czas między stop a start, jeśli jest wywołana na pierwszej krawędzi ustawia ratio,
      * jeśli na innych to ustawia ich długość
      * @param start czas rozpoczęcia odliczania
@@ -214,6 +214,28 @@ public class PathViewer extends AppCompatActivity  {
     {
         long time = stop-start;
         Log.d(TAG, "Czas w ms: "+Long.toString((time)));
+        ArrayList<Integer> parallel = new ArrayList<>();
+
+        for(int i = 0 ; i<=counterLimit ; i++)
+        {
+            float jeden = PathData.getSegmentLength(list.get(i).getP1(), list.get(getCounterIncrement(i)).getP1(), list.get(i).getP2(), list.get(getCounterIncrement(i)).getP2());
+            float dwa =  PathData.getSegmentLength(list.get(counter).getP1(), list.get(getCounterIncrement()).getP1(), list.get(counter).getP2(), list.get(getCounterIncrement()).getP2());
+            float adin = list.get(i).getA();
+            float adin2 = list.get(counter).getA();
+            Log.d(TAG, "lalala"+jeden+","+dwa);
+            Log.d(TAG, "oololo"+adin+","+adin2);
+
+            if( (list.get(i).getA() == list.get(counter).getA()) &&
+                    (PathData.getSegmentLength(list.get(i).getP1(), list.get(getCounterIncrement(i)).getP1(), list.get(i).getP2(), list.get(getCounterIncrement(i)).getP2()) ==
+                            PathData.getSegmentLength(list.get(counter).getP1(), list.get(getCounterIncrement()).getP1(), list.get(counter).getP2(), list.get(getCounterIncrement()).getP2())) &&
+                    list.get(i).getIsIfLinear() == list.get(counter).getIsIfLinear() &&
+                    i!= counter)
+            {
+                parallel.add(i);
+                Log.d(TAG, "MAM!");
+            }
+        }
+
 
         if(counter == 0)
         {
@@ -235,8 +257,37 @@ public class PathViewer extends AppCompatActivity  {
             Log.d(TAG,"sprawdzenie counter i getCounter "+ counter +","+getCounterIncrement());
             Log.d(TAG, "Ratio: "+PathData.getRatio());
 
-            PathData.setNewLength(time, list.get(counter), list.get(getCounterIncrement()));
+            PathData.setNewLength(time, list.get(counter), list.get(getCounterIncrement()), false);
 
+            for( Integer item : parallel)
+            {
+                Log.d(TAG, "paralel" + item);
+            }
+
+    /*
+            if(!parallel.isEmpty())
+            {
+                for( Integer item : parallel)
+                {
+                    if(PathData.isPointsCrossed(list.get(counter), list.get(getCounterIncrement()), list.get(item), list.get(getCounterIncrement(item))))
+                        PathData.setNewLength(time, list.get(getCounterIncrement(item)), list.get(item) );
+                    else
+                        PathData.setNewLength(time, list.get(item), list.get(getCounterIncrement(item)));
+                }
+            }
+*/
+
+            if(!parallel.isEmpty())
+            {
+                for( Integer item : parallel)
+                {
+                    if(PathData.isPointsCrossed(list.get(counter), list.get(getCounterIncrement()), list.get(item), list.get(getCounterIncrement(item))))
+                        PathData.setNewLength(time, list.get(item), list.get(getCounterIncrement(item)), true);
+                    else
+                        PathData.setNewLength(time, list.get(item), list.get(getCounterIncrement(item)), false);
+                }
+                updateData(false);
+            }
         }
 
     }
@@ -267,6 +318,33 @@ public class PathViewer extends AppCompatActivity  {
         {
             button.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void updateData(boolean ifInDatabase)
+    {
+        Log.d(TAG, "save");
+        int listLength = list.size();
+        //uaktualnienie wpółczynników funkcji
+        for (int i = 0; i < listLength-1; i++)
+        {
+            PathData.setNewCoefficients(list.get(i), list.get(i+1));
+            Log.d(TAG, "iterator"+i+", "+i+1);
+        }
+        //ostatni punkt z pierwszym
+        PathData.setNewCoefficients(list.get(listLength-1), list.get(0));
+
+        if( ifInDatabase )
+        {
+            //uaktualnienie ich w bazie
+            for( PathData item : list)
+            {
+                PathDataController controller = new PathDataController();
+                controller.update(item, getApplicationContext());
+            }
+
+            PathDataController.printAllTableToLog(list);
+        }
+
     }
 
     @Override

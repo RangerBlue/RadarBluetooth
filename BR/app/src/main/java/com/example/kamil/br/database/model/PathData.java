@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.kamil.br.QuadraticFunction;
 import com.example.kamil.br.database.controller.PathDataController;
 
+import java.io.Closeable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * punkt początkowy następnej
  * Created by kamil on 30.07.16.
  */
-public class PathData implements Serializable
+public class PathData implements Serializable, Cloneable
 {
     public static final String TAG = PathData.class.getSimpleName();
     public static final String TABLE = "PathData";
@@ -248,7 +249,7 @@ public class PathData implements Serializable
      * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
      * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
      */
-    public static void setNewLength(long time, PathData firstValue, PathData secondValue )
+    public static void setNewLength(long time, PathData firstValue, PathData secondValue, boolean swap )
     {
         float oldLength = getSegmentLength(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG," oldLength: "+Float.toString(oldLength) );
         float newLength = time/ratio;  Log.d(TAG+" newLength",Float.toString(newLength) );
@@ -257,9 +258,26 @@ public class PathData implements Serializable
 
         //sprawdzenie czy liniowa czy nie
         if(firstValue.getIsIfLinear()==1)
-            getNewPoint(newLength, firstValue, secondValue);
+        {
+            if(swap)
+            {
+                try {
+                    getNewPointSwapped(newLength, secondValue, firstValue);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+                getNewPoint(newLength, firstValue, secondValue);
+        }
         else
-            getNewPointNotLinear(newLength, firstValue, secondValue);
+        {
+            if(swap)
+                getNewPointNotLinear(newLength, secondValue, firstValue);
+            else
+                getNewPointNotLinear(newLength, firstValue, secondValue);
+        }
+
         //wypisanie zmienonego wiersza
         Log.d(TAG,
                     "ID "+String.valueOf(secondValue.getIdPathData()) +
@@ -289,13 +307,45 @@ public class PathData implements Serializable
     }
 
     /**
+     * Zamienia miejscami obiekty, żeby można było obliczyć punkt od punktu startowego, ale w drugą stronę
+     * @param newLength Podana odległość
+     * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
+     * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
+     */
+    private static void getNewPointSwapped(float newLength, PathData firstValue,PathData secondValue) throws CloneNotSupportedException {
+        /**
+         * Tworzenie kopi obiektów
+         */
+        PathData firstValue_ = (PathData) firstValue.clone();
+        PathData secondValue_ = (PathData) secondValue.clone();
+
+        /**
+         * Przepisanie fukcji z drugiego obiektu do pierwszego
+         */
+        firstValue_.setA(secondValue_.getA());
+        firstValue_.setB(secondValue_.getB());
+        firstValue_.setX(secondValue_.getX());
+        firstValue_.setIfLinear(secondValue_.getIsIfLinear());
+
+        /**
+         * Wywołanie zwykłej wersji funkcji
+         */
+        getNewPoint(newLength, firstValue_, secondValue_);
+
+        secondValue.setP1(secondValue_.getP1());
+        secondValue.setP2(secondValue_.getP2());
+
+    }
+
+    /**
      * Obliczenie punktu, który znajduje się w podanej odległości od punktu startowego, korzystając z funkcji liniowej
      * @param newLength Podana odległość
      * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
      * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
      */
-    private static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)
-    {
+    private static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)  {
+
+
         Log.d(TAG,"getNewPoint wywołanie");
         float a = firstValue.getA(); Log.d(TAG+ " a", Float.toString(a));
         float b = firstValue.getB(); Log.d(TAG+" b", Float.toString(b));
@@ -549,4 +599,36 @@ public class PathData implements Serializable
 
     }
 
+    public static boolean isPointsCrossed(PathData edge1P1, PathData edge1P2, PathData edge2P1, PathData edge2P2 )
+    {
+        float x1 = edge1P2.getA();
+        float y1 = edge1P2.getB();
+        float x2 = edge2P1.getA();
+        float y2 = edge2P1.getB();
+        float a = (y1 - y2) / (x1 - x2);
+        float b = (y1 - a * x1);
+        PathData result1 = new PathData(a, b, x1, y1);
+
+        x1 = edge1P1.getA();
+        y1 = edge1P1.getB();
+        x2 = edge2P2.getA();
+        y2 = edge2P2.getB();
+        a = (y1 - y2) / (x1 - x2);
+        b = (y1 - a * x1);
+        PathData result2 = new PathData(a, b, x1, y1);
+
+        if(result1.getA() != result2.getA())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
