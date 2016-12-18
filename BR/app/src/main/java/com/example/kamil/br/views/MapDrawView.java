@@ -24,22 +24,60 @@ import com.example.kamil.br.database.model.PathData;
 import java.util.ArrayList;
 
 public class MapDrawView extends View {
+    /**
+     * Lista z danymi urządzeń
+     */
     private static ArrayList<BluetoothResults> results;
+
+    /**
+     * Lista z krawędziami pokoju
+     */
     private static ArrayList<PathData>  path;
+
+    /**
+     * Lista z nazwą i adresem urządzeń, które zostały znalezione
+     */
     private static ArrayList<String> distinctDevices;
+
+    /**
+     * Lista z danymi urządzeń odnoszącymi się do jednej krawędzi
+     */
     private static ArrayList<BluetoothResults> sublist ;
+
+    /**
+     * Numer krawędzi
+     */
     private int edgeNumbers;
+
+    /**
+     * Styl rysowania
+     */
     private Paint p;
+
+    /**
+     * Mnożnik pomniejszający lub powiększający mapę w zależności od ekranu urządzenia
+     */
     private int ratio;
+
+    /**
+     * Promień rysowania punktu w miejscu, w którym nastąpił pomiar
+     */
     private int radius;
+
+    /**
+     * Tag klasy
+     */
     private static String TAG = MapDrawView.class.getSimpleName();
 
-    //ratio ustawione na pałe
-    private float walkRatio = 0.1f;
     /**
-     * prędkość chodu użytkownika w m/s
+     * Prędkość chodu użytkownika w m/s
      */
+    //TODO połączyć z aktywnością z radaren
     private float walkVelocity = 1f;
+
+    /**
+     * Czas, który upłynął do znalezienia urządzenia
+     */
     private int elapsedTime = 0;
 
 
@@ -71,6 +109,11 @@ public class MapDrawView extends View {
         MapDrawView.distinctDevices = distinctDevices;
     }
 
+
+    /**
+     * Wywołanie tej metody zamiast onDraw, używana jest przy własnych widokach
+     * @param canvas użyta kanwa
+     */
     @Override
     protected void dispatchDraw(Canvas canvas) {
 
@@ -78,13 +121,19 @@ public class MapDrawView extends View {
         PathDataController.printAllTableToLog(path);
         BluetoothResultsController.printAllTableToLog(results);
 
+
+        for(String item : distinctDevices)
+            Log.d(TAG+"tablca ",item );
+
         edgeNumbers = results.get(results.size()-1).getEdgeNumber();
         p = new Paint();
         p.setAntiAlias(true);
+        p.setStyle(Paint.Style.FILL);
+        p.setStrokeWidth(5);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLUE);
 
-        //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
+
+        //TODO dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
         ratio = 44;
         radius = 1;
 
@@ -92,7 +141,7 @@ public class MapDrawView extends View {
         p.setColor(Color.BLUE);
         for(int i = 0 ; i < path.size()-1; i++)
         {
-               p.setColor(Color.BLUE);
+            p.setColor(Color.BLACK);
             canvas.drawLine(path.get(i).getP1()*ratio,path.get(i).getP2Reverse()*ratio,path.get(i+1).getP1()*ratio,path.get(i+1).getP2Reverse()*ratio,p);
         }
 
@@ -115,21 +164,13 @@ public class MapDrawView extends View {
      */
     private void drawPoints(Canvas canvas)
     {
-        /**
-         * Utowrzenie sublisty
-         */
-
-
         p.setColor(Color.RED);
-
         int durationTime;
-        //int elapsedTime = 0 ;
         float edgeLength ;
 
         /**
          * Obsłużenie ostaniej krawędzi
          */
-
         //ostatni z pierwszym
         sublist =  BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
         Log.d(TAG, "Drukowanie sublisty");
@@ -223,6 +264,7 @@ public class MapDrawView extends View {
      */
     private void drawMeasure(Canvas canvas, PathData record, int value)
     {
+        p.setStrokeWidth(1);
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
         float length = getConvertedValue(BluetoothDistance.getDistance(value));
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,length*ratio,p);
@@ -265,8 +307,9 @@ public class MapDrawView extends View {
     }
 
 
-
-    //gdy chcemy zmienić cos w widoku
+    /**
+     * Aktualizuje dane widoku
+     */
     @Override
     public void invalidate() {
         super.invalidate();

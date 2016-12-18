@@ -40,7 +40,7 @@ public class BluetoothResultsController {
 
         ContentValues values = new ContentValues();
         values.put(BluetoothResults.NAME, bluetoothResult.getName());
-        values.put(BluetoothResults.ADDRESS, bluetoothResult.getName());
+        values.put(BluetoothResults.ADDRESS, bluetoothResult.getAddress());
         values.put(BluetoothResults.RSSI, bluetoothResult.getRssi());
         values.put(BluetoothResults.TIME, bluetoothResult.getTime());
         values.put(BluetoothResults.EGDENUMBER, bluetoothResult.getEdgeNumber());
@@ -127,13 +127,14 @@ public class BluetoothResultsController {
         return bluetoothResult;
     }
 
-    public ArrayList<String> selectNameDistinct(Context context, int idRooms, int idMeasurement)
+    public static ArrayList<String> selectNameDistinct(Context context, int idRooms, int idMeasurement)
     {
         ArrayList<String> results = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         String selectQuery =
                 " SELECT DISTINCT " +
                         "BluetoothResults." + BluetoothResults.ADDRESS +
+                        ", BluetoothResults." + BluetoothResults.NAME +
                         " FROM " + BluetoothResults.TABLE+
                         " WHERE BluetoothResults." + BluetoothResults.ID_ROOMS+"="+Integer.toString(idRooms)+
                         " AND BluetoothResults." + BluetoothResults.ID_MEASUREMENTS+"="+Integer.toString(idMeasurement);;
@@ -142,8 +143,9 @@ public class BluetoothResultsController {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                String result = cursor.getString(cursor.getColumnIndex(BluetoothResults.ADDRESS));
-                results.add(result);
+                String result = cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME))+", "+cursor.getString(cursor.getColumnIndex(BluetoothResults.ADDRESS));
+                if( !cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME)).equals("NULL") )
+                    results.add(result);
             } while (cursor.moveToNext());
         }
         cursor.close();

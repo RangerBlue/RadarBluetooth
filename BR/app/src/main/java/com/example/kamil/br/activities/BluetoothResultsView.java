@@ -40,12 +40,10 @@ public class BluetoothResultsView extends AppCompatActivity {
         ArrayList<PathData> pathDataList ;
         pathDataList = (ArrayList<PathData>) pdController.selectPathDataWhereId(getApplicationContext(), idRooms);
 
-        ArrayList<String> distinctDevices = btController.selectNameDistinct(getApplicationContext(), idRooms, idMeasurement);
-
-        Log.d(TAG, "tu jestem");
+        ArrayList<String> distinctDevices = BluetoothResultsController.selectNameDistinct(getApplicationContext(), idRooms, idMeasurement);
 
         map.setPath(pathDataList);
         map.setResults(bluetoothResultsList);
-
+        map.setDistinctDevices(distinctDevices);
     }
 }
