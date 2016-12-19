@@ -9,10 +9,12 @@ public class Rooms
 
     public static final String ID_ROOMS = "idrooms";
     public static final String NAME = "name";
+    public static final String TYPE = "type";
 
     //nazwy pól
     private int idRooms;
     private String name;
+    private float type;
 
     public String getName() {
         return name;
@@ -28,5 +30,13 @@ public class Rooms
 
     public void setIdRooms(int idRooms) {
         this.idRooms = idRooms;
+    }
+
+    public float getType() {
+        return type;
+    }
+
+    public void setType(float type) {
+        this.type = type;
     }
 }

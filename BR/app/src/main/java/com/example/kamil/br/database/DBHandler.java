@@ -27,7 +27,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // nazwa bazy
-    private static final String DATABASE_NAME = "Baza";
+    private static final String DATABASE_NAME = "BazaBluetooth2";
 
 
 

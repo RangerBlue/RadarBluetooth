@@ -55,9 +55,9 @@ public class RoomCreator extends AppCompatActivity {
         //wybranie layoutu który zostanie wykorzystany gdy pojawi sie lista
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roomTypeSpinner.setAdapter(adapter);
-        //ustawienie ostatniego elemmentu, czyli wybierz wartosć
 
-        roomTypeSpinner.setSelection(valueList.size()-1);
+
+        roomTypeSpinner.setSelection(0);
 
         confirmButton = (ImageButton) findViewById(R.id.buttonConfirm);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +68,8 @@ public class RoomCreator extends AppCompatActivity {
                 {
                     Rooms room = new Rooms();
                     room.setName(roomNameEditText.getText().toString());
+                    Log.d("agsg", String.valueOf(getRoomType(roomTypeSpinner.getSelectedItemPosition())));
+                    room.setType(getRoomType(roomTypeSpinner.getSelectedItemPosition()));
                     RoomsController roomController = new RoomsController();
                     roomController.insert(room, getApplicationContext());
                     Toast.makeText(getApplicationContext(), R.string.added_room, Toast.LENGTH_SHORT).show();
@@ -85,5 +87,25 @@ public class RoomCreator extends AppCompatActivity {
             }
         });
 
+    }
+
+    private float getRoomType(int listPosition)
+    {
+        float returnValue = 0;
+
+        switch (listPosition)
+        {
+            case 0:
+                returnValue =  1.6f;
+                break;
+            case 1:
+                returnValue = 2.7f;
+                break;
+            case 2:
+                returnValue = 2f;
+                break;
+        }
+
+        return returnValue;
     }
 }

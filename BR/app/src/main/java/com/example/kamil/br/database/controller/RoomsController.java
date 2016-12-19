@@ -25,6 +25,7 @@ public class RoomsController {
     public static String createTable() {
         return "CREATE TABLE " + Rooms.TABLE + "(" +
                 Rooms.ID_ROOMS + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Rooms.TYPE + " REAL," +
                 Rooms.NAME + " TEXT )";
     }
 
@@ -33,9 +34,11 @@ public class RoomsController {
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Rooms.NAME, room.getName());
+        values.put(Rooms.TYPE, room.getType());
         db.insert(Rooms.TABLE, null, values);
         db.close(); // Closing database connection
         Log.d("Insert record: ", room.TABLE+" "+ room.getName());
+        Log.d("Insert record: ", room.TYPE+" "+ room.getType());
     }
 
     /**
@@ -67,6 +70,37 @@ public class RoomsController {
         MeasurementsController.deleteWhereIdRooms(idRoom, context);
     }
 
+    /**
+     * Zwraca typ pokoju
+     * @param context kontekst aplikacji
+     * @param idRoom identyfikator pokoju
+     * @return
+     */
+    public static Float selectTypeWhereId(Context context, int idRoom)
+    {
+        List<Float> rooms = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.TYPE +
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Float type = cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE));
+                Log.d("w funkcji", String.valueOf(type));
+                rooms.add(type);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return rooms.get(0);
+    }
+
     public List<Rooms> selectAll(Context context)
     {
         List<Rooms> rooms = new ArrayList<>();
@@ -75,6 +109,7 @@ public class RoomsController {
                 " SELECT " +
                 "Rooms." + Rooms.ID_ROOMS +
                 ", Rooms." + Rooms.NAME +
+                ", Rooms." + Rooms.TYPE +
                 " FROM " + Rooms.TABLE;
 
         // pętla po wszystkich wierszach i zapis do listy
@@ -84,6 +119,7 @@ public class RoomsController {
                 Rooms room= new Rooms();
                 room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
                 room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
+                room.setType(cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE)));
                 rooms.add(room);
             } while (cursor.moveToNext());
         }
@@ -101,7 +137,8 @@ public class RoomsController {
         {
             Log.d("Tabela Rooms: ",
                     "\t|ID| "+String.valueOf(element.getIdRooms()) +
-                            "\t|Name| "+ String.valueOf(element.getName())
+                            "\t|Name| "+ String.valueOf(element.getName()) +
+                            "\t|type| "+ String.valueOf(element.getType())
             ) ;
         }
     }

@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
@@ -42,12 +44,29 @@ public class RoomViewerAdapter extends ArrayAdapter<Rooms>
 
         // Pobierz textview
         TextView name = (TextView) rowView.findViewById(R.id.textViewName);
-
+        ImageView image = (ImageView) rowView.findViewById(R.id.imageViewRoomIcon);
 
         // Ustaw text
         name.setText(room.getName());
+        setImage(image, room.getIdRooms());
+
+
+
 
         // Zwróć rowview
         return rowView;
+    }
+
+    private void setImage(ImageView image, int idRoom )
+    {
+        Float choice = RoomsController.selectTypeWhereId(getContext(), idRoom);
+
+        if( choice == 1.6f )
+                image.setImageResource(R.drawable.office_room_icon);
+        if( choice == 2.7f )
+                image.setImageResource(R.drawable.big_room_icon);
+        if( choice == 2.0f )
+                image.setImageResource(R.drawable.free_space_icon);
+
     }
 }

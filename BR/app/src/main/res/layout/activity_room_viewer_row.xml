@@ -14,7 +14,10 @@
             android:id="@+id/imageViewRoomIcon"
             android:src="@drawable/office_room_icon"
             android:layout_column="0"
-            android:background="@null"/>
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:layout_width="wrap_content"

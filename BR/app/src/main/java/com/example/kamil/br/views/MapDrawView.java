@@ -17,6 +17,7 @@ import android.view.View;
 import com.example.kamil.br.BluetoothDistance;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
+import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
@@ -266,7 +267,7 @@ public class MapDrawView extends View {
     {
         p.setStrokeWidth(1);
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
-        float length = getConvertedValue(BluetoothDistance.getDistance(value));
+        float length = getConvertedValue(BluetoothDistance.getDistance(value, RoomsController.selectTypeWhereId(getContext(), results.get(0).getIdRooms())));
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,length*ratio,p);
 
     }

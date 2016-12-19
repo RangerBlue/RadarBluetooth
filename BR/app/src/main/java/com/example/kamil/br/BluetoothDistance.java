@@ -14,6 +14,8 @@ public class BluetoothDistance
 {
 
     public static String TAG = BluetoothDevice.class.getSimpleName();
+
+
     /**
      * Obliczanie dystansu na podstawie otrzymanej wielkosci RSSI
      * RSSI = -(10*n*log10(d)-A)
@@ -22,11 +24,14 @@ public class BluetoothDistance
      * A-wartość RSSI w referencyjnym dystansie(tu będzie 1m prawdopodobnie)
      * @param rssi wielkość rssi
      */
-    public static float getDistance(int rssi)
+    public static float getDistance(int rssi, float type)
     {
-
-        Log.d(TAG,"rssi: "+Integer.toString(rssi));
-        Float n = (float) 1.6;
+        Float n;
+        if( type != -1 )
+            n = type;
+        else
+            n = 2.0f;
+        
         Log.d(TAG, "Odległość:  "+n);
         int A = -77; // ustawione doświadczalnie                        xD
         float d = (float) (Math.pow(10, (((-1*(rssi-A))) / (10 * n))));

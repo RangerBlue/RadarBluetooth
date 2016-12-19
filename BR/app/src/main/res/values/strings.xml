@@ -43,10 +43,9 @@
     <string name="pick_corners">PICK CORNERS BELOW</string>
 
     <string-array name="room_type_arrays">
-        <item>Empty</item>
-        <item>Office</item>
-        <item>Classroom</item>
-        <item>Gym</item>
+        <item>Standard room</item>
+        <item>Big room</item>
+        <item>Free space</item>
     </string-array>
     <string name="title_activity_mapping_menu">MappingMenu</string>
 </resources>
