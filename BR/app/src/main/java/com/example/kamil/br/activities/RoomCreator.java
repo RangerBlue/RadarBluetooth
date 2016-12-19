@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Aktywność służaca do dodania nowego pokouju
+ * Aktywność służaca do dodania nowego pokoju
  * Created by Kamil
  */
 public class RoomCreator extends AppCompatActivity {

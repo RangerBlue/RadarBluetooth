@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import com.example.kamil.br.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class UserSpeed extends AppCompatActivity {
 
     TextView textViewSpeed;
+    TextView textViewSpeedKm;
     TextView textViewWynik;
     ArrayList<Float> test;
     Button wynik;
@@ -31,9 +33,10 @@ public class UserSpeed extends AppCompatActivity {
         test = new ArrayList<>();
 
         textViewSpeed = (TextView) findViewById(R.id.speed);
-        textViewWynik = (TextView) findViewById(R.id.textViewwynik);
+        textViewSpeedKm = (TextView) findViewById(R.id.speedKm);
+        textViewWynik = (TextView) findViewById(R.id.textViewResult);
 
-        wynik = (Button) findViewById(R.id.buttonWynik);
+        wynik = (Button) findViewById(R.id.buttonSpeedStartStop);
         wynik.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +50,11 @@ public class UserSpeed extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                textViewSpeed.setText(Float.toString(location.getSpeed()));
+                DecimalFormat format = new DecimalFormat();
+                format.setMinimumFractionDigits(2);
+                format.format(location.getSpeed());
+                textViewSpeed.setText(format.format(location.getSpeed()));
+                textViewSpeedKm.setText(format.format(meterPerSecondsToKilometersPerHour(location.getSpeed())));
                 addValue(location.getSpeed());
             }
 
@@ -95,5 +102,10 @@ public class UserSpeed extends AppCompatActivity {
         }
 
         return sum/list.size();
+    }
+
+    private float meterPerSecondsToKilometersPerHour(float velocity)
+    {
+        return velocity/3.6f;
     }
 }

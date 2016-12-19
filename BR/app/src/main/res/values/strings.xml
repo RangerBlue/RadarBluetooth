@@ -48,4 +48,9 @@
         <item>Free space</item>
     </string-array>
     <string name="title_activity_mapping_menu">MappingMenu</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+   <string name="meter_per_second">M/S</string>
+   <string name="kilometer_per_second">KM/H</string>
 </resources>
