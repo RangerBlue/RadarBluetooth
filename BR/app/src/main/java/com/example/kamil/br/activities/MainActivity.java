@@ -2,6 +2,7 @@ package com.example.kamil.br.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -125,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         checkBluetoothState();
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
+
+        Log.d("as", String.valueOf(pref.getFloat("velocity", -1f)));
 
     }
 

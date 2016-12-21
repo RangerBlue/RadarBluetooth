@@ -10,6 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackground"
     tools:context="com.example.kamil.br.activities.UserSpeed">
 
     <TableRow>
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/speed"
         android:textSize="@dimen/big_font"
+        android:textColor="@color/colorBlack"
         android:layout_gravity="center"
             />
 
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/TextViewMetersPerSecond"
             android:textSize="@dimen/big_font"
+            android:textColor="@color/colorBlack"
             android:layout_gravity="center"/>
     </TableRow>
 
@@ -38,6 +41,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/speedKm"
             android:textSize="@dimen/big_font"
+            android:textColor="@color/colorBlack"
             android:layout_gravity="center"
             />
 
@@ -47,25 +51,73 @@
             android:layout_height="wrap_content"
             android:id="@+id/TextViewKilometersPerHour"
             android:textSize="@dimen/big_font"
+            android:textColor="@color/colorBlack"
             android:layout_gravity="center"/>
     </TableRow>
 
 
 
     <TableRow>
-        <Button
-            android:text="Button"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonSpeedStartStop" />
+            android:id="@+id/buttonSpeedStartStop"
+            android:src="@drawable/switch_on_off_icon_red"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_span="2"/>
     </TableRow>
     <TableRow>
-        <TextView
-            android:text="TextView"
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewResult" />
+            android:layout_gravity="center"
+            android:id="@+id/progressBarSpeed"
+            android:max="100"
+            android:minWidth="240dp"
+            android:layout_span="2"
+            />
+
     </TableRow>
 
+    <TableRow>
+        <TextView
+            android:text="@string/average_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewAverageVelocity"
+            android:layout_gravity="center"
+            android:textSize="@dimen/big_font"
+            android:textColor="@color/colorBlack"
+            android:layout_span="2"/>/>
+    </TableRow>
 
+    <TableRow>
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewResult"
+            android:textSize="@dimen/big_font"
+            android:layout_gravity="center"
+            android:textColor="@color/colorBlack"
+            android:layout_span="2"/>
+    </TableRow>
+
+    <TableRow>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSpeedSave"
+            android:src="@drawable/save_icon"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_span="2"/>
+    </TableRow>
 </TableLayout>
