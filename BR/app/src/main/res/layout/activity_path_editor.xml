@@ -1,27 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:stretchColumns="*"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackground"
     tools:context=".activities.PathMenu">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_draw_path"
-        android:id="@+id/buttonCreateInPath"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+    <TableRow
+        android:background="@color/colorPrimaryDark">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_draw_path"
+            android:id="@+id/textView_create"
+            android:layout_gravity="center"
+            android:layout_column="0"/>
+    </TableRow>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_view"
-        android:id="@+id/buttonViewInPath"
-        android:layout_alignTop="@+id/buttonCreateInPath"
-        android:layout_alignParentEnd="true" />
-</RelativeLayout>
+    <TableRow
+        android:paddingBottom="5dp"
+        android:layout_weight="1"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_draw_path"
+            android:id="@+id/buttonCreateInPath"
+            android:src = "@drawable/add_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:background="@color/colorPrimaryDark">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_big"
+            android:id="@+id/textView_edit"
+            android:layout_gravity="center"
+            />
+    </TableRow>
+
+    <TableRow
+        android:paddingBottom="5dp"
+        android:layout_weight="1"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_view"
+            android:id="@+id/buttonViewInPath"
+            android:src = "@drawable/edit_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+
+    </TableRow>
+
+</TableLayout>

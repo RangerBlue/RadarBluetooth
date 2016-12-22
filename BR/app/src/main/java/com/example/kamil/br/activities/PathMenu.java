@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.PathDataController;
@@ -22,8 +23,8 @@ import java.util.List;
 public class PathMenu extends AppCompatActivity {
 
     private String TAG = PathMenu.class.getSimpleName();
-    private Button buttonCreate;
-    private Button buttonView;
+    private ImageButton buttonCreate;
+    private ImageButton buttonView;
     private int idRooms;
 
     @Override
@@ -34,7 +35,7 @@ public class PathMenu extends AppCompatActivity {
         idRooms = getIntent().getIntExtra("id",-1);
         Log.d(TAG, String.valueOf(idRooms));
 
-        buttonCreate = (Button) findViewById(R.id.buttonCreateInPath);
+        buttonCreate = (ImageButton) findViewById(R.id.buttonCreateInPath);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +43,7 @@ public class PathMenu extends AppCompatActivity {
             }
         });
 
-        buttonView = (Button) findViewById(R.id.buttonViewInPath);
+        buttonView = (ImageButton) findViewById(R.id.buttonViewInPath);
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

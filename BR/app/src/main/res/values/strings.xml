@@ -4,7 +4,7 @@
     <string name="button_edit_room">Room</string>
     <string name="button_create">Create</string>
     <string name="button_view">View</string>
-    <string name="button_draw_path">Draw path</string>
+    <string name="button_draw_path">DRAW PATH</string>
     <string name="button_edit_path">Path</string>
     <string name="text_view_list_choose_room_header">Choose one from below</string>
     <string name="progress_scanning">Scanning...</string>
