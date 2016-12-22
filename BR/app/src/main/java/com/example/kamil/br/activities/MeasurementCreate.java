@@ -24,13 +24,13 @@ import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class MeasurementCreate extends AppCompatActivity
 {
-    //https://developer.android.com/guide/topics/connectivity/bluetooth.html
-    /*
+    /**
     From documentation:
     The discovery process usually involves an inquiry scan of about 12 seconds, followed by a page scan of each new device to retrieve its Bluetooth name.
     Device discovery is a heavyweight procedure.
@@ -266,8 +266,9 @@ public class MeasurementCreate extends AppCompatActivity
     public void createMeasurement(int idToPass)
     {
         Measurements measurement = new Measurements();
-        Date data = new Date();
-        measurement.setName(data.toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        Date date = new Date();
+        measurement.setName(dateFormat.format(date));
         measurement.setIdRooms(idToPass);
         MeasurementsController controller = new MeasurementsController();
         controller.insert(measurement, getApplicationContext());

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="1"
+    android:stretchColumns="*"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,26 +12,13 @@
 
     <TableRow>
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewRoomIcon"
-            android:src="@drawable/office_room_icon"
-            android:layout_column="0"
-            android:background="@null"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/textViewName"
-            android:layout_gravity="center"
+            android:id="@+id/textViewBluetoothResultsDate"
             android:layout_column="1"
-           />
+            />
 
     </TableRow>
 

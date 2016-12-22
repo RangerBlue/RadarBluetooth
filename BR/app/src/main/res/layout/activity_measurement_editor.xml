@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_measurement_editor"
     android:layout_width="match_parent"
@@ -9,20 +9,73 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorBackground"
+    android:stretchColumns="*"
     tools:context="com.example.kamil.br.activities.MeasurementEditor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_view_list_choose_room_header"
-        android:id="@+id/textViewListMeasurementEditorHeader"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_list_choose_room_header"
+            android:id="@+id/textViewListMeasurementEditorHeader"
+            android:textSize="@dimen/medium_font"
+            android:layout_gravity="center_horizontal"
+            android:layout_span="6"
+            />
+    </TableRow>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listViewMeasurementEditor"
-        android:layout_below="@+id/textViewListMeasurementEditorHeader"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+    <TableRow
+        android:background="@color/colorPrimaryDark">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textMeasurementEditorNumber"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/edge"
+            android:id="@+id/textMeasurementEditorEdge"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_small"
+            android:id="@+id/textMeasurementEditorName"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/rssi"
+            android:id="@+id/textMeasurementEditorRssi"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:id="@+id/textMeasurementEditorTime"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/room_small"
+            android:id="@+id/textMeasurementChooseRoomName"
+            />
+    </TableRow>
+
+    <TableRow>
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listViewMeasurementEditor"
+            android:layout_span="6"
+            />
+    </TableRow>
+
+</TableLayout>

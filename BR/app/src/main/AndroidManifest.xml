@@ -53,6 +53,7 @@
         <activity android:name=".activities.UserSpeed" />
         <activity android:name=".activities.MeasurementEditor" />
         <activity android:name=".activities.MeasurementChooser" />
+        <activity android:name=".activities.Settings"></activity>
     </application>
 
 </manifest>

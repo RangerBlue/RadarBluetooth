@@ -48,14 +48,11 @@ public class RoomCreator extends AppCompatActivity {
         roomNameEditText = (EditText) findViewById(R.id.editTextRoomName);
 
         roomTypeSpinner = (Spinner) findViewById(R.id.room_creator_spinner);
-        String[] resources = getResources().getStringArray(R.array.room_type_arrays);
-        List<String> valueList = Arrays.asList(resources) ;
         //tworzenie Array adaptera ze tablicy wartosci i defaultowych elementów spinera
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.room_type_arrays, android.R.layout.simple_spinner_item);
         //wybranie layoutu który zostanie wykorzystany gdy pojawi sie lista
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roomTypeSpinner.setAdapter(adapter);
-
 
         roomTypeSpinner.setSelection(0);
 
@@ -64,7 +61,7 @@ public class RoomCreator extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                if(!roomNameEditText.getText().toString().isEmpty())
+                if( !roomNameEditText.getText().toString().isEmpty() && !RoomsController.ifNameExists(getApplicationContext(), roomNameEditText.getText().toString()))
                 {
                     Rooms room = new Rooms();
                     room.setName(roomNameEditText.getText().toString());

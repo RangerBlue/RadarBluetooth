@@ -17,14 +17,16 @@
     <string name="map">MAP</string>
     <string name="search_devices">SEARCH FOR DEVICES</string>
     <string name="measurement">MEASUREMENT</string>
+    <string name="results">RESULTS</string>
     <string name="title_activity_bluetooth_results_editor">BluetoothResultsEditor</string>
     <string name="no_bluetooth">This device does not have a bluetooth adapter</string>
     <string name="enabling_bluetooth">Bluetooth is enabled now</string>
     <string name="enabled_bluetooth">Bluetooth is already enabled</string>
     <string name="not_allow_bluetooth">The user decided to deny bluetooth access</string>
-    <string name="wrong_input">You typed wrong input</string>
+    <string name="wrong_input">You typed wrong input or name already exists</string>
     <string name="added_room">Room is just added</string>
     <string name="deleted_room">Room is just deleted</string>
+    <string name="deleted_result">Result is just deleted</string>
     <string name="show">Show</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
@@ -51,7 +53,19 @@
     <string name="title_activity_settings">Settings</string>
 
 
-   <string name="meter_per_second">M/S</string>
-   <string name="kilometer_per_second">KM/H</string>
-   <string name="average_speed">Average speed</string>
+    <string name="meter_per_second">M/S</string>
+    <string name="kilometer_per_second">KM/H</string>
+    <string name="average_speed">Average speed</string>
+    <string name="is">is</string>
+    <string name="from_here">m from here</string>
+    <string name="name_small">Name</string>
+    <string name="address">Address</string>
+    <string name="rssi">Rssi</string>
+    <string name="time">Time</string>
+    <string name="edge">Edge</string>
+    <string name="room_small">Room</string>
+    <string name="number">Number</string>
+    <string name="hold_to_open_menu">Hold to open menu</string>
+    <string name="type_small">Type</string>
+    <string name="date">Date</string>
 </resources>

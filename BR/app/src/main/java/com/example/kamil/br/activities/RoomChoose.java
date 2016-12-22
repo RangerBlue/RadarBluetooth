@@ -68,9 +68,6 @@ public class RoomChoose extends AppCompatActivity {
         int idToPass = room.getIdRooms();
         switch (item.getItemId())
         {
-            case R.id.menu_edit:
-                Log.d(TAG, "edit");
-                return true;
             case R.id.menu_delete:
                 RoomsController controller = new RoomsController();
                 controller.deleteRoomAndAllDependences(idToPass, getApplicationContext());

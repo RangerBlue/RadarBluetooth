@@ -3,7 +3,6 @@ package com.example.kamil.br.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +24,7 @@ public class MeasurementChooseRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_measurement_choose_room);
+        setContentView(R.layout.activity_choose_room);
 
         list = (ListView) findViewById(R.id.listViewMeasurementChooseRoom);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
@@ -42,7 +41,6 @@ public class MeasurementChooseRoom extends AppCompatActivity {
                 int idToPass = room.getIdRooms();
                 Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementChooser.class);
                 intent.putExtra("idRooms", idToPass);
-                Log.d("tutajkurwa", String.valueOf(idToPass));
                 startActivity(intent);
             }
         });

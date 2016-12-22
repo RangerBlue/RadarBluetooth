@@ -26,8 +26,8 @@ public class BluetoothResultsChooseRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_results_choose_room);
-        list = (ListView) findViewById(R.id.listViewBluetoothResultChooseRoom);
+        setContentView(R.layout.activity_choose_room);
+        list = (ListView) findViewById(R.id.listViewMeasurementChooseRoom);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
 
         adapter = new RoomViewerAdapter(this, all);
@@ -47,8 +47,6 @@ public class BluetoothResultsChooseRoom extends AppCompatActivity {
             }
         });
 
-       List<BluetoothResults> allTable = new BluetoothResultsController().selectAll(getApplicationContext());
-    //   BluetoothResultsController.printAllTableToLog((ArrayList<BluetoothResults>) allTable);
     }
 
 

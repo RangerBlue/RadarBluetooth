@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,13 +7,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:stretchColumns="*"
     tools:context=".activities.RoomChoose"
     android:background="@color/colorBackground">
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/listViewRoomViewer"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hold_to_open_menu"
+            android:id="@+id/textViewListRoomViewerHeader"
+            android:textSize="@dimen/medium_font"
+            android:layout_gravity="center_horizontal"
+            android:layout_span="2"
+            />
+    </TableRow>
+
+    <TableRow
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/type_small"
+            android:id="@+id/textRoomViewerType"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_small"
+            android:id="@+id/textRoomViewerName"
+            />
+
+    </TableRow>
+
+    <TableRow>
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/listViewRoomViewer"
+            android:layout_span="2"
+            />
+    </TableRow>
+
+</TableLayout>

@@ -91,7 +91,6 @@ public class RoomsController {
         if (cursor.moveToFirst()) {
             do {
                 Float type = cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE));
-                Log.d("w funkcji", String.valueOf(type));
                 rooms.add(type);
             } while (cursor.moveToNext());
         }
@@ -99,6 +98,36 @@ public class RoomsController {
         db.close();
 
         return rooms.get(0);
+    }
+
+    /**
+     * Zwraca nazwę pokoju
+     * @param context kontekst aplikacji
+     * @param idRoom identyfikator pokoju
+     * @return
+     */
+    public static String selectNameWhereId(Context context, int idRoom)
+    {
+        List<String> names = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.NAME+
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndex(Rooms.NAME));
+                names.add(name);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return names.get(0);
     }
 
     public List<Rooms> selectAll(Context context)
@@ -127,6 +156,39 @@ public class RoomsController {
         db.close();
 
         return rooms;
+    }
+
+    /**
+     * Sprawdza czy podana nazwa pokoju już istnieje
+     * @param context kontekst aplikacji
+     * @param name nazwa pokoju
+     * @return
+     */
+    public static boolean ifNameExists(Context context, String name)
+    {
+        List<String> names = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.NAME +
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.NAME+"=?";
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, new String[] {name});
+        if (cursor.moveToFirst()) {
+            do {
+                String name_ = cursor.getString(cursor.getColumnIndex(Rooms.NAME));
+                names.add(name_);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        if(names.isEmpty())
+            return false;
+        else
+            return true;
     }
 
     //debug only

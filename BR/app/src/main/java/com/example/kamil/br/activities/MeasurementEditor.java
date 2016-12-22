@@ -84,15 +84,11 @@ public class MeasurementEditor extends AppCompatActivity {
         int idbtResult = btResult.getIdBluetoothResults();
         switch (item.getItemId())
         {
-            case R.id.menu_edit:
-                Log.d(TAG, "edit");
-                return true;
+
             case R.id.menu_delete:
-                Log.d(TAG, "delete");
                 BluetoothResultsController controller = new BluetoothResultsController();
                 BluetoothResultsController.deleteWhereId(idbtResult, getApplicationContext());
-                Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "delete");
+                Toast.makeText(getApplicationContext(), R.string.deleted_result, Toast.LENGTH_SHORT).show();
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);

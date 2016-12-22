@@ -37,16 +37,14 @@ public class MeasurementAdapter extends ArrayAdapter<Measurements>
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Pobierz rowView z inflater
-        View rowView = inflater.inflate(R.layout.activity_measurement_choose_row, parent, false);
+        View rowView = inflater.inflate(R.layout.activity_bluetooth_results_row, parent, false);
 
         // Pobierz textview
-        TextView number = (TextView) rowView.findViewById(R.id.textMeasurementChooseNumber);
-        TextView name = (TextView) rowView.findViewById(R.id.textMeasurementChooseName);
+        TextView date = (TextView) rowView.findViewById(R.id.textViewBluetoothResultsDate);
 
 
         // Ustaw text
-        number.setText(String.valueOf(measurement.getIdMeasurements()));
-        name.setText(measurement.getName());
+        date.setText(measurement.getName());
 
         // Zwróć rowview
         return rowView;

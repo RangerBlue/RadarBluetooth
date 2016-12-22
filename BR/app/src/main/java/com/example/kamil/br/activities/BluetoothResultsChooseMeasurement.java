@@ -74,9 +74,7 @@ public class BluetoothResultsChooseMeasurement extends AppCompatActivity {
         int idToPass = measurement.getIdMeasurements();
         switch (item.getItemId())
         {
-            case R.id.menu_edit:
-                Log.d(TAG, "edit");
-                return true;
+
             case R.id.menu_delete:
                 Log.d(TAG, "delete");
                 MeasurementsController controller = new MeasurementsController();

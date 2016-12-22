@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_measurement_chooser"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,7 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:stretchColumns="*"
     android:background="@color/colorBackground"
-    tools:context="com.example.kamil.br.activities.MeasurementChooser">
+    tools:context=".activities.MeasurementChooseRoom">
+
+
 
     <TableRow>
         <TextView
@@ -27,14 +28,18 @@
     <TableRow
         android:background="@color/colorPrimaryDark">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/type_small"
+            android:id="@+id/textMeasurementChooseRoomType"
+            />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/date"
+            android:text="@string/name_small"
             android:id="@+id/textMeasurementChooseRoomName"
-            android:layout_gravity="center"
-            android:layout_span="2"
             />
 
     </TableRow>
@@ -43,9 +48,9 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listViewMeasurementChooser"
-            android:layout_span="2"
-            />
+            android:id="@+id/listViewMeasurementChooseRoom"
+            android:layout_span="2"/>
     </TableRow>
+
 
 </TableLayout>

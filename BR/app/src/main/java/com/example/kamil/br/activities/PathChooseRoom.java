@@ -31,7 +31,7 @@ public class PathChooseRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_path_choose_room);
+        setContentView(R.layout.activity_choose_room);
 
         //incijalizacja listy
         list = (ListView) findViewById(R.id.listViewMeasurementChooseRoom);

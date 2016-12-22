@@ -79,18 +79,16 @@ public class BluetoothFinder extends AppCompatActivity {
                 DecimalFormat format = new DecimalFormat();
                 format.setMinimumFractionDigits(2);
 
-                bluetoothResults.setName(device.getName()+" is "+Float.toString(BluetoothDistance.getDistance(rssi, -1)).substring(0,4)+" m from here");
-               // bluetoothResults.setName(device.getName());
+                bluetoothResults.setName(device.getName()+" "+getResources().getString(R.string.is)+" "+Float.toString(BluetoothDistance.getDistance(rssi, -1)).substring(0,4)+" "+getResources().getString(R.string.from_here));
                 bluetoothResults.setAddress(device.getAddress());
                 bluetoothResults.setRssi(rssi);
                 bluetoothResults.setTime(System.currentTimeMillis());
-
                 BluetoothDistance.getDistance(rssi, -1);
 
                 //wstawianie do listy
                 arrayOfFoundBTDevices.add(bluetoothResults);
 
-                // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
+                // zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
                 adapter = new BluetoothFinderAdapter(getApplicationContext(), arrayOfFoundBTDevices);
                 ListView lista = (ListView) findViewById(R.id.listBluetoothFinder);
                 lista.setAdapter(adapter);
