@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.WalkRatio;
 
@@ -183,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void trackingActivity()
     {
-
     }
 
     /**

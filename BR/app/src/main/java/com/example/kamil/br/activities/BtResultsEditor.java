@@ -24,7 +24,7 @@ import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class MeasurementEditor extends AppCompatActivity {
+public class BtResultsEditor extends AppCompatActivity {
 
     private ListView list;
     private BluetoothResultsAdapter adapter;
@@ -55,7 +55,7 @@ public class MeasurementEditor extends AppCompatActivity {
 
                 Measurements measurement = adapter.getItem(position);
                 int idToPass = measurement.getIdMeasurements();
-                Intent intent = new Intent(BluetoothResultsChooseMeasurement.this, BluetoothResultsView.class);
+                Intent intent = new Intent(MeasurementChooser.this, MeasurementView.class);
                 intent.putExtra("idMeasurement", idToPass);
                 intent.putExtra("idRooms", idRooms);
                 startActivity(intent);

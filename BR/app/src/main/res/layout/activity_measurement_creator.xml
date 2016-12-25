@@ -1,49 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:shrinkColumns="*" >
 
-    android:background="@color/colorBackground">
+    <TableRow
+        android:layout_weight="1">
+        <com.example.kamil.br.views.PathDrawView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/viewDrawMap"
+            android:layout_span="4"/>
+    </TableRow>
 
-    <com.example.kamil.br.views.PathDrawView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:id="@+id/viewDrawMap"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="74dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next_edge"
-        android:id="@+id/buttonMeasurementCreatorNext"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+    <TableRow
+        android:layout_weight="1">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:id="@+id/buttonMeasurementCreatorSave"
+            android:layout_span="0"
+            android:src = "@drawable/save_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start"
-        android:id="@+id/buttonMeasurementCreatorStartStop"
-        android:layout_alignBottom="@+id/buttonMeasurementCreatorNext"
-        android:layout_alignParentEnd="true" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_edge"
+            android:id="@+id/buttonMeasurementCreatorNext"
+            android:layout_column="1"
+            android:src = "@drawable/next_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search"
-        android:id="@+id/buttonMeasurementCreatorSeatch"
-        android:layout_alignTop="@+id/buttonMeasurementCreatorNext"
-        android:layout_centerHorizontal="true"
-        />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:id="@+id/buttonMeasurementCreatorStartStop"
+            android:layout_column="2"
+            android:src = "@drawable/start_process_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:id="@+id/buttonMeasurementCreatorSave"
-        android:layout_above="@+id/buttonMeasurementCreatorNext"
-        android:layout_alignParentStart="true" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            android:id="@+id/buttonMeasurementCreatorSeatch"
+            android:layout_column="3"
+            android:src = "@drawable/search_devices_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            />
+    </TableRow>
 
-</RelativeLayout>
+
+
+
+</TableLayout>

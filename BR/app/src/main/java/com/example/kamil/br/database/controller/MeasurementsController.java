@@ -6,13 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.kamil.br.activities.MainActivity;
-import com.example.kamil.br.activities.MeasurementEditor;
 import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.model.Measurements;
-import com.example.kamil.br.database.model.PathData;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 

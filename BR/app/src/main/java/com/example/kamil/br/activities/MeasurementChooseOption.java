@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.MeasurementsController;
@@ -14,10 +15,10 @@ import com.example.kamil.br.database.model.Measurements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BluetoothResultsChooseOption extends AppCompatActivity {
+public class MeasurementChooseOption extends AppCompatActivity {
 
-    private Button buttonCreate;
-    private Button buttonView;
+    private ImageButton buttonCreate;
+    private ImageButton buttonView;
     private int idRooms;
 
     @Override
@@ -29,7 +30,7 @@ public class BluetoothResultsChooseOption extends AppCompatActivity {
         idRooms = getIntent().getIntExtra("idRooms",-1);
         Log.d("odbieranieidz listy v2", String.valueOf(idRooms));
 
-        buttonCreate = (Button) findViewById(R.id.buttonCreateBluetoothResultsEditor);
+        buttonCreate = (ImageButton) findViewById(R.id.buttonCreateBluetoothResultsEditor);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +38,7 @@ public class BluetoothResultsChooseOption extends AppCompatActivity {
             }
         });
 
-        buttonView = (Button) findViewById(R.id.buttonViewBluetoothResultsEditor);
+        buttonView = (ImageButton) findViewById(R.id.buttonViewBluetoothResultsEditor);
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +75,7 @@ public class BluetoothResultsChooseOption extends AppCompatActivity {
 
     private void view()
     {
-        Intent intent = new Intent(this, BluetoothResultsChooseMeasurement.class);
+        Intent intent = new Intent(this, MeasurementChooser.class);
         intent.putExtra("idRooms", idRooms);
         startActivity(intent);
     }

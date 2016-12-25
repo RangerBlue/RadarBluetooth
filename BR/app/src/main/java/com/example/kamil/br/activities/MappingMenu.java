@@ -91,13 +91,13 @@ public class MappingMenu extends AppCompatActivity {
 
     private void launchMeasurementMenu()
     {
-        Intent intent = new Intent(this, MeasurementChooseRoom.class);
+        Intent intent = new Intent(this, BtResultsChooseRoom.class);
         startActivity(intent);
     }
 
     private void launchBluetoothResult()
     {
-        Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
+        Intent intent = new Intent(this, MeasurementChooseRoom.class);
         startActivity(intent);
     }
 }

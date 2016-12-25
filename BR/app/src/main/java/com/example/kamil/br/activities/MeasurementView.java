@@ -2,7 +2,6 @@ package com.example.kamil.br.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
@@ -13,10 +12,10 @@ import com.example.kamil.br.views.MapDrawView;
 
 import java.util.ArrayList;
 
-public class BluetoothResultsView extends AppCompatActivity {
+public class MeasurementView extends AppCompatActivity {
 
     private MapDrawView map;
-    private String TAG = BluetoothResultsView.class.getSimpleName();
+    private String TAG = MeasurementView.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,44 +15,37 @@
 
 
 
-<TableRow
+    <TableRow
     android:background="@color/colorPrimaryDark">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add"
+            android:id="@+id/textView_create"
+            android:layout_gravity="center"
+            android:layout_column="0"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
-        android:id="@+id/textView_create"
-        android:layout_gravity="center"
-        android:layout_column="0"/>
+    </TableRow>
 
-</TableRow>
-
-<TableRow
-    android:paddingBottom="5dp"
-    android:layout_weight="1"
-    >
-
-    <ImageButton
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/search_devices"
-        android:id="@+id/buttonCreate"
-        android:src = "@drawable/add_icon"
-        android:background="@null"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        />
-
-
-
-</TableRow>
+    <TableRow
+        android:paddingBottom="5dp"
+        android:layout_weight="1"
+        >
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_devices"
+            android:id="@+id/buttonCreate"
+            android:src = "@drawable/add_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            />
+    </TableRow>
 
     <TableRow
         android:background="@color/colorPrimaryDark">
-
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

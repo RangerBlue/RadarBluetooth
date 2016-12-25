@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kamil.br.adapters.BluetoothFinderAdapter;
 import com.example.kamil.br.database.controller.MeasurementsController;
@@ -41,10 +42,10 @@ public class MeasurementCreate extends AppCompatActivity
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
 
-    private Button buttonSearch;
-    private Button buttonNext;
-    private Button buttonStopStart;
-    private Button buttonSave;
+    private ImageButton buttonSearch;
+    private ImageButton buttonNext;
+    private ImageButton buttonStopStart;
+    private ImageButton buttonSave;
     private BluetoothFinderAdapter adapter;
     private ProgressDialog progressBar;
     private ArrayList<PathData> list;
@@ -77,7 +78,7 @@ public class MeasurementCreate extends AppCompatActivity
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        buttonSearch = (Button) findViewById(R.id.buttonMeasurementCreatorSeatch);
+        buttonSearch = (ImageButton) findViewById(R.id.buttonMeasurementCreatorSeatch);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -101,7 +102,7 @@ public class MeasurementCreate extends AppCompatActivity
 
         PathDataController.printAllTableToLog(list);
 
-        buttonNext = (Button) findViewById(R.id.buttonMeasurementCreatorNext);
+        buttonNext = (ImageButton) findViewById(R.id.buttonMeasurementCreatorNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -114,18 +115,19 @@ public class MeasurementCreate extends AppCompatActivity
             }
         });
 
-        buttonStopStart = (Button) findViewById(R.id.buttonMeasurementCreatorStartStop);
+        buttonStopStart = (ImageButton) findViewById(R.id.buttonMeasurementCreatorStartStop);
         buttonStopStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 if(ifTheClockIsTicking)
                 {
-                    buttonStopStart.setText(R.string.start);
+                    buttonStopStart.setImageResource(R.drawable.start_process_icon);
                     timeStop = System.currentTimeMillis();
                     ifTheClockIsTicking = false;
                     buttonNext.setVisibility(View.VISIBLE);
                     buttonSearch.setVisibility(View.VISIBLE);
+                    buttonSave.setVisibility(View.VISIBLE);
                     BluetoothResults emptyResult = new BluetoothResults(getTimeDifference(timeStart, timeStop));
                     emptyResult.setEdgeNumber(counter);
                     emptyResult.setIdMeasurements(idMeasurements);
@@ -134,17 +136,17 @@ public class MeasurementCreate extends AppCompatActivity
                 }
                 else
                 {
-                    buttonStopStart.setText(R.string.stop);
+                    buttonStopStart.setImageResource(R.drawable.stop_icon);
                     timeStart = System.currentTimeMillis();
                     ifTheClockIsTicking = true;
                     buttonNext.setVisibility(View.INVISIBLE);
                     buttonSearch.setVisibility(View.INVISIBLE);
-
+                    buttonSave.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        buttonSave = (Button) findViewById(R.id.buttonMeasurementCreatorSave);
+        buttonSave = (ImageButton) findViewById(R.id.buttonMeasurementCreatorSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

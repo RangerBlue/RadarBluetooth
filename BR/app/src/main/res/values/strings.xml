@@ -68,4 +68,6 @@
     <string name="hold_to_open_menu">Hold to open menu</string>
     <string name="type_small">Type</string>
     <string name="date">Date</string>
+    <string name="your_speed">Your speed is </string>
+    <string name="view_big">VIEW</string>
 </resources>
