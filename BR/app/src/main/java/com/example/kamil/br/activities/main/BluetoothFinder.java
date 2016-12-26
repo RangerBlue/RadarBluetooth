@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.main;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -106,6 +106,8 @@ public class BluetoothFinder extends AppCompatActivity {
             {
                 Log.i(TAG, "rozpoczęto szukanie");
             }
+
+
         }
     };
 
@@ -135,11 +137,10 @@ public class BluetoothFinder extends AppCompatActivity {
         });
     }
     /**
-     * Szuka dostępnych urządzeń i wyświetla je na liście
+     * Szuka dostępnych urządzeń i
      */
     private void getFoundDevices()
     {
-        Log.i(TAG,"wywołanie getFoundDevices");
         //wyczyszczenie listy
         arrayOfFoundBTDevices.clear();
         // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera

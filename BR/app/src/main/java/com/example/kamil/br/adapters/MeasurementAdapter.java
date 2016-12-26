@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Kamil on 2016-10-10.
+ * Adapter do wyświetlania daty pomiaru na liście
  */
 public class MeasurementAdapter extends ArrayAdapter<Measurements>
 {

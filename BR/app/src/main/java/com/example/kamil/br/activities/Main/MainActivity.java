@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.main;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -6,19 +6,12 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.database.controller.BluetoothResultsController;
-import com.example.kamil.br.database.controller.WalkRatioController;
-import com.example.kamil.br.database.model.WalkRatio;
-
-import java.util.ArrayList;
+import com.example.kamil.br.activities.settings.UserSpeed;
 
 /**
  * Menu główne, tutaj znajduje się całe sterowanie aplikacji

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * obsługuje tabelę walkratio
  * Created by Kamil on 2016-12-14.
  */
 
@@ -37,6 +38,11 @@ public class WalkRatioController {
         db.close(); // Closing database connection
     }
 
+    /**
+     * usuwa rekord o danym id
+     * @param id id rekordu
+     * @param context kontekst aplikacji
+     */
     public void deleteWhereId(int id, Context context)
     {
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -48,7 +54,13 @@ public class WalkRatioController {
         db.close(); // Closing database connection
     }
 
-    public static WalkRatio selectWalkRatioWherePathDataId(Context context, int idRooms)
+    /**
+     * zwraca rekord o danym danym id pokoju
+     * @param context kontekst aplikacji
+     * @param idRooms id pokoju
+     * @return
+     */
+    public static WalkRatio selectWalkRatioWhereRoomId(Context context, int idRooms)
     {
         List<WalkRatio> walkRatio = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -77,6 +89,11 @@ public class WalkRatioController {
         return walkRatio.get(0);
     }
 
+    /**
+     * zwraca całą tabele
+     * @param context kontekst aplikacji
+     * @return
+     */
     public static List<WalkRatio> selectAll(Context context)
     {
         List<WalkRatio> walkRatio = new ArrayList<>();
@@ -105,7 +122,10 @@ public class WalkRatioController {
         return walkRatio;
     }
 
-    //debug only
+    /**
+     * drukuje listę do logu
+     * @param list lista
+     */
     public static void printAllTableToLog(ArrayList<WalkRatio> list)
     {
         for ( WalkRatio element : list )

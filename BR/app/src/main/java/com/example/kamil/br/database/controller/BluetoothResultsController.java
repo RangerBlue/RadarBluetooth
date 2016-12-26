@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.kamil.br.activities.MainActivity;
 import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.model.BluetoothResults;
 
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Obsługa tabeli bluetoothResults
  * Created by Kamil on 2016-09-21.
- * Można wywalić ustawianie czasu gdy rekord nie jest pusty
  */
 public class BluetoothResultsController {
 
@@ -46,11 +45,15 @@ public class BluetoothResultsController {
         values.put(BluetoothResults.EGDENUMBER, bluetoothResult.getEdgeNumber());
         values.put(BluetoothResults.ID_MEASUREMENTS, bluetoothResult.getIdMeasurements());
         values.put(BluetoothResults.ID_ROOMS, bluetoothResult.getIdRooms());
-        Log.d("w insercie", String.valueOf(bluetoothResult.getIdRooms()));
         db.insert(BluetoothResults.TABLE, null, values);
         db.close(); // Closing database connection
     }
 
+    /**
+     * zwraca wszystkie rekordy z tabeli
+     * @param context kontekst aplikacji
+     * @return lista z rekordami
+     */
     public List<BluetoothResults> selectAll(Context context)
     {
         List<BluetoothResults> bluetoothResult = new ArrayList<>();
@@ -88,6 +91,13 @@ public class BluetoothResultsController {
         return bluetoothResult;
     }
 
+    /**
+     * zwraca rekordy o podanym id pokoju i id pomiaru
+     * @param context kontekst aplikacji
+     * @param idRooms id pokoju
+     * @param idMeasurement id pomiaru
+     * @return lista z rekordami
+     */
     public List<BluetoothResults> selectBluetoothResultsWhereIdRoomsAndIdMeasurements(Context context, int idRooms, int idMeasurement)
     {
         List<BluetoothResults> bluetoothResult = new ArrayList<>();
@@ -127,6 +137,13 @@ public class BluetoothResultsController {
         return bluetoothResult;
     }
 
+    /**
+     * zwraca nazwy unikalnych urządzeń z rekordów o danym id pokoju i id pomiaru
+     * @param context konekst aplikacji
+     * @param idRooms id pokoju
+     * @param idMeasurement id pomiaru
+     * @return lista z rekordami
+     */
     public static ArrayList<String> selectNameDistinct(Context context, int idRooms, int idMeasurement)
     {
         ArrayList<String> results = new ArrayList<>();
@@ -154,8 +171,8 @@ public class BluetoothResultsController {
     }
 
     /**
-     * Usuwa pomiary danego pokoju
-     * @param idRoom id pokoju do usunięcia
+     * Usuwa resultaty danego pokoju
+     * @param idRoom id pokoju
      * @param context kontekst aplikacji
      */
     public static void deleteWhereIdRooms(int idRoom, Context context)
@@ -170,8 +187,8 @@ public class BluetoothResultsController {
     }
 
     /**
-     * Usuwa pomiary mapowania
-     * @param idMeasurement id pokoju do usunięcia
+     * Usuwa resulaty danego pomiaru
+     * @param idMeasurement id pokoju
      * @param context kontekst aplikacji
      */
     public static void deleteWhereIdMeasurement(int idMeasurement, Context context)
@@ -186,8 +203,8 @@ public class BluetoothResultsController {
     }
 
     /**
-     * Usuwa pomiary mapowania
-     * @param idbtResult id do usunięcia
+     * Usuwa dany resultat
+     * @param idbtResult id rekordu do usunięcia
      * @param context kontekst aplikacji
      */
     public static void deleteWhereId(int idbtResult, Context context)
@@ -201,7 +218,10 @@ public class BluetoothResultsController {
         db.close(); // Closing database connection
     }
 
-    //debug only
+    /**
+     * wypisuje w logu podaną listę
+     * @param list lista
+     */
     public static void printAllTableToLog(ArrayList<BluetoothResults> list)
     {
 

@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.measurement;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +19,9 @@ import com.example.kamil.br.database.model.Measurements;
 
 import java.util.ArrayList;
 
+/**
+ * Aktywność służaca do wyboru pomiaru, z którego wyświetlimy mapę
+ */
 public class MeasurementChooser extends AppCompatActivity {
 
     private ListView list;
@@ -26,11 +29,12 @@ public class MeasurementChooser extends AppCompatActivity {
     private String TAG = getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_results_choose_measurement);
+
         //odebranie paczki
         final int idRooms = getIntent().getIntExtra("idRooms",-1);
-        Log.d(TAG, "UWAGAGAAG"+idRooms);
         list = (ListView) findViewById(R.id.listViewBluetoothResultsChooseMeasurement);
         registerForContextMenu(list);
         ArrayList<Measurements> all = (ArrayList<Measurements>) new MeasurementsController().selectMeasurementWhereIdRoom(getApplicationContext(), idRooms);
@@ -79,8 +83,7 @@ public class MeasurementChooser extends AppCompatActivity {
                 Log.d(TAG, "delete");
                 MeasurementsController controller = new MeasurementsController();
                 controller.deleteMeasurementAndAllDependencies(idToPass, getApplicationContext());
-                Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "delete");
+                Toast.makeText(getApplicationContext(), R.string.deleted_measurement, Toast.LENGTH_SHORT).show();
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);

@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by Kamil on 2016-09-22.
+ * Adapter do wyświetlania nazwy i typu pokoju na liście pokoi
  */
 public class RoomViewerAdapter extends ArrayAdapter<Rooms>
 {

@@ -7,15 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
-import com.example.kamil.br.activities.MainActivity;
 import com.example.kamil.br.database.DBHandler;
-import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * obsługa tabeli rooms
  * Created by Kamil on 2016-09-21.
  */
 public class RoomsController {
@@ -43,7 +42,7 @@ public class RoomsController {
 
     /**
      * Usuwa pokój
-     * @param @param idRoom id pokoju do usunięcia
+     * @param @param id pokoju do usunięcia
      * @param @context kontekst aplikacji
      */
     public void deleteWhereIdRooms(int idRoom, Context context)
@@ -130,6 +129,11 @@ public class RoomsController {
         return names.get(0);
     }
 
+    /**
+     * zwraca całą tabelę
+     * @param context kontekst aplikacji
+     * @return
+     */
     public List<Rooms> selectAll(Context context)
     {
         List<Rooms> rooms = new ArrayList<>();
@@ -191,7 +195,10 @@ public class RoomsController {
             return true;
     }
 
-    //debug only
+    /**
+     * wypisuje do logu listę
+     * @param list  lista
+     */
     public static void printAllTableToLog(ArrayList<Rooms> list)
     {
         //wypisanie rekordów z PathData nienaruszonych

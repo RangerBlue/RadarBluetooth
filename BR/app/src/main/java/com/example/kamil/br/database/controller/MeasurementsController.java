@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * obsługa tabeli measurements
  * Created by Kamil on 2016-09-21.
  */
 public class MeasurementsController {
@@ -36,6 +37,11 @@ public class MeasurementsController {
         db.close(); // Closing database connection
     }
 
+    /**
+     * zwraca całą tabele
+     * @param context kontekst aplikacji
+     * @return lista
+     */
     public List<Measurements> selectAll(Context context)
     {
         List<Measurements> measurement = new ArrayList<>();
@@ -64,6 +70,12 @@ public class MeasurementsController {
         return measurement;
     }
 
+    /**
+     * zwraca pomiary o danym id pokoju
+     * @param context kontekst aplikacji
+     * @param id id pokoju
+     * @return
+     */
     public static List<Measurements> selectMeasurementWhereIdRoom(Context context, int id)
     {
         List<Measurements> measurement = new ArrayList<>();
@@ -93,6 +105,11 @@ public class MeasurementsController {
         return measurement;
     }
 
+    /**
+     * zwraca ostatni rekord
+     * @param context kontekst aplikacji
+     * @return
+     */
     public static Measurements getLastRecord(Context context)
     {
         List<Measurements> measurement = new ArrayList<>();
@@ -129,8 +146,8 @@ public class MeasurementsController {
     }
 
     /**
-     * Usuwa ścieżkę danego pokoju
-     * @param idRoom id pokoju do usunięcia
+     * Usuwa pomiary danego pokoju
+     * @param idRoom id pokoju
      * @param context kontekst aplikacji
      */
     public static void deleteWhereIdRooms(int idRoom, Context context)
@@ -173,7 +190,10 @@ public class MeasurementsController {
     }
 
 
-    //debug only
+    /**
+     * wypisuje do logu listę
+     * @param list lista
+     */
     public static void printAllTableToLog(ArrayList<Measurements> list)
     {
         for ( Measurements element : list )

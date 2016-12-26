@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:stretchColumns="*"
-    tools:context=".activities.RoomChoose"
+    tools:context=".activities.mapping.room.RoomChoose"
     android:background="@color/colorBackground">
 
     <TableRow>

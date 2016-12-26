@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.room;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

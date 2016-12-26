@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.results;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +14,19 @@ import com.example.kamil.br.database.model.Measurements;
 
 import java.util.ArrayList;
 
-public class BtResultsMeasurementChooser extends AppCompatActivity {
+/**
+ * aktwyność służąca do wybrania pomiaru, z ktorego można wyświetlić rezultaty
+ */
+public class BluetoothResultsMeasurementChooser extends AppCompatActivity {
 
+    /**
+     * widok listowy
+     */
     private ListView list;
+
+    /**
+     * adapter listy
+     */
     private MeasurementAdapter adapter;
     private String TAG = getClass().getSimpleName();
 
@@ -41,7 +51,7 @@ public class BtResultsMeasurementChooser extends AppCompatActivity {
             {
                 Measurements measurement = adapter.getItem(position);
                 int idToPass = measurement.getIdMeasurements();
-                Intent intent = new Intent(BtResultsMeasurementChooser.this, BtResultsEditor.class);
+                Intent intent = new Intent(BluetoothResultsMeasurementChooser.this, BluetoothResultsEditor.class);
                 intent.putExtra("idMeasurement", idToPass);
                 intent.putExtra("idRooms", idRooms);
                 startActivity(intent);

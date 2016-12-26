@@ -1,10 +1,13 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.kamil.br.R;
 
+/**
+ * aktywność służąca do ustawienia preferencji użytkownika
+ */
 public class Settings extends AppCompatActivity {
 
     @Override

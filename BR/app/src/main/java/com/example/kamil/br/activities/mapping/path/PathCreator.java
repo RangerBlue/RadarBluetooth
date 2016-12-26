@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.path;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -20,7 +20,7 @@ import com.example.kamil.br.database.model.PathData;
 import java.util.ArrayList;
 
 /**
- * Aktywność służaca do utowrzenia ścieżki, towrzy się ją
+ * Aktywność służaca do utowrzenia ścieżki, tworzy się ją
  * zaznaczając kolejne narożniki pomieszczenia
  * Created by Kamil
  */
@@ -95,7 +95,7 @@ public class PathCreator extends AppCompatActivity {
     }
 
     /**
-     * Rysowanie pól, na których zaznaczamy kształ
+     * Rysowanie pól, na których zaznaczamy kształt
      */
     public void drawGrid()
     {

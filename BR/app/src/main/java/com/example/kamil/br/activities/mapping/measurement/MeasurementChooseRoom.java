@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.measurement;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,23 +9,30 @@ import android.widget.ListView;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.adapters.RoomViewerAdapter;
-import com.example.kamil.br.database.controller.MeasurementsController;
 import com.example.kamil.br.database.controller.RoomsController;
-import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class BtResultsChooseRoom extends AppCompatActivity {
+/**
+ * aktywność służaca do wyboru pokoju, z którego chcemy wyświetlić
+ * dane pomiary
+ */
+public class MeasurementChooseRoom extends AppCompatActivity {
 
+    /**
+     * widok listowy do wyświetlenia pokoi
+     */
     private ListView list;
+    /**
+     * adapter listy
+     */
     private RoomViewerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_room);
-
         list = (ListView) findViewById(R.id.listViewMeasurementChooseRoom);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
 
@@ -39,19 +46,13 @@ public class BtResultsChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(BtResultsChooseRoom.this, BtResultsMeasurementChooser.class);
+                Intent intent = new Intent(MeasurementChooseRoom.this, MeasurementChooseOption.class);
                 intent.putExtra("idRooms", idToPass);
                 startActivity(intent);
             }
         });
+
     }
 
 
-
-    public Measurements getLastRecord()
-    {
-        MeasurementsController controller = new MeasurementsController();
-        Measurements measurement = controller.getLastRecord(getApplicationContext());
-        return measurement;
-    }
 }

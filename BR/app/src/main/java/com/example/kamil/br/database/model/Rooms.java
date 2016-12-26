@@ -12,8 +12,19 @@ public class Rooms
     public static final String TYPE = "type";
 
     //nazwy pól
+    /**
+     * identyfikator
+     */
     private int idRooms;
+
+    /**
+     * nazwa pokoju
+     */
     private String name;
+
+    /**
+     * typ pokoju
+     */
     private float type;
 
     public String getName() {

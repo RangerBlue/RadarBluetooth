@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.main;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,14 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.activities.mapping.results.BluetoothResultsChooseRoom;
+import com.example.kamil.br.activities.mapping.measurement.MeasurementChooseRoom;
+import com.example.kamil.br.activities.mapping.path.PathChooseRoom;
+import com.example.kamil.br.activities.mapping.room.RoomMenu;
 
+/**
+ * Menu mapowania, glówna część aplikacji, obsługa mapowania
+ */
 public class MappingMenu extends AppCompatActivity {
 
     private String TAG = MappingMenu.class.getSimpleName();
@@ -56,7 +63,7 @@ public class MappingMenu extends AppCompatActivity {
         buttonMeasurement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchMeasurementMenu();
+                launchBluetoothResultsMenu();
             }
         });
 
@@ -72,32 +79,44 @@ public class MappingMenu extends AppCompatActivity {
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchBluetoothResult();
+                launchMeasurementMenu();
             }
         });
     }
 
+    /**
+     * funkcja włączająca aktywność obsługi pomieszczeń
+     */
     private void launchRoomMenu()
     {
         Intent intent = new Intent(this, RoomMenu.class);
         startActivity(intent);
     }
 
+    /**
+     * funkcja włączająca aktywnośc obsługi kształtu pomieszczeń
+     */
     private void launchPathMenu()
     {
         Intent intent = new Intent(this, PathChooseRoom.class);
         startActivity(intent);
     }
 
+    /**
+     * funkcja włączająca aktywnośc obsługi pomiarów(mapowań)
+     */
     private void launchMeasurementMenu()
     {
-        Intent intent = new Intent(this, BtResultsChooseRoom.class);
+        Intent intent = new Intent(this, MeasurementChooseRoom.class);
         startActivity(intent);
     }
 
-    private void launchBluetoothResult()
+    /**
+     * funkcja włączająca aktywnośc obsługi rezultatów w pomiarze
+     */
+    private void launchBluetoothResultsMenu()
     {
-        Intent intent = new Intent(this, MeasurementChooseRoom.class);
+        Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
         startActivity(intent);
     }
 }

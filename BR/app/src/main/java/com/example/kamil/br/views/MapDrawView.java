@@ -280,7 +280,7 @@ public class MapDrawView extends View {
      */
     private float getConvertedValue(float result)
     {
-        float walkRatio = WalkRatioController.selectWalkRatioWherePathDataId(getContext(), path.get(0).getIdRooms()).getValue();
+        float walkRatio = WalkRatioController.selectWalkRatioWhereRoomId(getContext(), path.get(0).getIdRooms()).getValue();
         float returnValue = ((result/walkVelocity)*1000)/walkRatio;
         Log.d(TAG, "result "+String.valueOf(result));
         Log.d(TAG, "walkWelocity "+String.valueOf(walkVelocity));

@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.path;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +48,7 @@ public class PathChooseRoom extends AppCompatActivity {
             {
                 Rooms room = adapter.getItem(position);
                 int idToPass = room.getIdRooms();
-                Intent intent = new Intent(PathChooseRoom.this, PathMenu.class);
+                Intent intent = new Intent(PathChooseRoom.this, PathChooseOption.class);
                 //przekazanie id pokoju do kolejnej aktywności
                 intent.putExtra("id", idToPass);
                 startActivity(intent);

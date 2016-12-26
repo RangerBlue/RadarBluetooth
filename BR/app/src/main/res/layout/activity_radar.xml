@@ -10,7 +10,7 @@
     android:stretchColumns="*"
     android:shrinkColumns="*"
     android:background="@color/colorBackground"
-    tools:context="com.example.kamil.br.activities.Radar">
+    tools:context="com.example.kamil.br.activities.main.Radar">
 
     <TableRow
         android:layout_weight="5">

@@ -12,6 +12,9 @@ import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;
 
+/**
+ * obsługa elementów na liście znalezionych urządzeń
+ */
 public class BluetoothFinderAdapter extends ArrayAdapter<BluetoothResults>
 {
     private Context context;

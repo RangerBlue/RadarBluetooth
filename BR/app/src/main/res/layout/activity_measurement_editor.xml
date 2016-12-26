@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorBackground"
     android:stretchColumns="*"
-    tools:context="com.example.kamil.br.activities.BtResultsEditor">
+    tools:context="com.example.kamil.br.activities.mapping.results.BluetoothResultsEditor">
 
     <TableRow>
         <TextView

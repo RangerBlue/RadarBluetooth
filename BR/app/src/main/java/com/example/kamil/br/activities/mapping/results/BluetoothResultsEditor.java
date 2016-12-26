@@ -1,9 +1,8 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.results;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,21 +13,31 @@ import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.adapters.BluetoothResultsAdapter;
-import com.example.kamil.br.adapters.MeasurementAdapter;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
-import com.example.kamil.br.database.controller.MeasurementsController;
-import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.BluetoothResults;
-import com.example.kamil.br.database.model.Measurements;
-import com.example.kamil.br.database.model.Rooms;
 
 import java.util.ArrayList;
 
-public class BtResultsEditor extends AppCompatActivity {
+/**
+ * Aktywność służąca do wyświetlania wszystkich rezultatów w pomiarze, przytrzymując
+ * item można go usunąć z menu podręcznego
+ */
+public class BluetoothResultsEditor extends AppCompatActivity {
 
+    /**
+     * widok listowy
+     */
     private ListView list;
+
+    /**
+     * adapter listy
+     */
     private BluetoothResultsAdapter adapter;
     private String TAG = getClass().getSimpleName();
+
+    /**
+     * id pomiaru
+     */
     private int idMeasurements;
 
     @Override
@@ -47,21 +56,6 @@ public class BtResultsEditor extends AppCompatActivity {
 
         adapter = new BluetoothResultsAdapter(this, all);
         list.setAdapter(adapter);
-
-       /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-
-                Measurements measurement = adapter.getItem(position);
-                int idToPass = measurement.getIdMeasurements();
-                Intent intent = new Intent(MeasurementChooser.this, MeasurementView.class);
-                intent.putExtra("idMeasurement", idToPass);
-                intent.putExtra("idRooms", idRooms);
-                startActivity(intent);
-            }
-
-        }); */
     }
 
     @Override
@@ -86,7 +80,6 @@ public class BtResultsEditor extends AppCompatActivity {
         {
 
             case R.id.menu_delete:
-                BluetoothResultsController controller = new BluetoothResultsController();
                 BluetoothResultsController.deleteWhereId(idbtResult, getApplicationContext());
                 Toast.makeText(getApplicationContext(), R.string.deleted_result, Toast.LENGTH_SHORT).show();
                 Intent intent = getIntent();

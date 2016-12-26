@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.kamil.br.activities.BluetoothResultsEditor">
+    tools:context="com.example.kamil.br.activities.mapping.results.BluetoothResultsEditor">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

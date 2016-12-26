@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.measurement;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +12,15 @@ import com.example.kamil.br.views.MapDrawView;
 
 import java.util.ArrayList;
 
+/**
+ * aktywność służąca do wyświetlenia mapy ze znalezionymi urządzeniami, w postaci punktów
+ * w pomieszczeniu
+ */
 public class MeasurementView extends AppCompatActivity {
 
+    /**
+     * widok na którym będzie wyświetlany wynik
+     */
     private MapDrawView map;
     private String TAG = MeasurementView.class.getSimpleName();
 
@@ -29,7 +36,6 @@ public class MeasurementView extends AppCompatActivity {
         int idRooms = getIntent().getIntExtra("idRooms",-1);
 
 
-
         BluetoothResultsController btController = new BluetoothResultsController();
         ArrayList<BluetoothResults> bluetoothResultsList;
         bluetoothResultsList = (ArrayList<BluetoothResults>) btController.selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurement );
@@ -37,12 +43,16 @@ public class MeasurementView extends AppCompatActivity {
 
         PathDataController pdController = new PathDataController();
         ArrayList<PathData> pathDataList ;
-        pathDataList = (ArrayList<PathData>) pdController.selectPathDataWhereId(getApplicationContext(), idRooms);
+        pathDataList = (ArrayList<PathData>) pdController.selectPathDataWhereIdRoom(getApplicationContext(), idRooms);
 
         ArrayList<String> distinctDevices = BluetoothResultsController.selectNameDistinct(getApplicationContext(), idRooms, idMeasurement);
 
+        //ustawienie danych w widoku
+        //dane o krawędziach pokoju
         map.setPath(pathDataList);
+        //dane o resultatach pomiaru
         map.setResults(bluetoothResultsList);
+        //dane o unikalnych urządzeniach
         map.setDistinctDevices(distinctDevices);
     }
 }

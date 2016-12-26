@@ -1,11 +1,9 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.measurement;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
@@ -15,10 +13,25 @@ import com.example.kamil.br.database.model.Measurements;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Aktywność służąca do wyboru między dodaniem nowego mapowania, a wybraniem istniejącego
+ * do wyświetlenia lub edytowania
+ */
 public class MeasurementChooseOption extends AppCompatActivity {
 
+    /**
+     * przycisk do utworzenia pomiaru
+     */
     private ImageButton buttonCreate;
+
+    /**
+     * przycisk do wyświetlenia pomiaru
+     */
     private ImageButton buttonView;
+
+    /**
+     * identyfikator pokoju, w którym są pomiary
+     */
     private int idRooms;
 
     @Override
@@ -28,7 +41,6 @@ public class MeasurementChooseOption extends AppCompatActivity {
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
-        Log.d("odbieranieidz listy v2", String.valueOf(idRooms));
 
         buttonCreate = (ImageButton) findViewById(R.id.buttonCreateBluetoothResultsEditor);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -46,26 +58,27 @@ public class MeasurementChooseOption extends AppCompatActivity {
             }
         });
 
-
         List<Measurements> all = new MeasurementsController().selectAll(getApplicationContext());
         MeasurementsController.printAllTableToLog((ArrayList<Measurements>) all);
 
-       // Log.d("dupa", MeasurementsController.selectMeasurementWhereIdRoom(getApplicationContext(), idRooms).get(0).getName());
+
 
     }
 
     /**
      * Nie można kliknąć przycsiku jeśli nie istnieje żaden pomiar
      */
-    private void hideButtonIfMeasurementNotExist()
+    private void hideButtonIfMeasurementNotExist(ImageButton button)
     {
         if((MeasurementsController.selectMeasurementWhereIdRoom(getApplicationContext(), idRooms).isEmpty()))
         {
-            buttonCreate.setClickable(false);
+            button.setClickable(false);
         }
     }
 
-    //TODO:zmienić podpis klasy
+    /**
+     * włączenie aktywności utworzenie pomiaru
+     */
     private void create()
     {
         Intent intent = new Intent(this, MeasurementCreate.class);
@@ -73,6 +86,9 @@ public class MeasurementChooseOption extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * włączenie aktywności edytowania pomiaru
+     */
     private void view()
     {
         Intent intent = new Intent(this, MeasurementChooser.class);

@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:stretchColumns="*"
     android:background="@color/colorBackground"
-    tools:context=".activities.BtResultsChooseRoom">
+    tools:context=".activities.mapping.results.BluetoothResultsChooseRoom">
 
 
 

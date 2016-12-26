@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Kamil on 2016-12-13.
- * Adapter do wyświetlania wyniów pomiaru bluetooth na liście
+ * Adapter do wyświetlania wyniów pomiaru bluetooth na liście rezultatów
  */
 
 public class BluetoothResultsAdapter  extends ArrayAdapter<BluetoothResults> {

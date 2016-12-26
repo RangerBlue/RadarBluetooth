@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.measurement;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -11,15 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.kamil.br.adapters.BluetoothFinderAdapter;
 import com.example.kamil.br.database.controller.MeasurementsController;
 import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
-import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.BluetoothResults;
@@ -32,6 +29,12 @@ import java.util.Date;
 public class MeasurementCreate extends AppCompatActivity
 {
     /**
+     * aktywność służaca do mapowania pomieszczenia, nawigujemy po kolei po krawędziach, każde przejscie po krawędzi trzeba
+     * oznaczyć w czasie, naciskając przycisk startu a następnie stopu, gdy znajdziemy się w wybranym miejscu szukamy urządzenia,
+     * gdy zakończymy proces możemy go zapisać
+     *
+     * proces szukania urządzeń jest zasobożerną procedurą, trwa około 12 sekund
+     *
     From documentation:
     The discovery process usually involves an inquiry scan of about 12 seconds, followed by a page scan of each new device to retrieve its Bluetooth name.
     Device discovery is a heavyweight procedure.
@@ -39,24 +42,135 @@ public class MeasurementCreate extends AppCompatActivity
     I suppose that you have to wait until discovery routine is finished and there's no ways to speed up this process.
      */
     private String TAG = MeasurementCreate.class.getSimpleName();
+    /**
+     * adapter bluetooth
+     */
     private BluetoothAdapter mBluetoothAdapter;
+
+    /**
+     * lista na urządzenia bluetooth
+     */
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
 
+    /**
+     * przycisk rozpoczynający szukanie
+     */
     private ImageButton buttonSearch;
+
+    /**
+     * przycisk nawigujący po krawędziach
+     */
     private ImageButton buttonNext;
+
+    /**
+     * przycisk rozpoczynający lub zakończający odliczanie
+     */
     private ImageButton buttonStopStart;
+
+    /**
+     * przycisk zapisywania
+     */
     private ImageButton buttonSave;
-    private BluetoothFinderAdapter adapter;
+
+    /**
+     * kólko postępu, gdy trwa szukanie urządzeń
+     */
     private ProgressDialog progressBar;
+
+    /**
+     * lista z danymi o krawędziach pokoju
+     */
     private ArrayList<PathData> list;
+
+    /**
+     * widok, na którym rysowany jest kształ pomieszczenia
+     */
     private PathDrawView map;
+
+    /**
+     * numer obecnej krawędzi
+     */
     private int counter=0;
+
+    /**
+     * ilość krawędzi
+     */
     private int counterLimit;
+
+    /**
+     * zmienna logiczna zapisujaca stan czy trwa odliczanie
+     */
     private boolean ifTheClockIsTicking = false;
+
+    /**
+     * czas rozpoczęcia pomiaru
+     */
     private long timeStart=0;
+
+    /**
+     * czas zakończenia pomiaru
+     */
     private long timeStop=0;
+
+    /**
+     * identyfikator pomiaru
+     */
     private int idMeasurements;
-    private int  idRooms;
+
+    /**
+     * identyfikator pokoju
+     */
+    private int idRooms;
+
+    /**
+     * objekt mReceiver
+     */
+    final BroadcastReceiver mReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            Log.d("OnReceive", "W środku ");
+
+            String action = intent.getAction();
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action))
+            {
+
+                // Get the bluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                // Get the "RSSI" to get the signal strength as integer,
+                // but should be displayed in "dBm" units
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+
+                // Create the device object and add it to the arrayList of devices
+                BluetoothResults bluetoothResults = new BluetoothResults();
+                bluetoothResults.setName(device.getName());
+                bluetoothResults.setAddress(device.getAddress());
+                bluetoothResults.setRssi(rssi);
+                bluetoothResults.setTime(getTimeDifference(timeStart, timeStop));
+                bluetoothResults.setEdgeNumber(counter);
+                bluetoothResults.setIdMeasurements(idMeasurements);
+                bluetoothResults.setIdRooms(idRooms);
+
+
+                //wstawianie do listy
+                arrayOfFoundBTDevices.add(bluetoothResults);
+
+            }
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
+            {
+                progressBar.dismiss();
+                unregisterReceiver(this);
+
+            }
+            else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
+            {
+                Log.d("BluetoothAdapter", "Starting discovery ");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,35 +180,15 @@ public class MeasurementCreate extends AppCompatActivity
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
-        Log.d("ajdi romms", String.valueOf(idRooms));
-        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
+        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereIdRoom(getApplicationContext(), idRooms);
 
-        //utworzenie pomiaru
-
+        //pobranie id pomiaru, który ma zostać utworzony
         idMeasurements = MeasurementsController.getLastRecord(getApplicationContext()).getIdMeasurements()+1;
 
-
         arrayOfFoundBTDevices = new ArrayList<>();
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        buttonSearch = (ImageButton) findViewById(R.id.buttonMeasurementCreatorSeatch);
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                progressBar = new ProgressDialog(v.getContext());
-                progressBar.setMessage(getResources().getString(R.string.progress_scanning));
-                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressBar.show();
-                progressBar.setCanceledOnTouchOutside(false);
-                Log.d("Wywołanie funkcji", "Wywoływanie display ..");
-                displayListOfFoundDevices();
-
-            }
-        });
-
-        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
+        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereIdRoom(getApplicationContext(), idRooms);
         map = (PathDrawView) findViewById(R.id.viewDrawMap);
         map.setData(list);
         map.setNumber(counter);
@@ -102,16 +196,31 @@ public class MeasurementCreate extends AppCompatActivity
 
         PathDataController.printAllTableToLog(list);
 
+        buttonSearch = (ImageButton) findViewById(R.id.buttonMeasurementCreatorSeatch);
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                //rozpoczęcie szukania
+                progressBar = new ProgressDialog(v.getContext());
+                progressBar.setMessage(getResources().getString(R.string.progress_scanning));
+                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressBar.show();
+                progressBar.setCanceledOnTouchOutside(false);
+                Log.d("Wywołanie funkcji", "Wywoływanie display ..");
+                displayListOfFoundDevices();
+            }
+        });
+
         buttonNext = (ImageButton) findViewById(R.id.buttonMeasurementCreatorNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
+                //przejście po krawędziach
                 counterIncrement();
                 map.setNumber(counter);
                 map.invalidate();
-
-                Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
             }
         });
 
@@ -120,6 +229,8 @@ public class MeasurementCreate extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                //odmierzanie czasu, zawsze wstawiany jest rekord z czasem przejścia danej odległości
+                //bez danych o jakimkolwiek urządzeniu, tzw. pusty rekord
                 if(ifTheClockIsTicking)
                 {
                     buttonStopStart.setImageResource(R.drawable.start_process_icon);
@@ -136,6 +247,7 @@ public class MeasurementCreate extends AppCompatActivity
                 }
                 else
                 {
+                    //jeśli odliczanie trwa, blokowane są inne elementy gui
                     buttonStopStart.setImageResource(R.drawable.stop_icon);
                     timeStart = System.currentTimeMillis();
                     ifTheClockIsTicking = true;
@@ -151,6 +263,7 @@ public class MeasurementCreate extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                //zapisanie elementów do bazy
                 createMeasurement(idRooms);
                 BluetoothResultsController controller = new BluetoothResultsController();
                 //wstawienie do bazy
@@ -166,6 +279,9 @@ public class MeasurementCreate extends AppCompatActivity
 
     }
 
+    /**
+     * iteracja po ilości krawędzi, po osiągnieciu limitu przekręca sie od nowa
+     */
     public void counterIncrement()
     {
         if(counter == counterLimit)
@@ -176,6 +292,10 @@ public class MeasurementCreate extends AppCompatActivity
             counter++;
     }
 
+    /**
+     * zwraca daną numer krawędzi powiększony o jeden uwzględniając przekręcanie się
+     * @return kolejna wartość licznika
+     */
     public int getCounterIncrement()
     {
         if(counter == counterLimit)
@@ -190,6 +310,12 @@ public class MeasurementCreate extends AppCompatActivity
 
     }
 
+    /**
+     * zwraca czas trwania wydarzenia
+     * @param start godzina początkowa
+     * @param stop godzina końcowa
+     * @return czas trwania
+     */
     public long getTimeDifference(long start, long stop)
     {
         long time = stop-start;
@@ -197,7 +323,9 @@ public class MeasurementCreate extends AppCompatActivity
         return time;
     }
 
-    //Todo: ta sama funkcja jest w BluetoothFinder, spróbować wywołąć ją z tamtad
+    /**
+     * szuka urządzeń bluetooth i wstawia je do listy
+     */
     private void displayListOfFoundDevices()
     {
         Log.d("DisplayList", "W środku ");
@@ -207,53 +335,7 @@ public class MeasurementCreate extends AppCompatActivity
 
         // Discover new devices
         // Create a BroadcastReceiver for ACTION_FOUND
-        final BroadcastReceiver mReceiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Log.d("OnReceive", "W środku ");
 
-                String action = intent.getAction();
-                // When discovery finds a device
-                if (BluetoothDevice.ACTION_FOUND.equals(action))
-                {
-
-                    // Get the bluetoothDevice object from the Intent
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                    // Get the "RSSI" to get the signal strength as integer,
-                    // but should be displayed in "dBm" units
-                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-
-                    // Create the device object and add it to the arrayList of devices
-                    BluetoothResults bluetoothResults = new BluetoothResults();
-                    bluetoothResults.setName(device.getName());
-                    bluetoothResults.setAddress(device.getAddress());
-                    bluetoothResults.setRssi(rssi);
-                    bluetoothResults.setTime(getTimeDifference(timeStart, timeStop));
-                    bluetoothResults.setEdgeNumber(counter);
-                    bluetoothResults.setIdMeasurements(idMeasurements);
-                    Log.d(TAG, "halo halo"+idRooms);
-                    bluetoothResults.setIdRooms(idRooms);
-
-
-                    //wstawianie do listy
-                    arrayOfFoundBTDevices.add(bluetoothResults);
-
-                }
-                else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
-                {
-                    progressBar.dismiss();
-                    unregisterReceiver(this);
-
-                }
-                else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
-                {
-                    Log.d("BluetoothAdapter", "Starting discovery ");
-                }
-            }
-        };
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         //nowe rzeczy
@@ -264,7 +346,10 @@ public class MeasurementCreate extends AppCompatActivity
         registerReceiver(mReceiver, filter);
     }
 
-
+    /**
+     * tworzy nowy pomiar w nazwie używając obecną date
+     * @param idToPass id nowego pomiary
+     */
     public void createMeasurement(int idToPass)
     {
         Measurements measurement = new Measurements();

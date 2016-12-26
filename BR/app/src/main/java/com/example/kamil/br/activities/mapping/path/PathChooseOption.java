@@ -1,11 +1,10 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.path;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
@@ -20,11 +19,23 @@ import java.util.List;
  * utworzenie, wyświetlenie, edycja, usunięcie
  * Created by Kamil
  */
-public class PathMenu extends AppCompatActivity {
+public class PathChooseOption extends AppCompatActivity {
 
-    private String TAG = PathMenu.class.getSimpleName();
+    private String TAG = PathChooseOption.class.getSimpleName();
+
+    /**
+     * przycisk do utworzenia ścierzki
+     */
     private ImageButton buttonCreate;
+
+    /**
+     * przycisk do widoku ścierzki
+     */
     private ImageButton buttonView;
+
+    /**
+     * id pokoju, do którego dodajemy krawędzie
+     */
     private int idRooms;
 
     @Override
@@ -64,7 +75,7 @@ public class PathMenu extends AppCompatActivity {
      */
     private void hideButtonIfPathAlreadyExists()
     {
-        if(!(PathDataController.selectPathDataWhereId(getApplicationContext(), idRooms).isEmpty()))
+        if(!(PathDataController.selectPathDataWhereIdRoom(getApplicationContext(), idRooms).isEmpty()))
         {
             buttonCreate.setClickable(false);
         }

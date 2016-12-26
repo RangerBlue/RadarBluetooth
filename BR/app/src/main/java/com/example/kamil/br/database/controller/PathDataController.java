@@ -4,10 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Path;
 import android.util.Log;
 
-import com.example.kamil.br.activities.MainActivity;
 import com.example.kamil.br.database.DBHandler;
 import com.example.kamil.br.database.model.PathData;
 
@@ -16,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * obsługa tabeli pathData
  * Created by Kamil on 2016-09-21.
  */
 public class PathDataController {
@@ -69,6 +68,11 @@ public class PathDataController {
         Log.d(TAG, " Updated row number: "+pathdata.getIdPathData());
     }
 
+    /**
+     * zwraca całą tabele
+     * @param context kontekst aplikacji
+     * @return lista
+     */
     public List<PathData> selectAll(Context context)
     {
         List<PathData> pathData = new ArrayList<>();
@@ -109,7 +113,13 @@ public class PathDataController {
         return pathData;
     }
 
-    public static List<PathData> selectPathDataWhereId(Context context, int id)
+    /**
+     * zwraca ścierzkę o danym id pokoju
+     * @param context kontekst aplikacji
+     * @param id id pokoju
+     * @return
+     */
+    public static List<PathData> selectPathDataWhereIdRoom(Context context, int id)
     {
         List<PathData> pathData = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -166,7 +176,10 @@ public class PathDataController {
         db.close(); // Closing database connection
     }
 
-    //debug only
+    /**
+     * wypisuje do logu listę
+     * @param list lista
+     */
     public static void printAllTableToLog(ArrayList<PathData> list)
     {
         //wypisanie rekordów z PathData nienaruszonych

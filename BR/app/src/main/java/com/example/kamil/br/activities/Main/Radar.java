@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.main;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -21,16 +21,82 @@ import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;
 
+/**
+ * aktywność służąca do przestawienia wyników wyszukiwania urządzeń w postaci graficznej,
+ * w jakiej odległości one sie znajdują
+ */
 public class Radar extends AppCompatActivity {
 
+    /**
+     * adapter bluetooth
+     */
     private BluetoothAdapter mBluetoothAdapter;
+
+    /**
+     * lista znalezionych urządzeń
+     */
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
+
+    /**
+     * przycisk do rozpoczęcia wyszukiwania
+     */
     private ImageButton buttonSearch;
-    private BluetoothFinderAdapter adapter;
+
+    /**
+     * pasek postępu, podczas szukania
+     */
     private ProgressDialog progressBar;
+
+    /**
+     * układ wspólrzędnych, na którym wyświetlana jest odległość od znalezionych urządzeń
+     */
     private RadarDrawView radar;
+
     private final String TAG = Radar.class.getSimpleName();
 
+    final BroadcastReceiver mReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            Log.d("OnReceive", "W środku ");
+
+            String action = intent.getAction();
+            // znaleziono urządzenie
+            if (BluetoothDevice.ACTION_FOUND.equals(action))
+            {
+
+                // pobranie urządzenia bluetooth
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                // pobranie rssi
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+
+                // stworzenie obiektu opisującego pomiar
+                BluetoothResults bluetoothResults = new BluetoothResults();
+                bluetoothResults.setName(device.getName());
+                bluetoothResults.setAddress(device.getAddress());
+                bluetoothResults.setRssi(rssi);
+                bluetoothResults.setTime(System.currentTimeMillis());
+
+                //wstawianie do listy
+                arrayOfFoundBTDevices.add(bluetoothResults);
+
+            }
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
+            {
+                Log.d(TAG, "action_finished" );
+                progressBar.dismiss();
+                unregisterReceiver(this);
+                radar.setData(arrayOfFoundBTDevices);
+                radar.invalidate();
+            }
+            else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
+            {
+                Log.d("BluetoothAdapter", "Starting discovery ");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,11 +124,6 @@ public class Radar extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
     private void getFoundDevices()
@@ -70,61 +131,11 @@ public class Radar extends AppCompatActivity {
         Log.d("DisplayList", "W środku ");
 
         arrayOfFoundBTDevices.clear();
-
-        // rozpocznij szukanie
-
         mBluetoothAdapter.startDiscovery();
 
-        // Discover new devices
-        // Create a BroadcastReceiver for ACTION_FOUND
-        final BroadcastReceiver mReceiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Log.d("OnReceive", "W środku ");
 
-                String action = intent.getAction();
-                // When discovery finds a device
-                if (BluetoothDevice.ACTION_FOUND.equals(action))
-                {
-
-                    // Get the bluetoothDevice object from the Intent
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                    // Get the "RSSI" to get the signal strength as integer,
-                    // but should be displayed in "dBm" units
-                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-
-                    // Create the device object and add it to the arrayList of devices
-                    BluetoothResults bluetoothResults = new BluetoothResults();
-                    bluetoothResults.setName(device.getName());
-                    bluetoothResults.setAddress(device.getAddress());
-                    bluetoothResults.setRssi(rssi);
-                    bluetoothResults.setTime(System.currentTimeMillis());
-
-                    //wstawianie do listy
-                    arrayOfFoundBTDevices.add(bluetoothResults);
-
-                    // Zainicjonowanie adaptera listą urządzeń, i ustawienie na listView adaptera
-                }
-                else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
-                {
-                    Log.d(TAG, "action_finished" );
-                    progressBar.dismiss();
-                    unregisterReceiver(this);
-                    radar.setData(arrayOfFoundBTDevices);
-                    radar.invalidate();
-                }
-                else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
-                {
-                    Log.d("BluetoothAdapter", "Starting discovery ");
-                }
-            }
-        };
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        //nowe rzeczy
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);

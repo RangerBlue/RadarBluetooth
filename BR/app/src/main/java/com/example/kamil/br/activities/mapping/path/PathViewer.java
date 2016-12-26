@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.path;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,7 +90,7 @@ public class PathViewer extends AppCompatActivity  {
 
         Log.d(TAG, "Z bazy danych");
         //lista z danymi o krawędziach
-        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereId(getApplicationContext(), idRooms);
+        list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereIdRoom(getApplicationContext(), idRooms);
         map = (PathDrawView) findViewById(R.id.viewDrawMap);
         map.setData(list);
         map.setNumber(counter);

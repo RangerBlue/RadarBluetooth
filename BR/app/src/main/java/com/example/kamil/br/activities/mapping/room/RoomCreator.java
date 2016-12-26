@@ -1,4 +1,4 @@
-package com.example.kamil.br.activities;
+package com.example.kamil.br.activities.mapping.room;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,6 +86,11 @@ public class RoomCreator extends AppCompatActivity {
 
     }
 
+    /**
+     * Zwraca wspólczynnik w zależności od numeru typu pomieszczenia
+     * @param listPosition numer typu pomieszczenia
+     * @return wartość współczynnika
+     */
     private float getRoomType(int listPosition)
     {
         float returnValue = 0;

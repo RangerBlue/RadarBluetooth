@@ -23,13 +23,45 @@ public class BluetoothResults implements Parcelable
 
 
     //nazwy pól
+
+    /**
+     * identyfikator
+     */
     private int idBluetoothResults;
+
+    /**
+     * nazwa urządzenia
+     */
     private String name;
+
+    /**
+     * adres urządzenia
+     */
     private String address;
+
+    /**
+     * rssi urządzenia
+     */
     private int rssi;
+
+    /**
+     * godzina znalezienia urządzenia
+     */
     private long time;
+
+    /**
+     * numer krawędzi
+     */
     private int edgeNumber;
+
+    /**
+     * numer pomiaru
+     */
     private int idMeasurements;
+
+    /**
+     * numer pokoju
+     */
     private int idRooms;
 
     public BluetoothResults(long time)
