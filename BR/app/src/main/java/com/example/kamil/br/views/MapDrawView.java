@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.kamil.br.BluetoothDistance;
+import com.example.kamil.br.Circle;
+import com.example.kamil.br.QuadraticFunction;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;
@@ -81,7 +83,10 @@ public class MapDrawView extends View {
      */
     private int elapsedTime = 0;
 
-
+    /**
+     * Lista z danymi o okręgach
+     */
+    private ArrayList<Circle> circles;
 
     public MapDrawView(Context context) {
         super(context);
@@ -122,6 +127,7 @@ public class MapDrawView extends View {
         PathDataController.printAllTableToLog(path);
         BluetoothResultsController.printAllTableToLog(results);
 
+        circles = new ArrayList<>();
 
         for(String item : distinctDevices)
             Log.d(TAG+"tablca ",item );
@@ -153,13 +159,16 @@ public class MapDrawView extends View {
         //rysowanie punktów
         drawPoints(canvas);
 
+        Circle.printAllTableToLog(circles);
+        drawResult(canvas, circles);
+
         super.dispatchDraw(canvas);
 
     }
 
 
     /**
-     * Rysuje punkty na krawędziach w miejscach gdzie nastąpił pomiar
+     * Rysuje punkty na krawędziach w miejscach gdzie nastąpił pomiar oraz okręgi
      * @param canvas używana kanwa
      *
      */
@@ -269,7 +278,8 @@ public class MapDrawView extends View {
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
         float length = getConvertedValue(BluetoothDistance.getDistance(value, RoomsController.selectTypeWhereId(getContext(), results.get(0).getIdRooms())));
         canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,length*ratio,p);
-
+        Circle circle = new Circle(record.getP1(), record.getP2(), length);
+        circles.add(circle);
     }
 
     /**
@@ -307,6 +317,18 @@ public class MapDrawView extends View {
         return durationTime;
     }
 
+    /**
+     * Rysuje punkt w miejscu, w którym znajduję się urządzenie
+     * @param canvas kanwa
+     * @param list lista z okręgami
+     */
+    public void drawResult(Canvas canvas, ArrayList<Circle> list)
+    {
+        QuadraticFunction.Point point = Circle.multiCircle(list);
+        canvas.drawCircle(point.getA()*ratio,(-1)*point.getB()*ratio,radius,p);
+
+
+    }
 
     /**
      * Aktualizuje dane widoku

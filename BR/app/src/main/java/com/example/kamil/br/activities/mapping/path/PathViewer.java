@@ -1,8 +1,11 @@
 package com.example.kamil.br.activities.mapping.path;
 
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -76,6 +79,11 @@ public class PathViewer extends AppCompatActivity  {
      */
     private ArrayList<PathData> list;
 
+    /**
+     * Szerokość ekranu
+     */
+    private int screenWidth ;
+
     private int idRooms;
 
     @Override
@@ -87,6 +95,7 @@ public class PathViewer extends AppCompatActivity  {
         setContentView(R.layout.activity_path_viewer);
         PathData.setWalkRatio(0);
 
+        screenWidth = setScreenWidth();
 
         Log.d(TAG, "Z bazy danych");
         //lista z danymi o krawędziach
@@ -94,6 +103,7 @@ public class PathViewer extends AppCompatActivity  {
         map = (PathDrawView) findViewById(R.id.viewDrawMap);
         map.setData(list);
         map.setNumber(counter);
+        map.setScreenWidth(screenWidth);
         counterLimit = list.get(list.size()-1).getEdgeNumber();
 
         PathDataController.printAllTableToLog(list);
@@ -344,6 +354,17 @@ public class PathViewer extends AppCompatActivity  {
 
             PathDataController.printAllTableToLog(list);
         }
+
+    }
+
+    public int setScreenWidth()
+    {
+        //pobranie wymiaru wyświetlacza
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return (int) size.x;
 
     }
 

@@ -19,6 +19,10 @@ public class QuadraticFunction
     private float x1;
     private float x2;
 
+    public QuadraticFunction() {
+
+    }
+
     /**
      * Konstruktor tworzący obiekt z równania a*x^2+b*x+c
      * @param a wartość przy x^2

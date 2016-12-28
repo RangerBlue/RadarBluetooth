@@ -128,7 +128,7 @@ public class PathCreator extends AppCompatActivity {
     }
 
     /**
-     * Konwetowanie wartości dip na pixele
+     * Konwertowanie wartości dip na pixele
      * @param dip wartość w dip
      * @return wartość w pixelach
      */

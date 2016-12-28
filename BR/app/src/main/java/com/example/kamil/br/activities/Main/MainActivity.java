@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        checkBluetoothState();
+       //checkBluetoothState();
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
 

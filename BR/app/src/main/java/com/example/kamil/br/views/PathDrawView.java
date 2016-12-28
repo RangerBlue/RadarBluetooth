@@ -1,11 +1,14 @@
 package com.example.kamil.br.views;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 
 import com.example.kamil.br.R;
@@ -23,6 +26,16 @@ public class PathDrawView extends View
     private static ArrayList<PathData> data;
     private Paint p;
     private static int number;
+    private static int screenWidth;
+
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static void setScreenWidth(int screenWidth) {
+        PathDrawView.screenWidth = screenWidth;
+    }
+
     private static String TAG = PathDrawView.class.getSimpleName();
 
 
@@ -59,8 +72,12 @@ public class PathDrawView extends View
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.BLACK);
 
+
+
         //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
-        int ratio = 44;
+        //int ratio = 44;
+        int ratio = calculateAbsoluteRatio(screenWidth, data);
+        Log.d(TAG,"ratio nowe: "+ratio);
         //moraczowe
         int radius = 3;
         //rysowanie punktów
@@ -105,7 +122,23 @@ public class PathDrawView extends View
 
     }
 
+    /**
+     *
+     * @param screenWidth
+     * @param list
+     * @return
+     */
+    private int calculateAbsoluteRatio(int screenWidth, ArrayList<PathData> list)
+    {
+        float max=0;
+        for ( PathData item : list )
+        {
+            if(item.getP1() > max)
+                max = item.getP1();
+        }
 
+        return (int) ((screenWidth/max)*0.95);
+    }
 
     //gdy chcemy zmienić cos w widoku
     @Override

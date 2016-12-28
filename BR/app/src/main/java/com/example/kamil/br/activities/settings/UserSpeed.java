@@ -244,7 +244,7 @@ public class UserSpeed extends AppCompatActivity {
     {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putFloat("velocity", speed);
+        editor.putFloat("velocity", 1.1f);
         editor.commit();
     }
 }
