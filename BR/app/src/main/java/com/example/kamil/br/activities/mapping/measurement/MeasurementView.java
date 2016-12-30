@@ -1,6 +1,7 @@
 package com.example.kamil.br.activities.mapping.measurement;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.kamil.br.BluetoothDistance;
 import com.example.kamil.br.R;
+import com.example.kamil.br.activities.main.MappingMenu;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.model.BluetoothResults;
@@ -41,6 +43,11 @@ public class MeasurementView extends AppCompatActivity {
     private ImageButton buttonInfo;
 
     /**
+     * Przycisk zamykajacy aktywność
+     */
+    private ImageButton buttonClose;
+
+    /**
      * Lista z nazwami unikalnych urządzeń
      */
     private ArrayList<String> distinctDevices;
@@ -56,7 +63,8 @@ public class MeasurementView extends AppCompatActivity {
 
         //odebranie paczki
         int idMeasurement = getIntent().getIntExtra("idMeasurement",-1);
-        int idRooms = getIntent().getIntExtra("idRooms",-1);
+        final int idRooms = getIntent().getIntExtra("idRooms",-1);
+        final int process = getIntent().getIntExtra("process",-1);
 
 
         BluetoothResultsController btController = new BluetoothResultsController();
@@ -107,6 +115,20 @@ public class MeasurementView extends AppCompatActivity {
                         })
                         .setIcon(R.drawable.map_icon)
                         .show();
+            }
+        });
+
+        buttonClose = (ImageButton) findViewById(R.id.buttonMeasurementViewerClose);
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(MeasurementView.this, MappingMenu.class);
+                Intent intent2 = new Intent(MeasurementView.this, MeasurementChooser.class);
+
+                if (process == 1)
+                    startActivity(intent1);
+                else
+                   finish();
             }
         });
 

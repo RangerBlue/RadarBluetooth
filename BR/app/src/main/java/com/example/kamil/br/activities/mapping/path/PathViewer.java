@@ -1,5 +1,6 @@
 package com.example.kamil.br.activities.mapping.path;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.kamil.br.activities.mapping.measurement.MeasurementCreate;
+import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.WalkRatio;
 import com.example.kamil.br.views.PathDrawView;
@@ -80,6 +83,11 @@ public class PathViewer extends AppCompatActivity  {
     private ArrayList<PathData> list;
 
     /**
+     * Parametr procesu
+     */
+    private int process ;
+
+    /**
      * Szerokość ekranu
      */
     private int screenWidth ;
@@ -91,6 +99,7 @@ public class PathViewer extends AppCompatActivity  {
     {
         super.onCreate(savedInstanceState);
         idRooms = getIntent().getIntExtra("id",-1);
+        process = getIntent().getIntExtra("process",-1);
         Log.d(TAG, Integer.toString(idRooms));
         setContentView(R.layout.activity_path_viewer);
         PathData.setWalkRatio(0);
@@ -156,6 +165,8 @@ public class PathViewer extends AppCompatActivity  {
             public void onClick(View v)
             {
                 updateData(true);
+                if( process == 1 )
+                launchMeasurementCreator();
             }
         });
 
@@ -366,6 +377,17 @@ public class PathViewer extends AppCompatActivity  {
 
         return (int) size.x;
 
+    }
+
+    /**
+     * Przechodzi do aktywnosci tworzenia pomiaru
+     */
+    private void launchMeasurementCreator()
+    {
+        Intent intent = new Intent(this, MeasurementCreate.class);
+        intent.putExtra("idRooms", idRooms);
+        intent.putExtra("process", process);
+        startActivity(intent);
     }
 
     @Override

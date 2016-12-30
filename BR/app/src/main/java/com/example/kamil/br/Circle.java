@@ -276,6 +276,9 @@ public class Circle
             wyniki = Circle.getTriangleOfResult(wyniki);
             end = Circle.pairsOfPointsToPoints(wyniki);
             finalPoint = Circle.centerOfTriangle(end.get(0), end.get(1), end.get(2));
+            Log.d("multiccore", "("+finalPoint.getA()+","+finalPoint.getB()+")");
+            return finalPoint;
+
 
         }else if(tab.size()==99999){
             //tutaj dokleje później
@@ -292,11 +295,13 @@ public class Circle
             }
             //wyniki = Circle.getClosestPoint(cross);
             Point wynik = arithmeticMean(cross);
-
+            Log.d("multiccore", "("+wynik.getA()+","+wynik.getB()+")");
             return wynik;
-        }
 
+        }
+        Log.d("multiccore", "("+center.getA()+","+center.getB()+")");
         return center;
+
     }
 
     /**

@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewAverageVelocity"
             android:layout_gravity="center"
-            android:textSize="@dimen/big_font"
+            android:textSize="@dimen/medium_font"
             android:textColor="@color/colorBlack"
             android:layout_span="2"/>/>
     </TableRow>
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textViewResult"
-            android:textSize="@dimen/big_font"
+            android:textSize="@dimen/medium_font"
             android:layout_gravity="center"
             android:textColor="@color/colorBlack"
             android:layout_span="2"/>

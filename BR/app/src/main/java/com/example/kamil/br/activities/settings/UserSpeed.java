@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -94,9 +95,9 @@ public class UserSpeed extends AppCompatActivity {
             }
         });
         saveButton.setVisibility(View.INVISIBLE);
-       // progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         startButton = (ImageButton) findViewById(R.id.buttonSpeedStartStop);
-        //start.setClickable(false);
+        startButton.setClickable(false);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,11 +108,15 @@ public class UserSpeed extends AppCompatActivity {
 
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
+        Log.d(TAG, "gps"+locationManager.toString());
+
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location)
             {
-
+                startButton.setImageResource(R.drawable.switch_on_off_icon);
+                progressBar.setVisibility(View.VISIBLE);
+                startButton.setClickable(true);
                 DecimalFormat format = new DecimalFormat();
                 format.setMinimumFractionDigits(2);
                 format.format(location.getSpeed());
@@ -126,16 +131,23 @@ public class UserSpeed extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
+                Toast.makeText(UserSpeed.this, "onStatusChanged ",
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onProviderEnabled(String provider) {
+                startButton.setImageResource(R.drawable.switch_on_off_icon);
+                progressBar.setVisibility(View.VISIBLE);
                 startButton.setClickable(true);
+                Toast.makeText(UserSpeed.this, "Enabled new provider ",
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onProviderDisabled(String provider) {
+                Toast.makeText(UserSpeed.this, "onProviderDisabled ",
+                        Toast.LENGTH_LONG).show();
 
             }
         };
@@ -147,8 +159,9 @@ public class UserSpeed extends AppCompatActivity {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            startButton.setImageResource(R.drawable.switch_on_off_icon);
-            progressBar.setVisibility(View.VISIBLE);
+            Toast.makeText(UserSpeed.this, "Dziwny if ",
+                    Toast.LENGTH_LONG).show();
+
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);

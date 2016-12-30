@@ -74,4 +74,7 @@
     <string name="info">Info</string>
     <string name="found_devices">Devices in 10 meters range</string>
     <string name="map_devices">Devices on map</string>
+    <string name="new_room">NEW</string>
+    <string name="existing_room">EXISTING</string>
+    <string name="room_process_option">ROOM</string>
 </resources>

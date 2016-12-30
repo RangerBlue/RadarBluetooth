@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Radar Bluetooth</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="button_edit_room">Pomiesczenie</string>
+    <string name="button_create">Utwórz</string>
+    <string name="button_view">Pokaż</string>
+    <string name="button_draw_path">RYSUJ ŚCIANY</string>
+    <string name="button_edit_path">ŚCIANY</string>
+    <string name="text_view_list_choose_room_header">Wybierz jeden z poniższych</string>
+    <string name="progress_scanning">Skanowanie...</string>
+    <string name="next_edge">Następna krawędź</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="save">Zapisz</string>
+    <string name="search">Szukaj</string>
+    <string name="radar">RADAR</string>
+    <string name="map">MAPA</string>
+    <string name="search_devices">SZUKAJ URZĄDZEŃ</string>
+    <string name="measurement">POMIAR</string>
+    <string name="results">REZULTATY</string>
+    <string name="title_activity_bluetooth_results_editor">BluetoothResultsEdytor</string>
+    <string name="no_bluetooth">To urządzenie nie posiada bluetooth</string>
+    <string name="enabling_bluetooth">Włączono bluetooth</string>
+    <string name="enabled_bluetooth">Bluetooth jest już włączony</string>
+    <string name="not_allow_bluetooth">Użytkownik odmówił włączenia bluetooth</string>
+    <string name="wrong_input">Podałeś złe dane lub podana nazwa już istnieje</string>
+    <string name="added_room">Dodano pomieszczenie</string>
+    <string name="deleted_room">Usunięto pomieszczenie</string>
+    <string name="deleted_result">Usunięto rezultat</string>
+    <string name="deleted_measurement">Usunięto pomiar</string>
+    <string name="show">Pokaż</string>
+    <string name="delete">Usuń</string>
+    <string name="edit">Edytuj</string>
+    <string name="name">NAZWA</string>
+    <string name="type">TYP</string>
+    <string name="mapping">MAPOWANIE</string>
+    <string name="tracking">ŚLEDZENIE</string>
+    <string name="bluetooth">BLUETOOTH</string>
+    <string name="settings">USTAWIENIA</string>
+    <string name="start_process">ROZPCZNIJ PROCES</string>
+    <string name="room_type_prompt">Wybierz typ pomieszczenia</string>
+    <string name="room">POMIESZCZENIE</string>
+    <string name="path">ŚCIANY</string>
+    <string name="add">DODAJ</string>
+    <string name="edit_big">EDYTUJ</string>
+    <string name="pick_corners">WYBIERZ NAROŻNIKI</string>
+
+    <string-array name="room_type_arrays">
+        <item>Zwykłe pomieszczenie</item>
+        <item>Duże pomieszczenie</item>
+        <item>Wolna przestrzeń</item>
+    </string-array>
+    <string name="title_activity_mapping_menu">Menu mapowania</string>
+    <string name="title_activity_settings">Ustawienia</string>
+
+
+    <string name="meter_per_second">M/S</string>
+    <string name="kilometer_per_second">KM/H</string>
+    <string name="average_speed">Średnia prędkość</string>
+    <string name="is">jest</string>
+    <string name="from_here">m z tąd</string>
+    <string name="name_small">Nazwa</string>
+    <string name="address">Adres</string>
+    <string name="rssi">Rssi</string>
+    <string name="time">Czas</string>
+    <string name="edge">Krawędź</string>
+    <string name="room_small">Pomieszczenie</string>
+    <string name="number">Numer</string>
+    <string name="hold_to_open_menu">Przytrzymaj aby otworzyć menu</string>
+    <string name="type_small">Typ</string>
+    <string name="date">Data</string>
+    <string name="your_speed">Twoja prędkość wynosi </string>
+    <string name="view_big">POKAŻ</string>
+    <string name="info">Informacje</string>
+    <string name="found_devices">Urządzenia w zasięgu 10 m</string>
+    <string name="map_devices">Urządzenia na mapie</string>
+    <string name="new_room">NOWE</string>
+    <string name="existing_room">ISTNIEJĄCE</string>
+    <string name="room_process_option">POMIESZCZENIE</string>
+
+</resources>

@@ -19,9 +19,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activities.main.MainActivity"
-            >
+        <activity android:name=".activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,7 +48,8 @@
         <activity android:name=".activities.mapping.results.BluetoothResultsEditor" />
         <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser" />
         <activity android:name=".activities.main.Settings" />
-        <activity android:name=".activities.main.Tracking"></activity>
+        <activity android:name=".activities.main.Tracking" />
+        <activity android:name=".activities.mapping.process.OptionRoom"></activity>
     </application>
 
 </manifest>

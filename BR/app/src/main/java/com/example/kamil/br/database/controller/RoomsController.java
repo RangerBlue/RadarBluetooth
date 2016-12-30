@@ -196,6 +196,41 @@ public class RoomsController {
             return true;
     }
 
+    public static Rooms getLastRecord(Context context)
+    {
+        List<Rooms> rooms = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT *" +
+                        " FROM " + Rooms.TABLE+
+                        " WHERE Rooms."+ Rooms.ID_ROOMS+"="+
+                        "(SELECT MAX(Rooms."+Rooms.ID_ROOMS+") FROM "+Rooms.TABLE+")";
+
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Rooms room= new Rooms();
+                room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
+                room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
+                room.setType(cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE)));
+                rooms.add(room);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        if(rooms.isEmpty())
+        {
+            Log.d("aa", "jestem pusty");
+            Rooms returnRooms = new Rooms();
+            returnRooms.setIdRooms(-1);
+            rooms.add(returnRooms);
+        }
+        return rooms.get(0);
+    }
+
     /**
      * wypisuje do logu listę
      * @param list  lista

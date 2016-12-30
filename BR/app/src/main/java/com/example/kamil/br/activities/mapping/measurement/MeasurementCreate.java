@@ -123,6 +123,11 @@ public class MeasurementCreate extends AppCompatActivity
     private int idRooms;
 
     /**
+     * Parametr procesu
+     */
+    private int process ;
+
+    /**
      * objekt mReceiver
      */
     final BroadcastReceiver mReceiver = new BroadcastReceiver()
@@ -180,7 +185,9 @@ public class MeasurementCreate extends AppCompatActivity
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
+        process = getIntent().getIntExtra("process",-1);
         list = (ArrayList<PathData>) new PathDataController().selectPathDataWhereIdRoom(getApplicationContext(), idRooms);
+
 
         //pobranie id pomiaru, który ma zostać utworzony
         idMeasurements = MeasurementsController.getLastRecord(getApplicationContext()).getIdMeasurements()+1;
@@ -274,6 +281,8 @@ public class MeasurementCreate extends AppCompatActivity
                 }
                 BluetoothResultsController.printAllTableToLog(arrayOfFoundBTDevices);
 
+                if( process == 1 )
+                    launchMeasurementViewer();
             }
         });
 
@@ -361,6 +370,19 @@ public class MeasurementCreate extends AppCompatActivity
         controller.insert(measurement, getApplicationContext());
     }
 
+    /**
+     * Przechodzi do aktywnosci pokazania mapy
+     */
+    private void launchMeasurementViewer()
+    {
+        int idMeasurement = MeasurementsController.getLastRecord(getApplicationContext()).getIdMeasurements();
+        Intent intent = new Intent(this, MeasurementView.class);
+        Log.d(TAG, "idMeasure: "+idMeasurement);
+        intent.putExtra("idRooms", idRooms);
+        intent.putExtra("process", process);
+        intent.putExtra("idMeasurement", idMeasurement);
+        startActivity(intent);
+    }
 
     @Override
     protected void onPause()

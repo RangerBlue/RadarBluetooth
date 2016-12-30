@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.activities.mapping.process.OptionRoom;
 import com.example.kamil.br.activities.mapping.results.BluetoothResultsChooseRoom;
 import com.example.kamil.br.activities.mapping.measurement.MeasurementChooseRoom;
 import com.example.kamil.br.activities.mapping.path.PathChooseRoom;
@@ -50,6 +51,12 @@ public class MappingMenu extends AppCompatActivity {
         setContentView(R.layout.activity_mapping_menu);
 
         buttonStartProcess = (ImageButton) findViewById(R.id.button_start_process);
+        buttonStartProcess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 launchProcess();
+            }
+        });
 
         buttonRoom = (ImageButton) findViewById(R.id.button_room);
         buttonRoom.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +124,15 @@ public class MappingMenu extends AppCompatActivity {
     private void launchBluetoothResultsMenu()
     {
         Intent intent = new Intent(this, BluetoothResultsChooseRoom.class);
+        startActivity(intent);
+    }
+
+    /**
+     * funkcja włączająca aktywnośc procesu
+     */
+    private void launchProcess()
+    {
+        Intent intent = new Intent(this, OptionRoom.class);
         startActivity(intent);
     }
 }

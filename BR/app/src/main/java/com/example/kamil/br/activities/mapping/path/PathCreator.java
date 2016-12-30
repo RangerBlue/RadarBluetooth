@@ -61,6 +61,11 @@ public class PathCreator extends AppCompatActivity {
     private int idRooms ;
 
     /**
+     * Parametr procesu
+     */
+    private int process ;
+
+    /**
      * Szerokość ekranu horyzontalna lub wertykalna
      */
     private int screenWidth;
@@ -75,6 +80,8 @@ public class PathCreator extends AppCompatActivity {
         PathData.setGridCells(gridsCells);
         //odebranie paczki(id pokoju)
         idRooms = getIntent().getIntExtra("id",-1);
+        Log.d(TAG, "numer pokoju" + idRooms);
+        process = getIntent().getIntExtra("process", -1);
         position = new ArrayList<>();
         pathData = new ArrayList<>();
         setScreenWidth();
@@ -87,6 +94,7 @@ public class PathCreator extends AppCompatActivity {
                 PathData.calculateFunctions(position, pathData, idRooms,  getApplicationContext() );
                 Intent intent = new Intent(PathCreator.this, PathViewer.class);
                 intent.putExtra("id", idRooms);
+                intent.putExtra("process", process);
                 startActivity(intent);
             }
         });

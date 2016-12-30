@@ -13,6 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.activities.mapping.measurement.MeasurementChooseOption;
+import com.example.kamil.br.activities.mapping.measurement.MeasurementChooseRoom;
+import com.example.kamil.br.activities.mapping.measurement.MeasurementCreate;
 import com.example.kamil.br.adapters.RoomViewerAdapter;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
@@ -30,10 +33,17 @@ public class RoomChoose extends AppCompatActivity {
      * Lista elementów
      */
     private ListView list;
+
     /**
      * Adapter listy
      */
     private RoomViewerAdapter adapter;
+
+    /**
+     * Parametr procesu
+     */
+    private int process;
+
     private static String TAG = RoomChoose.class.getSimpleName();
 
     @Override
@@ -41,12 +51,32 @@ public class RoomChoose extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_viewer);
 
+        //odebranie paczki z aktywności procesu
+        process = getIntent().getIntExtra("process",-1);
+
         list = (ListView) findViewById(R.id.listViewRoomViewer);
         registerForContextMenu(list);
         ArrayList<Rooms> all = (ArrayList<Rooms>) new RoomsController().selectAll(getApplicationContext());
 
         adapter = new RoomViewerAdapter(this, all);
         list.setAdapter(adapter);
+
+        if( process == 1)
+        {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Rooms room = adapter.getItem(position);
+                    int idToPass = room.getIdRooms();
+                    Intent intent = new Intent(RoomChoose.this, MeasurementCreate.class);
+                    intent.putExtra("idRooms", idToPass);
+                    intent.putExtra("process", process);
+                    startActivity(intent);
+                }
+            });
+        }
+
     }
 
     @Override

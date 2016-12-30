@@ -1,5 +1,6 @@
 package com.example.kamil.br.activities.mapping.room;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ExpandedMenuView;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.activities.mapping.path.PathCreator;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
 
@@ -45,6 +47,9 @@ public class RoomCreator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_creator);
 
+        //odebranie paczki z aktywności procesu
+        final int process = getIntent().getIntExtra("process",-1);
+
         roomNameEditText = (EditText) findViewById(R.id.editTextRoomName);
 
         roomTypeSpinner = (Spinner) findViewById(R.id.room_creator_spinner);
@@ -76,6 +81,9 @@ public class RoomCreator extends AppCompatActivity {
                     roomTypeSpinner.setFocusable(false);
                     roomTypeSpinner.setClickable(false);
                     v.setClickable(false);
+
+                    if(process == 1)
+                    launchPathEditor(process);
                 }
                 else
                 {
@@ -109,5 +117,18 @@ public class RoomCreator extends AppCompatActivity {
         }
 
         return returnValue;
+    }
+
+    /**
+     * Przechodzi do aktywnosci rysowania kształtu pomieszczenia
+     * @param process parametr procesu
+     */
+    private void launchPathEditor(int process)
+    {
+        int idRooms = RoomsController.getLastRecord(getApplicationContext()).getIdRooms();
+        Intent intent = new Intent(this, PathCreator.class);
+        intent.putExtra("id", idRooms);
+        intent.putExtra("process", process);
+        startActivity(intent);
     }
 }

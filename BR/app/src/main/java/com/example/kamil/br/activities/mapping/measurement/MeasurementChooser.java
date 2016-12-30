@@ -50,6 +50,7 @@ public class MeasurementChooser extends AppCompatActivity {
             {
                 Measurements measurement = adapter.getItem(position);
                 int idToPass = measurement.getIdMeasurements();
+                Log.d(TAG, "measurement: "+idToPass);
                 Intent intent = new Intent(MeasurementChooser.this, MeasurementView.class);
                 intent.putExtra("idMeasurement", idToPass);
                 intent.putExtra("idRooms", idRooms);
