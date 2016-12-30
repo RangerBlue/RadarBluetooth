@@ -6,10 +6,13 @@ package com.example.kamil.br.views;
  * zasięgu od tego miejsca znajduje się urządzenie
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.view.View;
 import com.example.kamil.br.BluetoothDistance;
 import com.example.kamil.br.Circle;
 import com.example.kamil.br.QuadraticFunction;
+import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;
@@ -25,6 +29,7 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MapDrawView extends View {
     /**
@@ -44,6 +49,11 @@ public class MapDrawView extends View {
 
     /**
      * Lista z danymi urządzeń odnoszącymi się do jednej krawędzi
+     */
+    private static ArrayList<Integer> colors ;
+
+    /**
+     * Lista kolorów
      */
     private static ArrayList<BluetoothResults> sublist ;
 
@@ -115,6 +125,9 @@ public class MapDrawView extends View {
         MapDrawView.distinctDevices = distinctDevices;
     }
 
+    public static void setColors(ArrayList<Integer> colors) {
+        MapDrawView.colors = colors;
+    }
 
     /**
      * Wywołanie tej metody zamiast onDraw, używana jest przy własnych widokach
@@ -159,8 +172,7 @@ public class MapDrawView extends View {
         //rysowanie punktów
         drawPoints(canvas);
 
-        Circle.printAllTableToLog(circles);
-        drawResult(canvas, circles);
+
 
         super.dispatchDraw(canvas);
 
@@ -174,93 +186,130 @@ public class MapDrawView extends View {
      */
     private void drawPoints(Canvas canvas)
     {
-        p.setColor(Color.RED);
+        //p.setColor(Color.RED);
         int durationTime;
         float edgeLength ;
 
         /**
          * Obsłużenie ostaniej krawędzi
          */
-        //ostatni z pierwszym
-        sublist =  BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
-        Log.d(TAG, "Drukowanie sublisty");
-        BluetoothResultsController.printAllTableToLog(sublist);
-        durationTime = getEdgeDurationTime(sublist);
-        Log.d(TAG, "durationTime "+durationTime );
-        edgeLength = PathData.getSegmentLength(
-                    path.get(edgeNumbers).getP1(),
-                    path.get(0).getP1(),
-                    path.get(edgeNumbers).getP2(),
-                    path.get(0).getP2()
-                    );
-        Log.d(TAG, "edge"+edgeLength);
-        PathData.setRatio(durationTime/edgeLength);
-        elapsedTime = 0;
+        Random random = new Random();
 
-        for(int j=0 ; j<sublist.size(); j++)
+        int l=0;
+        for( String item : distinctDevices)
         {
-            Log.d(TAG, "cyk");
-            if(sublist.get(j).getAddress().equals("NULL"))
-            {
-                elapsedTime+=sublist.get(j).getTime();
-                Log.d(TAG, "elapsedTime: "+elapsedTime);
-            }
-            else
-            {
-                PathData clone = new PathData();
-                clone.setP1(path.get(0).getP1());
-                clone.setP2(path.get(0).getP2());
-                clone.setIfLinear(path.get(0).getIsIfLinear());
-                Log.d(TAG, "elapsed"+elapsedTime);
-                PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone , false);
-                drawMeasure(canvas, clone, sublist.get(j).getRssi());
-            }
-        }
 
-
-        //tu przerwa
-
-        /**
-         * Obsłużenie reszty krawędzi
-         */
-        //ostatni z pierwszym
-        for(int i=0 ; i<edgeNumbers; i++)
-        {
-            sublist = BluetoothResults.getSublistWhereEdgeNumbers(i, results);
-            Log.d(TAG, "sublista w pętli" );
+            p.setColor(colors.get(l));
+            l++;
+            //ostatni z pierwszym
+            sublist =  BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
+            sublist = getDataOfOneDevice(sublist, item);
+            Log.d(TAG, "Drukowanie sublisty");
             BluetoothResultsController.printAllTableToLog(sublist);
             durationTime = getEdgeDurationTime(sublist);
             Log.d(TAG, "durationTime "+durationTime );
             edgeLength = PathData.getSegmentLength(
-                    path.get(i).getP1(),
-                    path.get(i+1).getP1(),
-                    path.get(i).getP2(),
-                    path.get(i+1).getP2()
+                    path.get(edgeNumbers).getP1(),
+                    path.get(0).getP1(),
+                    path.get(edgeNumbers).getP2(),
+                    path.get(0).getP2()
             );
-            //Log.d(TAG, "edgeLenght"+edgeLength);
+            Log.d(TAG, "edge"+edgeLength);
             PathData.setRatio(durationTime/edgeLength);
-            //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
             elapsedTime = 0;
-            //pętla po oddzielonej liście
+
             for(int j=0 ; j<sublist.size(); j++)
             {
+                Log.d(TAG, "cyk");
                 if(sublist.get(j).getAddress().equals("NULL"))
                 {
                     elapsedTime+=sublist.get(j).getTime();
-                    // Log.d(TAG, "elapsedTime: "+elapsedTime);
+                    Log.d(TAG, "elapsedTime: "+elapsedTime);
                 }
                 else
                 {
                     PathData clone = new PathData();
-                    clone.setP1(path.get(i+1).getP1());
-                    clone.setP2(path.get(i+1).getP2());
-                    clone.setIfLinear(path.get(i+1).getIsIfLinear());
-                    PathData.setNewLength(elapsedTime,path.get(i), clone, false);
+                    clone.setP1(path.get(0).getP1());
+                    clone.setP2(path.get(0).getP2());
+                    clone.setIfLinear(path.get(0).getIsIfLinear());
+                    Log.d(TAG, "elapsed"+elapsedTime);
+                    PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone , false);
                     drawMeasure(canvas, clone, sublist.get(j).getRssi());
                 }
             }
-            elapsedTime = 0;
+
+
+            //tu przerwa
+
+            /**
+             * Obsłużenie reszty krawędzi
+             */
+            //ostatni z pierwszym
+            for(int i=0 ; i<edgeNumbers; i++)
+            {
+                sublist = BluetoothResults.getSublistWhereEdgeNumbers(i, results);
+                sublist = getDataOfOneDevice(sublist, item);
+                Log.d(TAG, "sublista w pętli" );
+                BluetoothResultsController.printAllTableToLog(sublist);
+                durationTime = getEdgeDurationTime(sublist);
+                Log.d(TAG, "durationTime "+durationTime );
+                edgeLength = PathData.getSegmentLength(
+                        path.get(i).getP1(),
+                        path.get(i+1).getP1(),
+                        path.get(i).getP2(),
+                        path.get(i+1).getP2()
+                );
+                //Log.d(TAG, "edgeLenght"+edgeLength);
+                PathData.setRatio(durationTime/edgeLength);
+                //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
+                elapsedTime = 0;
+                //pętla po oddzielonej liście
+                for(int j=0 ; j<sublist.size(); j++)
+                {
+                    if(sublist.get(j).getAddress().equals("NULL"))
+                    {
+                        elapsedTime+=sublist.get(j).getTime();
+                        // Log.d(TAG, "elapsedTime: "+elapsedTime);
+                    }
+                    else
+                    {
+                        PathData clone = new PathData();
+                        clone.setP1(path.get(i+1).getP1());
+                        clone.setP2(path.get(i+1).getP2());
+                        clone.setIfLinear(path.get(i+1).getIsIfLinear());
+                        PathData.setNewLength(elapsedTime,path.get(i), clone, false);
+                        drawMeasure(canvas, clone, sublist.get(j).getRssi());
+                    }
+                }
+                elapsedTime = 0;
+            }
+
+            Circle.printAllTableToLog(circles);
+            try
+            {
+                drawResult(canvas, circles);
+            }
+            catch (StackOverflowError e)
+            {
+                Log.d(TAG, "złapałem błąd");
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Błąd")
+                        .setMessage("To sie dzieje kiedy moracz pisze kod")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Activity activity = (Activity) getContext();
+                                activity.finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+
+            circles.clear();
         }
+
+
 
     }
 
@@ -322,12 +371,24 @@ public class MapDrawView extends View {
      * @param canvas kanwa
      * @param list lista z okręgami
      */
-    public void drawResult(Canvas canvas, ArrayList<Circle> list)
+    public void drawResult(Canvas canvas, ArrayList<Circle> list) throws StackOverflowError
     {
         QuadraticFunction.Point point = Circle.multiCircle(list);
+        Log.d(TAG, "wynik ("+point.getA()+","+point.getB()+")");
         canvas.drawCircle(point.getA()*ratio,(-1)*point.getB()*ratio,radius,p);
+    }
 
+    private ArrayList<BluetoothResults> getDataOfOneDevice(ArrayList<BluetoothResults> list, String name)
+    {
+        ArrayList<BluetoothResults> returnList = new ArrayList<>();
 
+        for (BluetoothResults item :  list)
+        {
+            if( item.getName().equals(name) || (item.getName().equals("NULL") && item.getRssi() == 0 ) )
+                returnList.add(item);
+        }
+
+        return returnList;
     }
 
     /**

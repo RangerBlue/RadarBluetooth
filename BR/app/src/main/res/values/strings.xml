@@ -71,4 +71,7 @@
     <string name="date">Date</string>
     <string name="your_speed">Your speed is </string>
     <string name="view_big">VIEW</string>
+    <string name="info">Info</string>
+    <string name="found_devices">Devices in 10 meters range</string>
+    <string name="map_devices">Devices on map</string>
 </resources>

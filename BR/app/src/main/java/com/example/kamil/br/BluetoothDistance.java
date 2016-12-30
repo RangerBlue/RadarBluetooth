@@ -1,7 +1,12 @@
 package com.example.kamil.br;
 
 import android.bluetooth.BluetoothDevice;
+
+import android.graphics.Color;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Klasa do obliczania odległości między szukanymi urządzeniami
@@ -39,5 +44,23 @@ public class BluetoothDistance
         Log.d(TAG,"rssi: "+rssi);
         return d;
 
+    }
+
+    public static ArrayList<Integer> getColorsForDevices(int numberOfDevices)
+    {
+        Random random = new Random();
+        ArrayList<Integer> returnList = new ArrayList<>();
+        int r, g, b;
+
+        for(int i = 0 ; i < numberOfDevices ; i++)
+        {
+            r = random.nextInt(255);
+            g = random.nextInt(255);
+            b = random.nextInt(255);
+            int color = Color.rgb(r,g,b);
+            returnList.add(color);
+        }
+
+        return returnList;
     }
 }

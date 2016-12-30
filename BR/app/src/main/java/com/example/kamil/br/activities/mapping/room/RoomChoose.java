@@ -70,7 +70,7 @@ public class RoomChoose extends AppCompatActivity {
         {
             case R.id.menu_delete:
                 RoomsController controller = new RoomsController();
-                controller.deleteRoomAndAllDependences(idToPass, getApplicationContext());
+                controller.deleteRoomAndAllDependencies(idToPass, getApplicationContext());
                 Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "delete");
                 Intent intent = getIntent();

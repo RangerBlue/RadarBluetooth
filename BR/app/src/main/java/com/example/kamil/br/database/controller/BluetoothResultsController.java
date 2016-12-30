@@ -160,7 +160,8 @@ public class BluetoothResultsController {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                String result = cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME))+", "+cursor.getString(cursor.getColumnIndex(BluetoothResults.ADDRESS));
+                //String result = cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME))+", "+cursor.getString(cursor.getColumnIndex(BluetoothResults.ADDRESS));
+                String result = cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME));
                 if( !cursor.getString(cursor.getColumnIndex(BluetoothResults.NAME)).equals("NULL") )
                     results.add(result);
             } while (cursor.moveToNext());

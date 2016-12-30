@@ -89,7 +89,7 @@ public class UserSpeed extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(getApplicationContext(), R.string.your_speed +Float.toString(averageValue) + " m/s", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.your_speed) +Float.toString(averageValue) + " m/s", Toast.LENGTH_SHORT).show();
                 saveSpeed(averageValue);
             }
         });
@@ -233,7 +233,7 @@ public class UserSpeed extends AppCompatActivity {
      */
     private float meterPerSecondsToKilometersPerHour(float velocity)
     {
-        return velocity/3.6f;
+        return velocity*3.6f;
     }
 
     /**
@@ -244,7 +244,7 @@ public class UserSpeed extends AppCompatActivity {
     {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putFloat("velocity", 1.1f);
+        editor.putFloat("velocity", speed);
         editor.commit();
     }
 }

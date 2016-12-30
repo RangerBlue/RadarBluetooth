@@ -88,7 +88,6 @@ public class Circle
             if(b == d)
             {
                 float x = (a + c)/2;
-                System.out.println("x nie funkcyjny "+ x);
 
                 //postać równania kwadratowego do otrzymania rozwiązań
                 float resultEquation_b = (-2) * b ;
@@ -103,9 +102,9 @@ public class Circle
                 double p2x = x;
 
                 double p1y = result.getX1();
-                System.out.println("y1 "+ p1y);
+
                 double p2y = result.getX2();
-                System.out.println("y1 "+ p2y);
+
 
 
 
@@ -125,17 +124,17 @@ public class Circle
             {
                 //równanie y= a_x + b_
                 float a_ = (a-c)/(d-b);
-                System.out.println("a_: "+a_);
+
                 float b_ = (float) ((Math.pow(c, 2) - Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(d, 2)+ Math.pow(r1, 2)-Math.pow(r2, 2)))/(2*(d-b));
-                System.out.println("b_: "+b_);
+
 
                 //postać równania kwadratowego do otrzymania rozwiązań
                 float resultEquation_a = (float) (1 + Math.pow(a_, 2));
-                System.out.println("eqa: "+resultEquation_a);
+
                 float resultEquation_b = (float) 2*(a_*b_ - a - b*a_);
-                System.out.println("eqb: "+resultEquation_b);
+
                 float resultEquation_c = (float) (Math.pow(a, 2)+ Math.pow((b_ - b), 2) - Math.pow(r1, 2));
-                System.out.println("eqc: "+resultEquation_c);
+
                 QuadraticFunction result = new QuadraticFunction(resultEquation_a, resultEquation_b, resultEquation_c);
 
 
@@ -144,15 +143,15 @@ public class Circle
                 Point point2= container.new Point();
 
                 float p1x = result.getX1();
-                System.out.println("x1: "+p1x);
+
                 float p2x = result.getX2();
-                System.out.println("x2: "+p2x);
+
 
 
                 float p1y = a_*p1x + b_;
-                System.out.println("y1: "+p1y);
+
                 float p2y = a_*p2x + b_;
-                System.out.println("y2: "+p2y);
+
 
                 point1.setA((float) p1x);
                 point2.setA((float) p2x);
@@ -167,7 +166,7 @@ public class Circle
         }
         else
         {
-            System.out.println("Okręgi sie nie stykają");
+
             QuadraticFunction container = new QuadraticFunction();
             Point point1= container.new Point();
             Point point2= container.new Point();
@@ -178,7 +177,7 @@ public class Circle
             point1.setB((float) circle1.getB());
             point2.setB((float) circle2.getB());
             float addLength = (PathData.getSegmentLength(point1.getA(), point2.getA(), point1.getB(), point2.getB()) - circle1.getR() - circle2.getR())/2;
-            System.out.println("Zwiększenie promienia o " + addLength);
+
 
             Circle circlePlus1 = new Circle(a, b, r1 + addLength);
             Circle circlePlus2 = new Circle(c, d, r2 + addLength);
@@ -186,7 +185,7 @@ public class Circle
             ArrayList<QuadraticFunction.Point> result;
             result = getIntersectionPointsOfTwoCircles(circlePlus1,circlePlus2);
 
-            System.out.println("Okręgi juz stykają sie końcówkami :P");
+
 
             returnList.add(result.get(0));
             returnList.add(result.get(1));
@@ -277,7 +276,7 @@ public class Circle
             wyniki = Circle.getTriangleOfResult(wyniki);
             end = Circle.pairsOfPointsToPoints(wyniki);
             finalPoint = Circle.centerOfTriangle(end.get(0), end.get(1), end.get(2));
-            System.out.println("Wynik to:\nx:" +finalPoint.a+ "\ny:" + finalPoint.b);
+
         }else if(tab.size()==99999){
             //tutaj dokleje później
         }else{
@@ -293,7 +292,7 @@ public class Circle
             }
             //wyniki = Circle.getClosestPoint(cross);
             Point wynik = arithmeticMean(cross);
-            System.out.println("Wynik test to:\nx: " + wynik.getA() +"\ny: " + wynik.getB());
+
             return wynik;
         }
 

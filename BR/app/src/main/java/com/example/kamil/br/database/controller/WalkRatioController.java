@@ -43,14 +43,13 @@ public class WalkRatioController {
      * @param id id rekordu
      * @param context kontekst aplikacji
      */
-    public void deleteWhereId(int id, Context context)
+    public static void deleteWhereId(int id, Context context)
     {
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         String delete =
                 " DELETE FROM " + WalkRatio.TABLE +
                         " WHERE WalkRatio." + WalkRatio.ID_WALKRATIO+"="+Integer.toString(id);
         db.execSQL(delete);
-        Log.d(TAG, "deleted record from walkratio");
         db.close(); // Closing database connection
     }
 

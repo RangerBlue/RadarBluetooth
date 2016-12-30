@@ -28,8 +28,10 @@ public class RadarDrawView extends View {
     private static ArrayList<BluetoothResults> data;
     private Paint p;
     private static String TAG = RadarDrawView.class.getSimpleName();
+    private static ArrayList<Integer> colorList;
     int canvasWidth;
     int canvasHeight;
+
     int ratio = 1000;
     int radius = 3;
 
@@ -39,6 +41,7 @@ public class RadarDrawView extends View {
     {
         this.data = data;
     }
+    public void setColorList(ArrayList<Integer> list) {this.colorList = list;}
 
     public RadarDrawView(Context context)
     {
@@ -77,15 +80,17 @@ public class RadarDrawView extends View {
 
         drawAxis(canvas, p, canvasWidth, canvasHeight);
 
+        int i = 0;
         //rysowanie punktów
         for(BluetoothResults e : data )
         {
             p.setStrokeWidth(2);
-            p.setColor(getResources().getColor(R.color.colorPrimaryDark));
+            p.setColor(colorList.get(i));
             //figura pusta w środku
             p.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(canvasWidth/2,canvasWidth/2,MetersToPixels(BluetoothDistance.getDistance(e.getRssi(), -1)),p);
             Log.d(TAG,e.getName()+","+ Integer.toString(e.getRssi()));
+            i++;
          }
 
         super.dispatchDraw(canvas);

@@ -61,12 +61,13 @@ public class RoomsController {
      * @param @param idRoom id pokoju do usunięcia
      * @param @context kontekst aplikacji
      */
-    public void deleteRoomAndAllDependences(int idRoom, Context context)
+    public void deleteRoomAndAllDependencies(int idRoom, Context context)
     {
         deleteWhereIdRooms(idRoom, context);
         PathDataController.deleteWhereIdRooms(idRoom, context);
         BluetoothResultsController.deleteWhereIdRooms(idRoom, context);
         MeasurementsController.deleteWhereIdRooms(idRoom, context);
+        WalkRatioController.deleteWhereId(idRoom, context);
     }
 
     /**

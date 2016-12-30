@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.activities.settings.UserSpeed;
+import com.example.kamil.br.database.controller.WalkRatioController;
+import com.example.kamil.br.database.model.WalkRatio;
+
+import java.util.ArrayList;
 
 /**
  * Menu główne, tutaj znajduje się całe sterowanie aplikacji
@@ -123,8 +127,10 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
 
-        Log.d("as", String.valueOf(pref.getFloat("velocity", -1f)));
+        ArrayList<WalkRatio> lista = (ArrayList<WalkRatio>) WalkRatioController.selectAll(getApplicationContext());
+        WalkRatioController.printAllTableToLog(lista);
 
+        Toast.makeText(this, String.valueOf(pref.getFloat("velocity", -1f)), Toast.LENGTH_SHORT).show();
     }
 
     /**
