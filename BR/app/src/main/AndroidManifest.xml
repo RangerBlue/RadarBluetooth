@@ -4,13 +4,6 @@
     android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -22,34 +15,15 @@
         <activity android:name=".activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.mapping.measurement.MeasurementCreate" />
-        <activity android:name=".activities.mapping.path.PathViewer" />
-        <activity
-            android:name=".activities.mapping.path.PathCreator"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.mapping.room.RoomCreator" />
-        <activity android:name=".activities.mapping.room.RoomChoose" />
-        <activity android:name=".activities.mapping.room.RoomMenu" />
-        <activity android:name=".activities.mapping.path.PathChooseOption" />
-        <activity android:name=".activities.mapping.path.PathChooseRoom" />
         <activity android:name=".activities.mapping.measurement.MeasurementChooseOption" />
         <activity android:name=".activities.mapping.results.BluetoothResultsChooseRoom" />
         <activity android:name=".activities.main.BluetoothFinder" />
         <activity android:name=".activities.main.Radar" />
-        <activity android:name=".activities.mapping.measurement.MeasurementChooseRoom" />
-        <activity android:name=".activities.mapping.measurement.MeasurementChooser" />
-        <activity android:name=".activities.mapping.measurement.MeasurementView" />
-        <activity android:name=".activities.main.MappingMenu" />
-        <activity android:name=".activities.settings.UserSpeed" />
-        <activity android:name=".activities.mapping.results.BluetoothResultsEditor" />
-        <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser" />
         <activity android:name=".activities.main.Settings" />
         <activity android:name=".activities.main.Tracking" />
-        <activity android:name=".activities.mapping.process.OptionRoom"></activity>
     </application>
 
 </manifest>

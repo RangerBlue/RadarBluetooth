@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         buttonMapping = (ImageButton) findViewById(R.id.button_map);
+
         buttonMapping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
