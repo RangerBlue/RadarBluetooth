@@ -17,6 +17,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.example.kamil.br.R;
+import com.example.kamil.br.activities.mapping.path.PathViewer;
 import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.math.Circle;
 import com.example.kamil.br.math.QuadraticFunction;
@@ -168,8 +170,28 @@ public class MapDrawView extends View {
         canvas.drawLine(path.get(path.size()-1).getP1()*ratio,path.get(path.size()-1).getP2Reverse()*ratio,path.get(0).getP1()*ratio,path.get(0).getP2Reverse()*ratio,p);
 
 
-        //rysowanie punktów
-        drawPoints(canvas);
+
+        try
+        {
+            //rysowanie punktów
+            drawPoints(canvas);
+        }
+        catch (ArithmeticException e)
+        {
+            Log.d(TAG, "złapałem błąd");
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getResources().getString(R.string.error))
+                    .setMessage(getResources().getString(R.string.error_map))
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Activity activity = (Activity) getContext();
+                            activity.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
 
 
 
@@ -292,8 +314,8 @@ public class MapDrawView extends View {
             {
                 Log.d(TAG, "złapałem błąd");
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Błąd")
-                        .setMessage("To sie dzieje kiedy moracz pisze kod")
+                        .setTitle(getResources().getString(R.string.error))
+                        .setMessage(getResources().getString(R.string.error_map))
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -372,9 +394,31 @@ public class MapDrawView extends View {
      */
     public void drawResult(Canvas canvas, ArrayList<Circle> list) throws StackOverflowError
     {
-        QuadraticFunction.Point point = Circle.multiCircle(list);
-        Log.d(TAG, "wynik ("+point.getA()+","+point.getB()+")");
-        canvas.drawCircle(point.getA()*ratio,(-1)*point.getB()*ratio,radius,p);
+
+        try
+        {
+            QuadraticFunction.Point point = Circle.multiCircle(list);
+            Log.d(TAG, "wynik ("+point.getA()+","+point.getB()+")");
+            canvas.drawCircle(point.getA()*ratio,(-1)*point.getB()*ratio,radius,p);
+        }
+        catch (ArithmeticException e)
+        {
+            Log.d(TAG, "stackoverflow");
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getResources().getString(R.string.error))
+                    .setMessage(getResources().getString(R.string.error_map))
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Activity activity = (Activity) getContext();
+                            activity.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+
     }
 
     private ArrayList<BluetoothResults> getDataOfOneDevice(ArrayList<BluetoothResults> list, String name)

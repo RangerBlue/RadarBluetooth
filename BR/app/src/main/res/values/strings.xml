@@ -79,4 +79,5 @@
     <string name="room_process_option">ROOM</string>
     <string name="error">Error</string>
     <string name="error_path">You can\'t changing length of edges in this way, try again</string>
+    <string name="error_map">You have encountered an error, calculation failed</string>
 </resources>

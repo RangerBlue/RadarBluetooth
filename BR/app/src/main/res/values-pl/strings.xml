@@ -79,5 +79,5 @@
     <string name="room_process_option">POMIESZCZENIE</string>
     <string name="error">Błąd</string>
     <string name="error_path">Nie możesz zmienić długości krawędzi w ten sposób, spróbuj ponownie</string>
-
+    <string name="error_map">Napotkano błąd, obliczenia nie powiodły się</string>
 </resources>
