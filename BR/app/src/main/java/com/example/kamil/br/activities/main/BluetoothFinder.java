@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.kamil.br.BluetoothDistance;
+import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.adapters.BluetoothFinderAdapter;
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.BluetoothResults;

@@ -1,4 +1,4 @@
-package com.example.kamil.br;
+package com.example.kamil.br.math;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import com.example.kamil.br.database.model.PathData;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.example.kamil.br.QuadraticFunction.Point;
+import com.example.kamil.br.math.QuadraticFunction.Point;
 
 /**
  * Opisuje okrąg w układzie wsółrzędnych

@@ -274,11 +274,7 @@ public class MeasurementCreate extends AppCompatActivity
                 createMeasurement(idRooms);
                 BluetoothResultsController controller = new BluetoothResultsController();
                 //wstawienie do bazy
-                for( BluetoothResults item : arrayOfFoundBTDevices)
-                {
-                    Log.d("ostateczne", String.valueOf(item.getIdRooms()));
-                    controller.insert(item, getApplicationContext());
-                }
+                controller.insertList(arrayOfFoundBTDevices, getApplicationContext());
                 BluetoothResultsController.printAllTableToLog(arrayOfFoundBTDevices);
 
                 if( process == 1 )

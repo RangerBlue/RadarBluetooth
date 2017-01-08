@@ -1,8 +1,11 @@
 package com.example.kamil.br.activities.mapping.path;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -112,7 +115,7 @@ public class PathViewer extends AppCompatActivity  {
         map = (PathDrawView) findViewById(R.id.viewDrawMap);
         map.setData(list);
         map.setNumber(counter);
-        map.setScreenWidth(screenWidth);
+      //  map.setScreenWidth(screenWidth);
         counterLimit = list.get(list.size()-1).getEdgeNumber();
 
         PathDataController.printAllTableToLog(list);
@@ -138,24 +141,43 @@ public class PathViewer extends AppCompatActivity  {
             @Override
             public void onClick(View v)
             {
-                Log.d(TAG, "stopstart");
-                if(isTheClockTicking)
+                try
                 {
-                    buttonStopStart.setImageResource(R.drawable.start_process_icon);
-                    timeStop = System.currentTimeMillis();
-                    getTimeDifference(timeStart, timeStop);
-                    isTheClockTicking = false;
-                    buttonNext.setVisibility(View.VISIBLE);
-                    hideButtonIfRatioIsNotSet(buttonNext);
+                    Log.d(TAG, "stopstart");
+                    if(isTheClockTicking)
+                    {
+                        buttonStopStart.setImageResource(R.drawable.start_process_icon);
+                        timeStop = System.currentTimeMillis();
+                        getTimeDifference(timeStart, timeStop);
+                        isTheClockTicking = false;
+                        buttonNext.setVisibility(View.VISIBLE);
+                        hideButtonIfRatioIsNotSet(buttonNext);
+                    }
+                    else
+                    {
+                        buttonStopStart.setImageResource(R.drawable.stop_icon);
+                        timeStart = System.currentTimeMillis();
+                        isTheClockTicking = true;
+                        buttonNext.setVisibility(View.INVISIBLE);
+                        hideButtonIfRatioIsNotSet(buttonNext);
+                    }
                 }
-                else
+                catch (ArithmeticException e)
                 {
-                    buttonStopStart.setImageResource(R.drawable.stop_icon);
-                    timeStart = System.currentTimeMillis();
-                    isTheClockTicking = true;
-                    buttonNext.setVisibility(View.INVISIBLE);
-                    hideButtonIfRatioIsNotSet(buttonNext);
+                    Log.d(TAG, "złapałem błąd");
+                    new AlertDialog.Builder(PathViewer.this)
+                            .setTitle(getResources().getString(R.string.error))
+                            .setMessage(getResources().getString(R.string.error_path))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
+
             }
         });
 
@@ -376,8 +398,8 @@ public class PathViewer extends AppCompatActivity  {
         display.getSize(size);
 
         return (int) size.x;
-
     }
+
 
     /**
      * Przechodzi do aktywnosci tworzenia pomiaru

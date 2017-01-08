@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.example.kamil.br.BluetoothDistance;
+import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.R;
 import com.example.kamil.br.activities.main.MappingMenu;
 import com.example.kamil.br.database.controller.BluetoothResultsController;

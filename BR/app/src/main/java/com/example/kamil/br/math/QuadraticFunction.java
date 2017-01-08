@@ -1,4 +1,4 @@
-package com.example.kamil.br;
+package com.example.kamil.br.math;
 
 import android.util.Log;
 
@@ -46,9 +46,10 @@ public class QuadraticFunction
      * @param c wartośc wyrazów wolnych
      * @return obliczona delta
      */
-    private float calculateDelta(float a, float b, float c)
+    private float calculateDelta(float a, float b, float c) throws ArithmeticException
     {
         float delta = b*b - 4*a*c; Log.d(TAG +" delta", Float.toString(delta));
+        if( delta<0 ) throw new ArithmeticException();
         return delta;
     }
 

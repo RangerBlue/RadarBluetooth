@@ -1,6 +1,5 @@
 package com.example.kamil.br.activities.main;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,15 +18,12 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 
-import com.example.kamil.br.BluetoothDistance;
-import com.example.kamil.br.adapters.BluetoothFinderAdapter;
+import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.R;
 import com.example.kamil.br.views.RadarDrawView;
 import com.example.kamil.br.database.model.BluetoothResults;
 
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 /**
  * aktywność służąca do przestawienia wyników wyszukiwania urządzeń w postaci graficznej,

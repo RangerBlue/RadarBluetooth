@@ -77,5 +77,7 @@
     <string name="new_room">NOWE</string>
     <string name="existing_room">ISTNIEJĄCE</string>
     <string name="room_process_option">POMIESZCZENIE</string>
+    <string name="error">Błąd</string>
+    <string name="error_path">Nie możesz zmienić długości krawędzi w ten sposób, spróbuj ponownie</string>
 
 </resources>

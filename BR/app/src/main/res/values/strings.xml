@@ -77,4 +77,6 @@
     <string name="new_room">NEW</string>
     <string name="existing_room">EXISTING</string>
     <string name="room_process_option">ROOM</string>
+    <string name="error">Error</string>
+    <string name="error_path">You can\'t changing length of edges in this way, try again</string>
 </resources>

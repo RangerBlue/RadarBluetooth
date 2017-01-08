@@ -49,6 +49,25 @@ public class BluetoothResultsController {
         db.close(); // Closing database connection
     }
 
+    public void insertList(ArrayList<BluetoothResults> bluetoothResults, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+
+        for( BluetoothResults bluetoothResult : bluetoothResults)
+        {
+            ContentValues values = new ContentValues();
+            values.put(BluetoothResults.NAME, bluetoothResult.getName());
+            values.put(BluetoothResults.ADDRESS, bluetoothResult.getAddress());
+            values.put(BluetoothResults.RSSI, bluetoothResult.getRssi());
+            values.put(BluetoothResults.TIME, bluetoothResult.getTime());
+            values.put(BluetoothResults.EGDENUMBER, bluetoothResult.getEdgeNumber());
+            values.put(BluetoothResults.ID_MEASUREMENTS, bluetoothResult.getIdMeasurements());
+            values.put(BluetoothResults.ID_ROOMS, bluetoothResult.getIdRooms());
+            db.insert(BluetoothResults.TABLE, null, values);
+        }
+        db.close(); // Closing database connection
+    }
+
     /**
      * zwraca wszystkie rekordy z tabeli
      * @param context kontekst aplikacji

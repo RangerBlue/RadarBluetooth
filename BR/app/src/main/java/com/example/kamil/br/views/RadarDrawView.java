@@ -1,24 +1,17 @@
 package com.example.kamil.br.views;
 
 import android.content.Context;
-import android.content.IntentFilter;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.example.kamil.br.BluetoothDistance;
-import com.example.kamil.br.R;
+import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.database.model.BluetoothResults;
-import com.example.kamil.br.database.model.PathData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Widok w którym pokazywane jest odległość znalezionych urządzeń przez

@@ -17,10 +17,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.example.kamil.br.BluetoothDistance;
-import com.example.kamil.br.Circle;
-import com.example.kamil.br.QuadraticFunction;
-import com.example.kamil.br.R;
+import com.example.kamil.br.math.BluetoothDistance;
+import com.example.kamil.br.math.Circle;
+import com.example.kamil.br.math.QuadraticFunction;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;

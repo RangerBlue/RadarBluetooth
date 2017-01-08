@@ -3,10 +3,9 @@ package com.example.kamil.br.database.model;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.kamil.br.QuadraticFunction;
+import com.example.kamil.br.math.QuadraticFunction;
 import com.example.kamil.br.database.controller.PathDataController;
 
-import java.io.Closeable;
 import java.io.Serializable;
 import java.util.ArrayList;
 

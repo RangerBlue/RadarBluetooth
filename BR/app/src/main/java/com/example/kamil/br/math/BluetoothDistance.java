@@ -1,4 +1,4 @@
-package com.example.kamil.br;
+package com.example.kamil.br.math;
 
 import android.bluetooth.BluetoothDevice;
 

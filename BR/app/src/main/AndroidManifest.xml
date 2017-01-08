@@ -49,7 +49,7 @@
         <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser" />
         <activity android:name=".activities.main.Settings" />
         <activity android:name=".activities.main.Tracking" />
-        <activity android:name=".activities.mapping.process.OptionRoom"></activity>
+        <activity android:name=".activities.mapping.process.OptionRoom" />
     </application>
 
 </manifest>
