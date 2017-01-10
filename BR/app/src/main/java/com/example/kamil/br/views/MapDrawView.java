@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import com.example.kamil.br.R;
@@ -76,7 +77,7 @@ public class MapDrawView extends View {
     /**
      * Promień rysowania punktu w miejscu, w którym nastąpił pomiar
      */
-    private int radius;
+    private int radius = 4;
 
     /**
      * Tag klasy
@@ -98,6 +99,12 @@ public class MapDrawView extends View {
      * Lista z danymi o okręgach
      */
     private ArrayList<Circle> circles;
+
+    private Float xMove = 0f ;
+    private Float yMove = 0f;
+
+    private static int screenWidth;
+    private static int screenHeight;
 
     public MapDrawView(Context context) {
         super(context);
@@ -141,6 +148,17 @@ public class MapDrawView extends View {
         PathDataController.printAllTableToLog(path);
         BluetoothResultsController.printAllTableToLog(results);
 
+        Pair moves = calculateMoves(path);
+        xMove = (Float) moves.first;
+        yMove = (Float) moves.second;
+        Log.d(TAG, "przemieszcezniea"+xMove+","+yMove);
+        updateListElements(path, xMove, yMove);
+        Log.d(TAG, "UPDATE");
+        PathDataController.printAllTableToLog(path);
+        ratio = calculateAbsoluteRatio(screenWidth,screenHeight, path);
+        Log.d(TAG,"ratio nowe: "+ratio);
+        radius = ratio/20;
+
         circles = new ArrayList<>();
 
         for(String item : distinctDevices)
@@ -155,26 +173,37 @@ public class MapDrawView extends View {
 
 
         //TODO dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
-        ratio = 44;
-        radius = 1;
+
+       // radius = 1;
+
 
         //rysowanie krawędzi
-        p.setColor(Color.BLUE);
+        p.setColor(Color.BLACK);
         for(int i = 0 ; i < path.size()-1; i++)
         {
-            p.setColor(Color.BLACK);
-            canvas.drawLine(path.get(i).getP1()*ratio,path.get(i).getP2Reverse()*ratio,path.get(i+1).getP1()*ratio,path.get(i+1).getP2Reverse()*ratio,p);
+
+            canvas.drawLine(
+                    (path.get(i).getP1()+ xMove)*ratio ,
+                    (path.get(i).getP2Reverse()+ yMove)*ratio ,
+                    (path.get(i+1).getP1() + xMove)*ratio,
+                    (path.get(i+1).getP2Reverse() + yMove)*ratio,
+                    p);
         }
 
         //rysowanie lini ostatniej z pierwszą
-        canvas.drawLine(path.get(path.size()-1).getP1()*ratio,path.get(path.size()-1).getP2Reverse()*ratio,path.get(0).getP1()*ratio,path.get(0).getP2Reverse()*ratio,p);
+        canvas.drawLine(
+                (path.get(path.size()-1).getP1() + xMove)*ratio,
+                (path.get(path.size()-1).getP2Reverse()+ yMove)*ratio,
+                (path.get(0).getP1() + xMove)*ratio,
+                (path.get(0).getP2Reverse()+ yMove)*ratio,
+                p);
 
 
 
         try
         {
             //rysowanie punktów
-            drawPoints(canvas);
+           drawPoints(canvas);
         }
         catch (ArithmeticException e)
         {
@@ -329,9 +358,6 @@ public class MapDrawView extends View {
 
             circles.clear();
         }
-
-
-
     }
 
 
@@ -345,9 +371,9 @@ public class MapDrawView extends View {
     private void drawMeasure(Canvas canvas, PathData record, int value)
     {
         p.setStrokeWidth(1);
-        canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,radius,p);
+       // canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,radius,p);
         float length = getConvertedValue(BluetoothDistance.getDistance(value, RoomsController.selectTypeWhereId(getContext(), results.get(0).getIdRooms())));
-        canvas.drawCircle(record.getP1()*ratio,record.getP2Reverse()*ratio,length*ratio,p);
+        //canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,length*ratio,p);
         Circle circle = new Circle(record.getP1(), record.getP2(), length);
         circles.add(circle);
     }
@@ -398,8 +424,10 @@ public class MapDrawView extends View {
         try
         {
             QuadraticFunction.Point point = Circle.multiCircle(list);
-            Log.d(TAG, "wynik ("+point.getA()+","+point.getB()+")");
-            canvas.drawCircle(point.getA()*ratio,(-1)*point.getB()*ratio,radius,p);
+            Log.d(TAG, "wynik ("+(point.getA())*ratio+","+((point.getB()))*(-1)*ratio+")");
+            p.setStyle(Paint.Style.FILL);
+            canvas.drawCircle((point.getA())*ratio,((point.getB()))*(-1)*ratio,radius,p);
+            p.setStyle(Paint.Style.STROKE);
         }
         catch (ArithmeticException e)
         {
@@ -420,6 +448,86 @@ public class MapDrawView extends View {
 
 
     }
+
+
+
+    /**
+     * Oblicza współczynnik powiększający rysunek zależnie od rozmiaru ekranu
+     * @param screenWidth szerokość ekranu
+     * @param list lista z danymi o krawędziach
+     * @return
+     */
+    private int calculateAbsoluteRatio(int screenWidth, int screenHeight, ArrayList<PathData> list)
+    {
+        float maxX = 0;
+        float maxY = 0;
+        for ( PathData item : list )
+        {
+            if(item.getP1() > maxX)
+                maxX = item.getP1();
+            if(item.getP2Reverse() > maxY)
+                maxY = item.getP2Reverse();
+        }
+        Log.d(TAG, "screenWidth "+ screenWidth);
+        Log.d(TAG, "screenHeight "+ screenHeight);
+        Log.d(TAG, "maxX "+ maxX);
+        Log.d(TAG, "maxY "+ maxY);
+
+        if( maxX >= maxY)
+        {
+            return (int) ((screenWidth/maxX)*0.95);
+        }
+        else
+        {
+            return (int) ((screenHeight/maxY)*0.95);
+        }
+
+    }
+
+    /**
+     * Zwraca przesunięcie osi X i Y jeśli rysunek wychodzi poza ekran
+     * @param list lista z danymi o krawędziach
+     * @return
+     */
+    private Pair calculateMoves(ArrayList<PathData> list)
+    {
+        float minX = 0;
+        float minY = 0;
+        float xMove = 0;
+        float yMove = 0;
+        for ( PathData item : list )
+        {
+            if(item.getP1() < minX)
+                minX = item.getP1();
+            if(item.getP2Reverse() < minY)
+                minY = item.getP2Reverse();
+        }
+
+        if( minX < 0 )
+            xMove = (-1) * minX;
+        if( minY <0 )
+            yMove = (-1) * minY;
+
+        Pair result = new Pair(xMove, yMove);
+
+        return result;
+    }
+
+    /**
+     * Uaktualnia elementy listy uwzględniacjąc przesunięcia
+     * @param list lista z danymi o krawędziach
+     * @param moveX przesunięcie na osi X
+     * @param moveY przesunięcie na osi Y
+     */
+    private void updateListElements(ArrayList<PathData> list, float moveX, float moveY )
+    {
+        for(PathData item : list)
+        {
+            item.setP1(item.getP1()+moveX);
+            item.setP2(item.getP2()-moveY);
+        }
+    }
+
 
     private ArrayList<BluetoothResults> getDataOfOneDevice(ArrayList<BluetoothResults> list, String name)
     {
@@ -442,5 +550,10 @@ public class MapDrawView extends View {
         super.invalidate();
     }
 
-
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        screenWidth= MeasureSpec.getSize(widthMeasureSpec);
+        screenHeight = MeasureSpec.getSize(heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 }

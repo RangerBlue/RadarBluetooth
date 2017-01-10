@@ -166,9 +166,9 @@ public class PathDrawView extends View
     }
 
     /**
-     *
-     * @param screenWidth
-     * @param list
+     * Oblicza współczynnik powiększający rysunek zależnie od rozmiaru ekranu
+     * @param screenWidth szerokość ekranu
+     * @param list lista z danymi o krawędziach
      * @return
      */
     private int calculateAbsoluteRatio(int screenWidth, int screenHeight, ArrayList<PathData> list)
@@ -198,6 +198,11 @@ public class PathDrawView extends View
 
     }
 
+    /**
+     * Zwraca przesunięcie osi X i Y jeśli rysunek wychodzi poza ekran
+     * @param list lista z danymi o krawędziach
+     * @return
+     */
     private Pair calculateMoves( ArrayList<PathData> list)
     {
         float minX = 0;
@@ -222,6 +227,12 @@ public class PathDrawView extends View
         return result;
     }
 
+    /**
+     * Uaktualnia elementy listy uwzględniacjąc przesunięcia
+     * @param list lista z danymi o krawędziach
+     * @param moveX przesunięcie na osi X
+     * @param moveY przesunięcie na osi Y
+     */
     private void updateListElements(ArrayList<PathData> list, float moveX, float moveY )
     {
         for(PathData item : list)

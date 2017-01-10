@@ -34,7 +34,8 @@ public class Settings extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
         speedValueTextView = (TextView) findViewById(R.id.textViewSettingsGPSValue);
-        speedValueTextView.setText(String.valueOf(pref.getFloat("velocity", -1f)));
+       // speedValueTextView.setText(String.valueOf(pref.getFloat("velocity", -1f)));
+        speedValueTextView.setText("1.11");
 
         numberOfRoomsTextView = (TextView) findViewById(R.id.textViewSettingsRoomAmount);
         numberOfRoomsTextView.setText( Integer.toString(RoomsController.selectAll(getApplicationContext()).size()));
