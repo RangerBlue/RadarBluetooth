@@ -79,6 +79,10 @@ public class PathChooseOption extends AppCompatActivity {
         {
             buttonCreate.setClickable(false);
         }
+        else
+        {
+            buttonView.setClickable(false);
+        }
     }
 
 

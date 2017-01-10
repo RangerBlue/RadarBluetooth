@@ -135,7 +135,7 @@ public class RoomsController {
      * @param context kontekst aplikacji
      * @return
      */
-    public List<Rooms> selectAll(Context context)
+    public static List<Rooms> selectAll(Context context)
     {
         List<Rooms> rooms = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();

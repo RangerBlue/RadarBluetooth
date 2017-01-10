@@ -19,37 +19,57 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.main.MainActivity">
+        <activity android:name=".activities.main.MainActivity"
+           >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.mapping.measurement.MeasurementCreate" />
-        <activity android:name=".activities.mapping.path.PathViewer" />
+        <activity android:name=".activities.mapping.measurement.MeasurementCreate"
+            android:label="@string/measurement_small"/>
+        <activity android:name=".activities.mapping.path.PathViewer"
+            android:label="@string/path_small"/>
         <activity
             android:name=".activities.mapping.path.PathCreator"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.mapping.room.RoomCreator" />
-        <activity android:name=".activities.mapping.room.RoomChoose" />
-        <activity android:name=".activities.mapping.room.RoomMenu" />
-        <activity android:name=".activities.mapping.path.PathChooseOption" />
-        <activity android:name=".activities.mapping.path.PathChooseRoom" />
-        <activity android:name=".activities.mapping.measurement.MeasurementChooseOption" />
-        <activity android:name=".activities.mapping.results.BluetoothResultsChooseRoom" />
-        <activity android:name=".activities.main.BluetoothFinder" />
-        <activity android:name=".activities.main.Radar" />
-        <activity android:name=".activities.mapping.measurement.MeasurementChooseRoom" />
-        <activity android:name=".activities.mapping.measurement.MeasurementChooser" />
-        <activity android:name=".activities.mapping.measurement.MeasurementView" />
-        <activity android:name=".activities.main.MappingMenu" />
-        <activity android:name=".activities.settings.UserSpeed" />
-        <activity android:name=".activities.mapping.results.BluetoothResultsEditor" />
-        <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser" />
-        <activity android:name=".activities.main.Settings" />
+        <activity android:name=".activities.mapping.room.RoomCreator"
+            android:label="@string/button_edit_room"/>
+        <activity android:name=".activities.mapping.room.RoomChoose"
+            android:label="@string/button_edit_room"/>
+        <activity android:name=".activities.mapping.room.RoomMenu"
+            android:label="@string/button_edit_room"/>
+        <activity android:name=".activities.mapping.path.PathChooseOption"
+            android:label="@string/path_small"/>
+        <activity android:name=".activities.mapping.path.PathChooseRoom"
+            android:label="@string/path_small"/>
+        <activity android:name=".activities.mapping.measurement.MeasurementChooseOption"
+            android:label="@string/measurement_small"/>
+        <activity android:name=".activities.mapping.results.BluetoothResultsChooseRoom"
+            android:label="@string/results_small"/>
+        <activity android:name=".activities.main.BluetoothFinder"
+            android:label="@string/search_devices_small"/>
+        <activity android:name=".activities.main.Radar"
+            android:label="@string/radar_small"/>
+        <activity android:name=".activities.mapping.measurement.MeasurementChooseRoom"
+            android:label="@string/measurement_small"/>
+        <activity android:name=".activities.mapping.measurement.MeasurementChooser"
+            android:label="@string/measurement_small"/>
+        <activity android:name=".activities.mapping.measurement.MeasurementView"
+            android:label="@string/measurement_small"/>
+        <activity android:name=".activities.main.MappingMenu"
+            android:label="@string/mapping_small"/>
+        <activity android:name=".activities.settings.UserSpeed"
+            android:label="@string/user_speed"/>
+        <activity android:name=".activities.mapping.results.BluetoothResultsEditor"
+            android:label="@string/results_small"/>
+        <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser"
+            android:label="@string/results_small"/>
+        <activity android:name=".activities.main.Settings"
+            android:label="@string/settings"/>
         <activity android:name=".activities.main.Tracking" />
-        <activity android:name=".activities.mapping.process.OptionRoom" />
+        <activity android:name=".activities.mapping.process.OptionRoom"
+            android:label="@string/button_edit_room"/>
     </application>
 
 </manifest>

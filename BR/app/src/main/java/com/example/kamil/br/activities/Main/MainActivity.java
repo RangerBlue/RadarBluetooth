@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void settings()
     {
-        Intent intent = new Intent(this, UserSpeed.class);
+        Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
 

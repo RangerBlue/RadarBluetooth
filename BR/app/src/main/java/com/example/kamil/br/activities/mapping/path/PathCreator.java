@@ -3,7 +3,10 @@ package com.example.kamil.br.activities.mapping.path;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.RadialGradient;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,15 +112,20 @@ public class PathCreator extends AppCompatActivity {
     {
 
         GridLayout grid = (GridLayout) findViewById(R.id.grid);
+        //grid.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         int columnAndRowCount = (int) Math.sqrt(gridsCells);
         grid.setColumnCount(columnAndRowCount);
         grid.setRowCount(columnAndRowCount);
         cells = new Button[gridsCells];
+        int[] colors = {Color.parseColor("#4691e7"),Color.parseColor("#bfbfbf")};
+        final GradientDrawable gradient = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+        gradient.setShape(GradientDrawable.OVAL);
+
         for (int i = 0; i < cells.length; i++)
         {
             cells[i] = new Button(this);
-            cells[i].setBackground(getResources().getDrawable(R.drawable.curved_button));
-            cells[i].setBackground(null);
+            //[i].setBackground(getResources().getDrawable(R.drawable.curved_button));
+            cells[i].setBackground(gradient);
             //dodawanie pola
             grid.addView(cells[i], screenWidth / grid.getColumnCount(), screenWidth / grid.getColumnCount());
             final int i_ = i;
@@ -126,7 +134,7 @@ public class PathCreator extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     v.setEnabled(false);
-                    v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    v.setBackgroundColor(getResources().getColor(R.color.colorBlack));
                     Log.d(TAG, "Numer pola: "+String.valueOf(i_));
                     position.add(i_);
                     numberOfVertex++;

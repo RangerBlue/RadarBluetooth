@@ -80,4 +80,16 @@
     <string name="error">Error</string>
     <string name="error_path">You can\'t changing length of edges in this way, try again</string>
     <string name="error_map">You have encountered an error, calculation failed</string>
+    <string name="user_speed">User speed</string>
+    <string name="room_amount">Number of rooms</string>
+    <string name="path_amount">Number of edges</string>
+    <string name="measurements_amount">Number of mappings</string>
+    <string name="results_amount">Number of results</string>
+    <string name="set">Set</string>
+    <string name="radar_small">Radar</string>
+    <string name="measurement_small">Measurement</string>
+    <string name="path_small">Path</string>
+    <string name="results_small">Results</string>
+    <string name="search_devices_small">Search for devices</string>
+    <string name="mapping_small">Mapping</string>
 </resources>

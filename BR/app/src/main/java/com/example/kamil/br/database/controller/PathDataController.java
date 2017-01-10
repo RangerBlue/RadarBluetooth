@@ -73,7 +73,7 @@ public class PathDataController {
      * @param context kontekst aplikacji
      * @return lista
      */
-    public List<PathData> selectAll(Context context)
+    public static List<PathData> selectAll(Context context)
     {
         List<PathData> pathData = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Radar Bluetooth</string>
     <string name="action_settings">Ustawienia</string>
-    <string name="button_edit_room">Pomiesczenie</string>
+    <string name="button_edit_room">Pomieszczenie</string>
     <string name="button_create">Utwórz</string>
     <string name="button_view">Pokaż</string>
     <string name="button_draw_path">RYSUJ ŚCIANY</string>
@@ -80,4 +80,16 @@
     <string name="error">Błąd</string>
     <string name="error_path">Nie możesz zmienić długości krawędzi w ten sposób, spróbuj ponownie</string>
     <string name="error_map">Napotkano błąd, obliczenia nie powiodły się</string>
+    <string name="user_speed">Prędkość</string>
+    <string name="room_amount">Liczba pokoi</string>
+    <string name="path_amount">Liczba ścian</string>
+    <string name="measurements_amount">Liczba mapowań</string>
+    <string name="results_amount">Liczba rezultatów</string>
+    <string name="set">Ustaw</string>
+    \<string name="radar_small">Radar</string>
+    <string name="measurement_small">Pomiar</string>
+    <string name="path_small">Ściany</string>
+    <string name="results_small">Rezultaty</string>
+    <string name="search_devices_small">Szukanie urządzeń</string>
+    <string name="mapping_small">Mapowanie</string>
 </resources>

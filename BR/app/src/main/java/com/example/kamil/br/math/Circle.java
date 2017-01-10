@@ -266,13 +266,13 @@ public class Circle
         QuadraticFunction container = new QuadraticFunction();
         Point center = container.new Point();
         if(tab.size()==3){
-            ArrayList<Point> test1;
+            ArrayList<Point> punkty;
             ArrayList<PointsDistance> wyniki ;
             ArrayList<Point> end = new ArrayList<>();
             Point finalPoint = container.new Point();
 
-            test1 = getIntersectionPointsOfThreeCircles(tab.get(0), tab.get(1), tab.get(2));
-            wyniki = Circle.getClosestPoint(test1);
+            punkty = getIntersectionPointsOfThreeCircles(tab.get(0), tab.get(1), tab.get(2));
+            wyniki = Circle.getClosestPoint(punkty);
             wyniki = Circle.getTriangleOfResult(wyniki);
             end = Circle.pairsOfPointsToPoints(wyniki);
             finalPoint = Circle.centerOfTriangle(end.get(0), end.get(1), end.get(2));
@@ -280,11 +280,27 @@ public class Circle
             return finalPoint;
 
 
-        }else if(tab.size()==99999){
-            //tutaj dokleje później
-        }else{
+        }else if(tab.size()==4){
             ArrayList<Point> cross = new ArrayList<>();
             ArrayList<PointsDistance> wyniki ;
+            Point finalPoint = container.new Point();
+            ArrayList<Point> end = new ArrayList<>();
+            for(int i=0; i<tab.size()-2; i++){
+                for(int j=i+1; j<tab.size()-1; j++){
+                    for(int k=j+1; k<tab.size(); k++){
+
+                        cross = getIntersectionPointsOfThreeCircles(tab.get(i), tab.get(j), tab.get(k));
+                    }
+                }
+            }
+            wyniki = Circle.getClosestPoint(cross);
+            wyniki = Circle.getQuadOfResult(wyniki);
+            end = Circle.pairsOfPointsToPoints(wyniki);
+            finalPoint = Circle.centerOfPolygon(end.get(0), end.get(1), end.get(2), end.get(3));
+            System.out.print("Wynik dla 4 to:\nx: " + finalPoint.getA() +"\ny: " + finalPoint.getB());
+            return finalPoint;
+        }else{
+            ArrayList<Point> cross = new ArrayList<>();
 
             for(int i=0; i<tab.size()-2; i++){
                 for(int j=i+1; j<tab.size()-1; j++){
@@ -294,14 +310,11 @@ public class Circle
                 }
             }
             //wyniki = Circle.getClosestPoint(cross);
-            Point wynik = arithmeticMean(cross);
-            Log.d("multiccore", "("+wynik.getA()+","+wynik.getB()+")");
-            return wynik;
+            Point finalPoint = arithmeticMean(cross);
+            Log.d("Wynik dla wielu to:\\nx:", "("+finalPoint.getA()+","+finalPoint.getB()+")");
+            return finalPoint;
 
         }
-        Log.d("multiccore", "("+center.getA()+","+center.getB()+")");
-        return center;
-
     }
 
     /**
@@ -345,6 +358,19 @@ public class Circle
         Collections.sort(closestPoints);
 
         for(int i=0; i<3 ; i++)
+        {
+            result.add(closestPoints.get(i));
+        }
+
+        return result;
+    }
+
+    public static ArrayList<PointsDistance>getQuadOfResult(ArrayList<PointsDistance> closestPoints)
+    {
+        ArrayList<PointsDistance> result = new ArrayList<>();
+        Collections.sort(closestPoints);
+
+        for(int i=0; i<4 ; i++)
         {
             result.add(closestPoints.get(i));
         }

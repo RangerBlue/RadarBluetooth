@@ -73,7 +73,7 @@ public class BluetoothResultsController {
      * @param context kontekst aplikacji
      * @return lista z rekordami
      */
-    public List<BluetoothResults> selectAll(Context context)
+    public static List<BluetoothResults> selectAll(Context context)
     {
         List<BluetoothResults> bluetoothResult = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
@@ -102,6 +102,7 @@ public class BluetoothResultsController {
                 result.setEdgeNumber(cursor.getInt(cursor.getColumnIndex(BluetoothResults.EGDENUMBER)));
                 result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_MEASUREMENTS)));
                 result.setIdMeasurements(cursor.getInt(cursor.getColumnIndex(BluetoothResults.ID_ROOMS)));
+                if(result.getRssi() < 0 )
                 bluetoothResult.add(result);
             } while (cursor.moveToNext());
         }
@@ -237,6 +238,8 @@ public class BluetoothResultsController {
         Log.d(TAG, "deleted record in bluetoothResults");
         db.close(); // Closing database connection
     }
+
+
 
     /**
      * wypisuje w logu podaną listę

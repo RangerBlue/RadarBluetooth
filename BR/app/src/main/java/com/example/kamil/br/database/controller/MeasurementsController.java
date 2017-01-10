@@ -42,7 +42,7 @@ public class MeasurementsController {
      * @param context kontekst aplikacji
      * @return lista
      */
-    public List<Measurements> selectAll(Context context)
+    public static List<Measurements> selectAll(Context context)
     {
         List<Measurements> measurement = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();

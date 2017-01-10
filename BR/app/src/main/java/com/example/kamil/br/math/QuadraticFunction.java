@@ -33,10 +33,18 @@ public class QuadraticFunction
         this.a = a;
         this.b = b;
         this.c = c;
+        Float sprawdzenieA = new Float(0);
+        Float sprawdzenieB = new Float(0);
         this.delta = calculateDelta(a,b,c);
         Point point = calculateSolutions(a,b,delta);
-        this.x1 = point.getA();
-        this.x2 = point.getB();
+        sprawdzenieA=point.getA();
+        sprawdzenieB=point.getA();
+        if(sprawdzenieA.isNaN() || sprawdzenieB.isNaN()){
+            System.out.println("Zmienne nie sa liczbami-pomijam");
+        }else{
+            this.x1 = point.getA();
+            this.x2 = point.getB();
+        }
     }
 
     /**
