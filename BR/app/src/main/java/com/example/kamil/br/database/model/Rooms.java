@@ -10,7 +10,7 @@ public class Rooms
 
     public static final String ID_ROOMS = "idrooms";
     public static final String NAME = "name";
-    public static final String TYPE = "type";
+    public static final String WALK_RATIO = "walkRatio";
 
     //nazwy pól
     /**
@@ -26,7 +26,7 @@ public class Rooms
     /**
      * typ pokoju
      */
-    private float type;
+    private float walkRatio;
 
     public String getName() {
         return name;
@@ -44,11 +44,11 @@ public class Rooms
         this.idRooms = idRooms;
     }
 
-    public float getType() {
-        return type;
+    public float getWalkRatio() {
+        return walkRatio;
     }
 
-    public void setType(float type) {
-        this.type = type;
+    public void setWalkRatio(float walkRatio) {
+        this.walkRatio = walkRatio;
     }
 }

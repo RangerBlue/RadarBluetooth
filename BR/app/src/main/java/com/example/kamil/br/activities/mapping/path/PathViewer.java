@@ -13,8 +13,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kamil.br.activities.mapping.measurement.MeasurementCreate;
-import com.example.kamil.br.database.controller.WalkRatioController;
-import com.example.kamil.br.database.model.WalkRatio;
+import com.example.kamil.br.database.controller.RoomsController;
+import com.example.kamil.br.database.model.Rooms;
 import com.example.kamil.br.views.PathDrawView;
 import com.example.kamil.br.R;
 
@@ -276,11 +276,10 @@ public class PathViewer extends AppCompatActivity  {
             PathData.setWalkRatio(ratio);
             PathData.setRatio(ratio);
             this.ratio = ratio;
-            WalkRatio item = new WalkRatio();
-            item.setValue(ratio);
-            item.setIdRooms(idRooms);
-            WalkRatioController controller = new WalkRatioController();
-            controller.insert(item, getApplicationContext());
+            Rooms room = RoomsController.selectWhereId(getApplicationContext(), idRooms);
+            room.setWalkRatio(ratio);
+            RoomsController controller = new RoomsController();
+            controller.update(room, getApplicationContext());
         }
         else
         {

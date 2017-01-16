@@ -86,7 +86,7 @@ public class Tracking extends AppCompatActivity {
                 //ustawienie koloru w zależności od odległości
                 if ((device.getName().equals(nameTextView.getText().toString())) || device.getAddress().equals(addressTextView.getText().toString())) {
 
-                    Float distance = BluetoothDistance.getDistance(rssi, -1);
+                    Float distance = BluetoothDistance.getDistance(rssi);
                     String distance_ = Float.toString(distance);
                     if (distance_.length() > 4)
                         distance_ = distance_.substring(0, 4);

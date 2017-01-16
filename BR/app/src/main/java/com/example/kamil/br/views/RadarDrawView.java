@@ -92,7 +92,7 @@ public class RadarDrawView extends View {
             p.setStrokeWidth(2);
             p.setColor(colorList.get(i));
             p.setStyle(Paint.Style.STROKE);
-            canvas.drawCircle(canvasWidth/2,canvasWidth/2,MetersToPixels(BluetoothDistance.getDistance(e.getRssi(), -1)),p);
+            canvas.drawCircle(canvasWidth/2,canvasWidth/2,MetersToPixels(BluetoothDistance.getDistance(e.getRssi())),p);
             Log.d(TAG,e.getName()+","+ Integer.toString(e.getRssi()));
             i++;
          }

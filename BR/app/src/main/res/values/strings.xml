@@ -32,7 +32,7 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="name">NAME</string>
-    <string name="type">TYPE</string>
+    <string name="walkRatio">TYPE</string>
     <string name="mapping">MAPPING</string>
     <string name="tracking">TRACKING</string>
     <string name="bluetooth">BLUETOOTH</string>

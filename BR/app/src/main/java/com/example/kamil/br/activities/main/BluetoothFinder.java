@@ -77,14 +77,14 @@ public class BluetoothFinder extends AppCompatActivity {
                 BluetoothResults bluetoothResults = new BluetoothResults();
 
 
-                String distance = Float.toString(BluetoothDistance.getDistance(rssi, -1));
+                String distance = Float.toString(BluetoothDistance.getDistance(rssi));
                 if(distance.length()>4)
                     distance = distance.substring(0,4);
                 bluetoothResults.setName(device.getName()+" "+getResources().getString(R.string.is)+" "+distance+" "+getResources().getString(R.string.from_here));
                 bluetoothResults.setAddress(device.getAddress());
                 bluetoothResults.setRssi(rssi);
                 bluetoothResults.setTime(System.currentTimeMillis());
-                BluetoothDistance.getDistance(rssi, -1);
+                BluetoothDistance.getDistance(rssi);
 
                 //wstawianie do listy
                 arrayOfFoundBTDevices.add(bluetoothResults);

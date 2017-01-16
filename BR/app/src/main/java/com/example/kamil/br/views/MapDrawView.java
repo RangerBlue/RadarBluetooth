@@ -21,13 +21,13 @@ import android.view.View;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.activities.mapping.path.PathViewer;
+import com.example.kamil.br.database.model.Rooms;
 import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.math.Circle;
 import com.example.kamil.br.math.QuadraticFunction;
 import com.example.kamil.br.database.controller.BluetoothResultsController;
 import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;
-import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.BluetoothResults;
 import com.example.kamil.br.database.model.PathData;
 
@@ -364,8 +364,7 @@ public class MapDrawView extends View {
     {
         p.setStrokeWidth(1);
        // canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,radius,p);
-        float length = getConvertedValue(BluetoothDistance.getDistance(value, RoomsController.selectTypeWhereId(getContext(), results.get(0).getIdRooms())));
-        Log.d("Kamil tutaj hej ", String.valueOf(value));
+        float length = getConvertedValue(BluetoothDistance.getDistance(value));
         //canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,length*ratio,p);
         Circle circle = new Circle(record.getP1(), record.getP2(), length);
         circles.add(circle);
@@ -379,7 +378,7 @@ public class MapDrawView extends View {
      */
     private float getConvertedValue(float result)
     {
-        float walkRatio = WalkRatioController.selectWalkRatioWhereRoomId(getContext(), path.get(0).getIdRooms()).getValue();
+        float walkRatio = RoomsController.selectWalkRatioWhereId(getContext(), path.get(0).getIdRooms());
         float returnValue = (result/(walkVelocity*1000*walkRatio));
         return returnValue;
     }

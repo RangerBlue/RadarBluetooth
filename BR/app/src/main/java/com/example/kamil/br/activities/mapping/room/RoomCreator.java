@@ -3,25 +3,15 @@ package com.example.kamil.br.activities.mapping.room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.ExpandedMenuView;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.activities.mapping.path.PathCreator;
 import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.model.Rooms;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Aktywność służaca do dodania nowego pokoju
@@ -59,7 +49,7 @@ public class RoomCreator extends AppCompatActivity {
                 {
                     Rooms room = new Rooms();
                     room.setName(roomNameEditText.getText().toString());
-                    room.setType(0);
+                    room.setWalkRatio(0);
                     RoomsController roomController = new RoomsController();
                     roomController.insert(room, getApplicationContext());
                     Toast.makeText(getApplicationContext(), R.string.added_room, Toast.LENGTH_SHORT).show();

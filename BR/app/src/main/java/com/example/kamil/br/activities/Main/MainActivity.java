@@ -11,6 +11,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
+import com.example.kamil.br.database.controller.RoomsController;
+import com.example.kamil.br.database.model.Rooms;
+
+import java.util.ArrayList;
 
 /**
  * Menu główne, tutaj znajduje się całe sterowanie aplikacji
@@ -130,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
         checkBluetoothState();
 
-        //SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
+        ArrayList<Rooms> list = (ArrayList<Rooms>) RoomsController.selectAll(getApplicationContext());
+        RoomsController.printAllTableToLog(list);
 
-        //Toast.makeText(this, String.valueOf(pref.getFloat("velocity", 0f)), Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -28,7 +28,7 @@ public class BluetoothDistance
      * A-wartość RSSI w referencyjnym dystansie(tu będzie 1m prawdopodobnie)
      * @param P wielkość rssi
      */
-    public static float getDistance(int P, float type)
+    public static float getDistance(int P)
     {
         int A = -74;
         float n = 1.7f;

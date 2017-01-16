@@ -24,7 +24,7 @@ public class RoomsController {
     public static String createTable() {
         return "CREATE TABLE " + Rooms.TABLE + "(" +
                 Rooms.ID_ROOMS + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                Rooms.TYPE + " REAL," +
+                Rooms.WALK_RATIO + " REAL," +
                 Rooms.NAME + " TEXT )";
     }
 
@@ -33,7 +33,7 @@ public class RoomsController {
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Rooms.NAME, room.getName());
-        values.put(Rooms.TYPE, room.getType());
+        values.put(Rooms.WALK_RATIO, room.getWalkRatio());
         db.insert(Rooms.TABLE, null, values);
         db.close(); // Closing database connection
     }
@@ -65,7 +65,6 @@ public class RoomsController {
         PathDataController.deleteWhereIdRooms(idRoom, context);
         BluetoothResultsController.deleteWhereIdRooms(idRoom, context);
         MeasurementsController.deleteWhereIdRooms(idRoom, context);
-        WalkRatioController.deleteWhereId(idRoom, context);
     }
 
     /**
@@ -74,13 +73,13 @@ public class RoomsController {
      * @param idRoom identyfikator pokoju
      * @return
      */
-    public static Float selectTypeWhereId(Context context, int idRoom)
+    public static Float selectWalkRatioWhereId(Context context, int idRoom)
     {
         List<Float> rooms = new ArrayList<>();
         SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
         String selectQuery =
                 " SELECT " +
-                        "Rooms." + Rooms.TYPE +
+                        "Rooms." + Rooms.WALK_RATIO +
                         " FROM " + Rooms.TABLE +
                         " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
 
@@ -88,8 +87,43 @@ public class RoomsController {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Float type = cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE));
+                Float type = cursor.getFloat(cursor.getColumnIndex(Rooms.WALK_RATIO));
                 rooms.add(type);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return rooms.get(0);
+    }
+
+    /**
+     * Zwraca pokój o danym id
+     * @param context kontekst aplikacji
+     * @param idRoom identyfikator pokoju
+     * @return
+     */
+    public static Rooms selectWhereId(Context context, int idRoom)
+    {
+        List<Rooms> rooms = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.ID_ROOMS +
+                        ", Rooms." + Rooms.NAME +
+                        ", Rooms." + Rooms.WALK_RATIO +
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Rooms room= new Rooms();
+                room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
+                room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
+                room.setWalkRatio(cursor.getFloat(cursor.getColumnIndex(Rooms.WALK_RATIO)));
+                rooms.add(room);
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -141,7 +175,7 @@ public class RoomsController {
                 " SELECT " +
                 "Rooms." + Rooms.ID_ROOMS +
                 ", Rooms." + Rooms.NAME +
-                ", Rooms." + Rooms.TYPE +
+                ", Rooms." + Rooms.WALK_RATIO +
                 " FROM " + Rooms.TABLE;
 
         // pętla po wszystkich wierszach i zapis do listy
@@ -151,7 +185,7 @@ public class RoomsController {
                 Rooms room= new Rooms();
                 room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
                 room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
-                room.setType(cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE)));
+                room.setWalkRatio(cursor.getFloat(cursor.getColumnIndex(Rooms.WALK_RATIO)));
                 rooms.add(room);
             } while (cursor.moveToNext());
         }
@@ -212,7 +246,7 @@ public class RoomsController {
                 Rooms room= new Rooms();
                 room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
                 room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
-                room.setType(cursor.getFloat(cursor.getColumnIndex(Rooms.TYPE)));
+                room.setWalkRatio(cursor.getFloat(cursor.getColumnIndex(Rooms.WALK_RATIO)));
                 rooms.add(room);
             } while (cursor.moveToNext());
         }
@@ -228,19 +262,33 @@ public class RoomsController {
         return rooms.get(0);
     }
 
+    public void update(Rooms room, Context context)
+    {
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Rooms.NAME, room.getName());
+        values.put(Rooms.WALK_RATIO, room.getWalkRatio());
+
+        String where = " Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(room.getIdRooms());
+
+        db.update(Rooms.TABLE, values, where,  null);
+        Log.d(TAG, " Updated row number: "+room.getIdRooms());
+    }
+
+
+
     /**
      * wypisuje do logu listę
      * @param list  lista
      */
     public static void printAllTableToLog(ArrayList<Rooms> list)
     {
-        //wypisanie rekordów z PathData nienaruszonych
         for ( Rooms element : list )
         {
             Log.d("Tabela Rooms: ",
                     "\t|ID| "+String.valueOf(element.getIdRooms()) +
                             "\t|Name| "+ String.valueOf(element.getName()) +
-                            "\t|type| "+ String.valueOf(element.getType())
+                            "\t|Walkratio| "+ String.valueOf(element.getWalkRatio())
             ) ;
         }
     }
