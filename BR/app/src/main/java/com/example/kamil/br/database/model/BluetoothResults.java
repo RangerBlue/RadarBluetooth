@@ -1,13 +1,14 @@
 package com.example.kamil.br.database.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class BluetoothResults implements Parcelable
+/**
+ * Obiekt rezultatu zwróconego przez bluetooth
+ * Created by Kamil
+ */
+public class BluetoothResults
 {
     //nazwa tabeli
     public static final String TABLE = "BluetoothResults";
@@ -21,8 +22,6 @@ public class BluetoothResults implements Parcelable
     public static final String ID_MEASUREMENTS = "idmeasurements";
     public static final String ID_ROOMS = "idrooms";
 
-
-    //nazwy pól
 
     /**
      * identyfikator
@@ -71,6 +70,9 @@ public class BluetoothResults implements Parcelable
         this.rssi = 0;
         this.time = time;
     }
+
+    public BluetoothResults()
+    {}
 
     public int getEdgeNumber() {
         return edgeNumber;
@@ -137,45 +139,6 @@ public class BluetoothResults implements Parcelable
         this.idRooms = idRooms;
     }
 
-    // Parcelable stuff
-    public BluetoothResults()
-    {}  //empty constructor
-
-    public BluetoothResults(Parcel in)
-    {
-        super();
-        readFromParcel(in);
-    }
-
-    public void readFromParcel(Parcel in)
-    {
-        name = in.readString();
-    }
-
-    public static final Parcelable.Creator<BluetoothResults> CREATOR = new Parcelable.Creator<BluetoothResults>()
-    {
-        public BluetoothResults createFromParcel(Parcel in) {
-            return new BluetoothResults(in);
-        }
-
-        public BluetoothResults[] newArray(int size) {
-
-            return new BluetoothResults[size];
-        }
-
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags)
-    {
-        out.writeString(name);
-    }
-
 
     /**
      * Zwraca listę zawierającą tylko dane z pomiaru bluetooth tylko jednej krawędzi
@@ -190,7 +153,6 @@ public class BluetoothResults implements Parcelable
         int indexOfFirstElement=-1;
         int indexOfLastElement=-1;
 
-        Log.d("krawedz", String.valueOf(edgeNumber));
 
         for(int i=0 ; i<listToSlice.size(); i++)
         {
@@ -201,15 +163,12 @@ public class BluetoothResults implements Parcelable
                     indexOfFirstElement = i;
                 }
                 indexOfLastElement = i;
-                Log.d("sprawdzene", String.valueOf(indexOfFirstElement));
             }
 
         }
 
         if(indexOfFirstElement != indexOfLastElement)
         {
-            Log.d("pierwsz", String.valueOf(indexOfFirstElement));
-            Log.d("drug", String.valueOf(indexOfLastElement));
             slicedList =  new ArrayList<>(listToSlice.subList(indexOfFirstElement, indexOfLastElement+1));
             return slicedList;
         }

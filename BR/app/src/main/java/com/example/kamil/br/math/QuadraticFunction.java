@@ -2,7 +2,6 @@ package com.example.kamil.br.math;
 
 import android.util.Log;
 
-import com.example.kamil.br.database.model.PathData;
 
 /**
  * Zapewnia rozwiązanie równania kwadratowego,
@@ -11,12 +10,36 @@ import com.example.kamil.br.database.model.PathData;
  */
 public class QuadraticFunction
 {
-    private String TAG = "QuadraticFunction";
+    private String TAG = getClass().getSimpleName();
+
+    /**
+     * współczynnik przy x^2
+     */
     private float a;
+
+    /**
+     * współczynnik przy x
+     */
     private float b;
+
+    /**
+     * wyraz wolny
+     */
     private float c;
+
+    /**
+     * delta
+     */
     private float delta;
+
+    /**
+     * rozwiązanie nr 1
+     */
     private float x1;
+
+    /**
+     * rozwiązanie nr 2
+     */
     private float x2;
 
     public QuadraticFunction() {
@@ -33,18 +56,10 @@ public class QuadraticFunction
         this.a = a;
         this.b = b;
         this.c = c;
-        Float sprawdzenieA = new Float(0);
-        Float sprawdzenieB = new Float(0);
         this.delta = calculateDelta(a,b,c);
         Point point = calculateSolutions(a,b,delta);
-        sprawdzenieA=point.getA();
-        sprawdzenieB=point.getA();
-        if(sprawdzenieA.isNaN() || sprawdzenieB.isNaN()){
-            System.out.println("Zmienne nie sa liczbami-pomijam");
-        }else{
-            this.x1 = point.getA();
-            this.x2 = point.getB();
-        }
+        this.x1 = point.getA();
+        this.x2 = point.getB();
     }
 
     /**
@@ -56,7 +71,7 @@ public class QuadraticFunction
      */
     private float calculateDelta(float a, float b, float c) throws ArithmeticException
     {
-        float delta = b*b - 4*a*c; Log.d(TAG +" delta", Float.toString(delta));
+        float delta = b*b - 4*a*c; //Log.d(TAG +" delta", Float.toString(delta));
         if( delta<0 ) throw new ArithmeticException();
         return delta;
     }
@@ -74,8 +89,8 @@ public class QuadraticFunction
         Point result = new Point();
         result.setA((float) ((-b - Math.sqrt(delta))/(2*a)));
         result.setB((float) ((-b + Math.sqrt(delta))/(2*a)));
-        Log.d(TAG +" x1", Float.toString(result.getA()));
-        Log.d(TAG +" x2", Float.toString(result.getB()));
+       // Log.d(TAG +" x1", Float.toString(result.getA()));
+        //Log.d(TAG +" x2", Float.toString(result.getB()));
 
         return result;
     }

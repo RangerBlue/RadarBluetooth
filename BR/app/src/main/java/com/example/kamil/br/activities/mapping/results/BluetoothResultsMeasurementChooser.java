@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * aktwyność służąca do wybrania pomiaru, z ktorego można wyświetlić rezultaty
+ * Created by Kamil
  */
 public class BluetoothResultsMeasurementChooser extends AppCompatActivity {
 

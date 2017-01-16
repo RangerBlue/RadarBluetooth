@@ -26,53 +26,57 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import java.util.ArrayList;
 
 /**
- * aktywność służąca do przestawienia wyników wyszukiwania urządzeń w postaci graficznej,
- * w jakiej odległości one sie znajdują
+ * Aktywność służąca do przestawienia wyników wyszukiwania urządzeń w postaci graficznej,
+ * w jakim zasięgu one sie znajdują
+ * Created by Kamil
  */
 public class Radar extends AppCompatActivity {
 
+    private final String TAG = Radar.class.getSimpleName();
+
     /**
-     * adapter bluetooth
+     * Adapter bluetooth
      */
     private BluetoothAdapter mBluetoothAdapter;
 
     /**
-     * lista znalezionych urządzeń
+     * Lista znalezionych urządzeń
      */
     private ArrayList<BluetoothResults> arrayOfFoundBTDevices;
 
     /**
-     * przycisk do rozpoczęcia wyszukiwania
+     * Przycisk do rozpoczęcia wyszukiwania
      */
     private ImageButton buttonSearch;
 
     /**
-     * przycisk do wyświetlenia informacji
+     * Przycisk do wyświetlenia informacji
      */
     private ImageButton buttonInfo;
 
     /**
-     * pasek postępu, podczas szukania
+     * Pasek postępu, podczas szukania
      */
     private ProgressDialog progressBar;
 
     /**
-     * układ wspólrzędnych, na którym wyświetlana jest odległość od znalezionych urządzeń
+     * Układ wspólrzędnych, na którym wyświetlana jest odległość od znalezionych urządzeń
      */
     private RadarDrawView radar;
 
     /**
-     * lista kolorów
+     * Lista kolorów
      */
     private ArrayList<Integer> colors;
 
     /**
-     * liczba urządzeń
+     * Liczba urządzeń
      */
     public int numberOfDevices;
 
-    private final String TAG = Radar.class.getSimpleName();
-
+    /**
+     * Obiekt, który reaguje na powiadomienie, w tym przypadku bluetooth
+     */
     final BroadcastReceiver mReceiver = new BroadcastReceiver()
     {
         @Override
@@ -104,20 +108,18 @@ public class Radar extends AppCompatActivity {
             }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
             {
-                Log.d(TAG, "action_finished" );
                 progressBar.dismiss();
                 unregisterReceiver(this);
                 radar.setData(arrayOfFoundBTDevices);
                 numberOfDevices = arrayOfFoundBTDevices.size();
                 colors = BluetoothDistance.getColorsForDevices(numberOfDevices);
                 radar.setColorList(colors);
-                Log.d(TAG, "ilosc"+numberOfDevices);
                 radar.invalidate();
 
             }
             else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
             {
-                Log.d("BluetoothAdapter", "Starting discovery ");
+               // Log.d("BluetoothAdapter", "Starting discovery ");
             }
         }
     };
@@ -144,9 +146,6 @@ public class Radar extends AppCompatActivity {
                 progressBar.show();
                 progressBar.setCanceledOnTouchOutside(false);
                 getFoundDevices();
-
-
-
             }
         });
 
@@ -190,7 +189,6 @@ public class Radar extends AppCompatActivity {
         arrayOfFoundBTDevices.clear();
         mBluetoothAdapter.startDiscovery();
 
-
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -201,9 +199,33 @@ public class Radar extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause()
     {
         super.onPause();
         mBluetoothAdapter.cancelDiscovery();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
     }
 }

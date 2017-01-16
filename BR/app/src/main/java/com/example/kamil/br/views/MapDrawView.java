@@ -9,6 +9,7 @@ package com.example.kamil.br.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -87,8 +88,8 @@ public class MapDrawView extends View {
     /**
      * Prędkość chodu użytkownika w m/s
      */
-    //TODO połączyć z aktywnością z radaren
-    private float walkVelocity = 1f;
+    SharedPreferences pref =  getContext().getSharedPreferences("options", 0);
+    private float walkVelocity = pref.getFloat("velocity", 1f);
 
     /**
      * Czas, który upłynął do znalezienia urządzenia
@@ -100,10 +101,24 @@ public class MapDrawView extends View {
      */
     private ArrayList<Circle> circles;
 
+    /**
+     * Wartośc przesuniecia w poziomie
+     */
     private Float xMove = 0f ;
+
+    /**
+     * Wartość przesunięcia w pionie
+     */
     private Float yMove = 0f;
 
+    /**
+     * Szerkość ekranu
+     */
     private static int screenWidth;
+
+    /**
+     * Wysokość ekranu
+     */
     private static int screenHeight;
 
     public MapDrawView(Context context) {
@@ -137,44 +152,46 @@ public class MapDrawView extends View {
         MapDrawView.colors = colors;
     }
 
-    /**
-     * Wywołanie tej metody zamiast onDraw, używana jest przy własnych widokach
-     * @param canvas użyta kanwa
-     */
     @Override
     protected void dispatchDraw(Canvas canvas) {
 
-        Log.d(TAG, "drukowanie tabel");
-        PathDataController.printAllTableToLog(path);
-        BluetoothResultsController.printAllTableToLog(results);
+        //PathDataController.printAllTableToLog(path);
+        //BluetoothResultsController.printAllTableToLog(results);
 
         Pair moves = calculateMoves(path);
         xMove = (Float) moves.first;
         yMove = (Float) moves.second;
-        Log.d(TAG, "przemieszcezniea"+xMove+","+yMove);
         updateListElements(path, xMove, yMove);
-        Log.d(TAG, "UPDATE");
-        PathDataController.printAllTableToLog(path);
         ratio = calculateAbsoluteRatio(screenWidth,screenHeight, path);
-        Log.d(TAG,"ratio nowe: "+ratio);
         radius = ratio/20;
-
         circles = new ArrayList<>();
 
-        for(String item : distinctDevices)
-            Log.d(TAG+"tablca ",item );
+        try
+        {
+            edgeNumbers = results.get(results.size()-1).getEdgeNumber();
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getResources().getString(R.string.error))
+                    .setMessage(getResources().getString(R.string.empty_measurement))
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Activity activity = (Activity) getContext();
+                            activity.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
 
-        edgeNumbers = results.get(results.size()-1).getEdgeNumber();
+
         p = new Paint();
         p.setAntiAlias(true);
         p.setStyle(Paint.Style.FILL);
         p.setStrokeWidth(5);
         p.setStyle(Paint.Style.STROKE);
-
-
-        //TODO dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
-
-       // radius = 1;
 
 
         //rysowanie krawędzi
@@ -198,8 +215,6 @@ public class MapDrawView extends View {
                 (path.get(0).getP2Reverse()+ yMove)*ratio,
                 p);
 
-
-
         try
         {
             //rysowanie punktów
@@ -207,7 +222,6 @@ public class MapDrawView extends View {
         }
         catch (ArithmeticException e)
         {
-            Log.d(TAG, "złapałem błąd");
             new AlertDialog.Builder(getContext())
                     .setTitle(getResources().getString(R.string.error))
                     .setMessage(getResources().getString(R.string.error_map))
@@ -222,8 +236,6 @@ public class MapDrawView extends View {
                     .show();
         }
 
-
-
         super.dispatchDraw(canvas);
 
     }
@@ -236,14 +248,8 @@ public class MapDrawView extends View {
      */
     private void drawPoints(Canvas canvas)
     {
-        //p.setColor(Color.RED);
         int durationTime;
         float edgeLength ;
-
-        /**
-         * Obsłużenie ostaniej krawędzi
-         */
-        Random random = new Random();
 
         int l=0;
         for( String item : distinctDevices)
@@ -254,27 +260,22 @@ public class MapDrawView extends View {
             //ostatni z pierwszym
             sublist =  BluetoothResults.getSublistWhereEdgeNumbers(edgeNumbers, results);
             sublist = getDataOfOneDevice(sublist, item);
-            Log.d(TAG, "Drukowanie sublisty");
-            BluetoothResultsController.printAllTableToLog(sublist);
             durationTime = getEdgeDurationTime(sublist);
-            Log.d(TAG, "durationTime "+durationTime );
             edgeLength = PathData.getSegmentLength(
                     path.get(edgeNumbers).getP1(),
                     path.get(0).getP1(),
                     path.get(edgeNumbers).getP2(),
                     path.get(0).getP2()
             );
-            Log.d(TAG, "edge"+edgeLength);
             PathData.setRatio(durationTime/edgeLength);
             elapsedTime = 0;
 
             for(int j=0 ; j<sublist.size(); j++)
             {
-                Log.d(TAG, "cyk");
                 if(sublist.get(j).getAddress().equals("NULL"))
                 {
                     elapsedTime+=sublist.get(j).getTime();
-                    Log.d(TAG, "elapsedTime: "+elapsedTime);
+                    //Log.d(TAG, "elapsedTime: "+elapsedTime);
                 }
                 else
                 {
@@ -282,36 +283,29 @@ public class MapDrawView extends View {
                     clone.setP1(path.get(0).getP1());
                     clone.setP2(path.get(0).getP2());
                     clone.setIfLinear(path.get(0).getIsIfLinear());
-                    Log.d(TAG, "elapsed"+elapsedTime);
+                    //Log.d(TAG, "elapsed"+elapsedTime);
                     PathData.setNewLength(elapsedTime,path.get(edgeNumbers), clone , false);
                     drawMeasure(canvas, clone, sublist.get(j).getRssi());
                 }
             }
 
 
-            //tu przerwa
 
-            /**
-             * Obsłużenie reszty krawędzi
-             */
-            //ostatni z pierwszym
+
+            //obsłużenie reszty krawędzi
             for(int i=0 ; i<edgeNumbers; i++)
             {
                 sublist = BluetoothResults.getSublistWhereEdgeNumbers(i, results);
                 sublist = getDataOfOneDevice(sublist, item);
-                Log.d(TAG, "sublista w pętli" );
-                BluetoothResultsController.printAllTableToLog(sublist);
+                //BluetoothResultsController.printAllTableToLog(sublist);
                 durationTime = getEdgeDurationTime(sublist);
-                Log.d(TAG, "durationTime "+durationTime );
                 edgeLength = PathData.getSegmentLength(
                         path.get(i).getP1(),
                         path.get(i+1).getP1(),
                         path.get(i).getP2(),
                         path.get(i+1).getP2()
                 );
-                //Log.d(TAG, "edgeLenght"+edgeLength);
                 PathData.setRatio(durationTime/edgeLength);
-                //Log.d(TAG, "sprawdzenie ratio"+PathData.getRatio());
                 elapsedTime = 0;
                 //pętla po oddzielonej liście
                 for(int j=0 ; j<sublist.size(); j++)
@@ -319,7 +313,6 @@ public class MapDrawView extends View {
                     if(sublist.get(j).getAddress().equals("NULL"))
                     {
                         elapsedTime+=sublist.get(j).getTime();
-                        // Log.d(TAG, "elapsedTime: "+elapsedTime);
                     }
                     else
                     {
@@ -337,11 +330,10 @@ public class MapDrawView extends View {
             Circle.printAllTableToLog(circles);
             try
             {
-                drawResult(canvas, circles);
+                drawResult(canvas, circles, item);
             }
             catch (StackOverflowError e)
             {
-                Log.d(TAG, "złapałem błąd");
                 new AlertDialog.Builder(getContext())
                         .setTitle(getResources().getString(R.string.error))
                         .setMessage(getResources().getString(R.string.error_map))
@@ -373,6 +365,7 @@ public class MapDrawView extends View {
         p.setStrokeWidth(1);
        // canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,radius,p);
         float length = getConvertedValue(BluetoothDistance.getDistance(value, RoomsController.selectTypeWhereId(getContext(), results.get(0).getIdRooms())));
+        Log.d("Kamil tutaj hej ", String.valueOf(value));
         //canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,length*ratio,p);
         Circle circle = new Circle(record.getP1(), record.getP2(), length);
         circles.add(circle);
@@ -387,9 +380,7 @@ public class MapDrawView extends View {
     private float getConvertedValue(float result)
     {
         float walkRatio = WalkRatioController.selectWalkRatioWhereRoomId(getContext(), path.get(0).getIdRooms()).getValue();
-        float returnValue = ((result/walkVelocity)*1000)/walkRatio;
-        Log.d(TAG, "result "+String.valueOf(result));
-        Log.d(TAG, "walkWelocity "+String.valueOf(walkVelocity));
+        float returnValue = (result/(walkVelocity*1000*walkRatio));
         return returnValue;
     }
 
@@ -409,7 +400,6 @@ public class MapDrawView extends View {
                 durationTime +=item.getTime();
             }
         }
-    Log.d(TAG, "czas trwania krawędzi:"+durationTime);
         return durationTime;
     }
 
@@ -418,20 +408,38 @@ public class MapDrawView extends View {
      * @param canvas kanwa
      * @param list lista z okręgami
      */
-    public void drawResult(Canvas canvas, ArrayList<Circle> list) throws StackOverflowError
+    public void drawResult(Canvas canvas, ArrayList<Circle> list, String item) throws StackOverflowError
     {
 
         try
         {
-            QuadraticFunction.Point point = Circle.multiCircle(list);
-            Log.d(TAG, "wynik ("+(point.getA())*ratio+","+((point.getB()))*(-1)*ratio+")");
-            p.setStyle(Paint.Style.FILL);
-            canvas.drawCircle((point.getA())*ratio,((point.getB()))*(-1)*ratio,radius,p);
-            p.setStyle(Paint.Style.STROKE);
+            if(list.size()<3)
+            {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.error))
+                        .setMessage(getResources().getString(R.string.error_not_enough)+" "+item+", "+getResources().getString(R.string.error_not_enough_2))
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                               dialogInterface.cancel();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+            else
+            {
+                QuadraticFunction.Point point = Circle.multiCircle(list);
+                //Log.d(TAG, "wynik ("+(point.getA())*ratio+","+((point.getB()))*(-1)*ratio+")");
+                p.setStyle(Paint.Style.FILL);
+                canvas.drawCircle((point.getA())*ratio,((point.getB()))*(-1)*ratio,radius,p);
+                p.setStyle(Paint.Style.STROKE);
+            }
+
         }
         catch (ArithmeticException e)
         {
-            Log.d(TAG, "stackoverflow");
+            //Log.d(TAG, "stackoverflow");
             new AlertDialog.Builder(getContext())
                     .setTitle(getResources().getString(R.string.error))
                     .setMessage(getResources().getString(R.string.error_map))
@@ -448,7 +456,6 @@ public class MapDrawView extends View {
 
 
     }
-
 
 
     /**
@@ -468,10 +475,6 @@ public class MapDrawView extends View {
             if(item.getP2Reverse() > maxY)
                 maxY = item.getP2Reverse();
         }
-        Log.d(TAG, "screenWidth "+ screenWidth);
-        Log.d(TAG, "screenHeight "+ screenHeight);
-        Log.d(TAG, "maxX "+ maxX);
-        Log.d(TAG, "maxY "+ maxY);
 
         if( maxX >= maxY)
         {
@@ -529,6 +532,12 @@ public class MapDrawView extends View {
     }
 
 
+    /**
+     * Zwraca dane dotyczące podanego urządzenia
+     * @param list lista danych
+     * @param name nazwa urządzenia
+     * @return dane o urządzeniu
+     */
     private ArrayList<BluetoothResults> getDataOfOneDevice(ArrayList<BluetoothResults> list, String name)
     {
         ArrayList<BluetoothResults> returnList = new ArrayList<>();

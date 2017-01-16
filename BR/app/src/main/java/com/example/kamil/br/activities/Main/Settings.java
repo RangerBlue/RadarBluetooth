@@ -16,15 +16,39 @@ import com.example.kamil.br.database.controller.PathDataController;
 import com.example.kamil.br.database.controller.RoomsController;
 
 /**
- * aktywność służąca do ustawienia preferencji użytkownika
+ * Aktywność służąca do ustawienia preferencji użytkownika
+ * Created by Kamil
  */
 public class Settings extends AppCompatActivity {
 
+    /**
+     * Pole tekstowe do wyświetlenia prędkości
+     */
     private TextView speedValueTextView;
+
+    /**
+     * Pole tekstowe do wyświetlenia liczby pomieszczeń
+     */
     private TextView numberOfRoomsTextView;
+
+    /**
+     * Pole tekstowe do wyświetlenia liczby ścian
+     */
     private TextView numberOfEdgesTextView;
+
+    /**
+     * Pole tekstowe do wyświetlenia liczby pomiarów
+     */
     private TextView numberOfMeasurementsTextView;
+
+    /**
+     * Pole tekstowe do wyświetlenia liczby rezultatów
+     */
     private TextView numberOfResultsTextView;
+
+    /**
+     * Przycisk przejścia do aktywności ustawiania prędkości
+     */
     private Button setSpeedButton;
 
     @Override
@@ -34,8 +58,7 @@ public class Settings extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
         speedValueTextView = (TextView) findViewById(R.id.textViewSettingsGPSValue);
-       // speedValueTextView.setText(String.valueOf(pref.getFloat("velocity", -1f)));
-        speedValueTextView.setText("1.11");
+        speedValueTextView.setText(String.valueOf(pref.getFloat("velocity", 0f)));
 
         numberOfRoomsTextView = (TextView) findViewById(R.id.textViewSettingsRoomAmount);
         numberOfRoomsTextView.setText( Integer.toString(RoomsController.selectAll(getApplicationContext()).size()));
@@ -60,9 +83,42 @@ public class Settings extends AppCompatActivity {
 
     }
 
+    /**
+     * Przechodzi do aktywności ustawiania prędkości
+     */
     private void launchGPS( )
     {
         Intent intent = new Intent(this, UserSpeed.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
     }
 }

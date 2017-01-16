@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 /**
  * Aktywność służaca do wyboru pomiaru, z którego wyświetlimy mapę
+ * Created by Kamil
  */
 public class MeasurementChooser extends AppCompatActivity {
 
@@ -50,7 +51,6 @@ public class MeasurementChooser extends AppCompatActivity {
             {
                 Measurements measurement = adapter.getItem(position);
                 int idToPass = measurement.getIdMeasurements();
-                Log.d(TAG, "measurement: "+idToPass);
                 Intent intent = new Intent(MeasurementChooser.this, MeasurementView.class);
                 intent.putExtra("idMeasurement", idToPass);
                 intent.putExtra("idRooms", idRooms);
@@ -81,7 +81,6 @@ public class MeasurementChooser extends AppCompatActivity {
         {
 
             case R.id.menu_delete:
-                Log.d(TAG, "delete");
                 MeasurementsController controller = new MeasurementsController();
                 controller.deleteMeasurementAndAllDependencies(idToPass, getApplicationContext());
                 Toast.makeText(getApplicationContext(), R.string.deleted_measurement, Toast.LENGTH_SHORT).show();

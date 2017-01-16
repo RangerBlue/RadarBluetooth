@@ -15,8 +15,8 @@ import com.example.kamil.br.database.model.Rooms;
 import java.util.ArrayList;
 
 /**
- * aktywność służaca do wyboru pokoju, z którego chcemy wyświetlić
- * dane pomiary
+ * Aktywność służaca do wyboru pokoju, z którego wyświetlana jest mapa
+ * Created by Kamil
  */
 public class MeasurementChooseRoom extends AppCompatActivity {
 

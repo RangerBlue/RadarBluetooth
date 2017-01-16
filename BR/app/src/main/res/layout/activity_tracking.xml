@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_tracking"
     android:layout_width="match_parent"
@@ -8,6 +8,54 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:stretchColumns="*"
+    android:background="@color/colorBackground"
     tools:context="com.example.kamil.br.activities.main.Tracking">
-
-</RelativeLayout>
+    <TableRow
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/trackingNameTextView"
+            android:layout_gravity="center"
+            android:textSize="@dimen/medium_font"
+            />
+    </TableRow>
+    <TableRow
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/trackingAddressTextView"
+            android:layout_gravity="center"
+            android:textSize="@dimen/medium_font"
+            />
+    </TableRow>
+    <TableRow
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/trackingDistanceTextView"
+            android:layout_gravity="center"
+            android:textSize="@dimen/big_font"
+            />
+    </TableRow>
+    <TableRow
+        android:layout_weight="1">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            android:id="@+id/buttonTrackingSearch"
+            android:src = "@drawable/search_devices_icon"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/search"/>
+    </TableRow>
+</TableLayout>

@@ -19,25 +19,21 @@
             android:id="@+id/textViewListRoomViewerHeader"
             android:textSize="@dimen/medium_font"
             android:layout_gravity="center_horizontal"
-            android:layout_span="2"
+            android:layout_span="1"
             />
     </TableRow>
 
     <TableRow
         android:background="@color/colorPrimaryDark">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/type_small"
-            android:id="@+id/textRoomViewerType"
-            />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/name_small"
             android:id="@+id/textRoomViewerName"
+            android:layout_gravity="center"
+            android:layout_span="1"
             />
 
     </TableRow>
@@ -47,7 +43,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/listViewRoomViewer"
-            android:layout_span="2"
+            android:layout_span="1"
             />
     </TableRow>
 

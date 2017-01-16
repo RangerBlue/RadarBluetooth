@@ -11,11 +11,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kamil.br.R;
-import com.example.kamil.br.activities.settings.UserSpeed;
-import com.example.kamil.br.database.controller.WalkRatioController;
-import com.example.kamil.br.database.model.WalkRatio;
-
-import java.util.ArrayList;
 
 /**
  * Menu główne, tutaj znajduje się całe sterowanie aplikacji
@@ -96,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
         buttonTracking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isBluetoothEnabled())
+                    Toast.makeText(getApplicationContext(), R.string.bluetooth_required, Toast.LENGTH_SHORT).show();
+                else
                 trackingActivity();
             }
         });
@@ -104,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
         buttonRadar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                radar();
+                if(!isBluetoothEnabled())
+                    Toast.makeText(getApplicationContext(), R.string.bluetooth_required, Toast.LENGTH_SHORT).show();
+                else
+                    radar();
             }
         });
 
@@ -112,7 +113,10 @@ public class MainActivity extends AppCompatActivity {
         buttonSearchDevices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchDevices();
+                if(!isBluetoothEnabled())
+                    Toast.makeText(getApplicationContext(), R.string.bluetooth_required, Toast.LENGTH_SHORT).show();
+                else
+                    searchDevices();
             }
         });
 
@@ -124,14 +128,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       //checkBluetoothState();
+        checkBluetoothState();
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
+        //SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
 
-        ArrayList<WalkRatio> lista = (ArrayList<WalkRatio>) WalkRatioController.selectAll(getApplicationContext());
-        WalkRatioController.printAllTableToLog(lista);
-
-        Toast.makeText(this, String.valueOf(pref.getFloat("velocity", -1f)), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, String.valueOf(pref.getFloat("velocity", 0f)), Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         //jeśli nie istnieje
         if (mBluetoothAdapter == null)
         {
-            Log.e(TAG, String.valueOf(R.string.no_bluetooth));
+           // Log.e(TAG, String.valueOf(R.string.no_bluetooth));
             Toast.makeText(this,R.string.no_bluetooth , Toast.LENGTH_LONG).show();
             finish();
         }
@@ -184,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void trackingActivity()
     {
+        Intent intent = new Intent(this, Tracking.class);
+        startActivity(intent);
     }
 
     /**
@@ -210,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
     private void mappingMenu()
     {
         Intent intent = new Intent(this, MappingMenu.class);
-        Bundle bundle = new Bundle();
         startActivity(intent);
     }
 
@@ -237,6 +239,50 @@ public class MainActivity extends AppCompatActivity {
         {
             buttonEnableBT.setImageResource(R.drawable.bt_icon_red);
         }
+    }
+
+
+    /**
+     * sprawdza czy bluetooth jest włączony
+     * @return
+     */
+    private boolean isBluetoothEnabled()
+    {
+        if(mBluetoothAdapter.isEnabled())
+            return true;
+        else
+            return false;
+    }
+
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
     }
 
 }

@@ -36,8 +36,6 @@ public class RoomsController {
         values.put(Rooms.TYPE, room.getType());
         db.insert(Rooms.TABLE, null, values);
         db.close(); // Closing database connection
-        Log.d("Insert record: ", room.TABLE+" "+ room.getName());
-        Log.d("Insert record: ", room.TYPE+" "+ room.getType());
     }
 
     /**
@@ -53,7 +51,7 @@ public class RoomsController {
                 " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
         db.execSQL(delete);
         Log.d(TAG, "deleted record from rooms");
-        db.close(); // Closing database connection
+        db.close();
     }
 
     /**
@@ -223,7 +221,6 @@ public class RoomsController {
 
         if(rooms.isEmpty())
         {
-            Log.d("aa", "jestem pusty");
             Rooms returnRooms = new Rooms();
             returnRooms.setIdRooms(-1);
             rooms.add(returnRooms);

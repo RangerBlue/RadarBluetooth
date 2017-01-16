@@ -1,9 +1,7 @@
 package com.example.kamil.br.activities.mapping.path;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +10,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.kamil.br.activities.mapping.measurement.MeasurementCreate;
-import com.example.kamil.br.database.controller.RoomsController;
 import com.example.kamil.br.database.controller.WalkRatioController;
 import com.example.kamil.br.database.model.WalkRatio;
 import com.example.kamil.br.views.PathDrawView;
@@ -95,6 +93,8 @@ public class PathViewer extends AppCompatActivity  {
      */
     private int screenWidth ;
 
+    private float ratio = 0;
+
     private int idRooms;
 
     @Override
@@ -115,7 +115,6 @@ public class PathViewer extends AppCompatActivity  {
         map = (PathDrawView) findViewById(R.id.viewDrawMap);
         map.setData(list);
         map.setNumber(counter);
-      //  map.setScreenWidth(screenWidth);
         counterLimit = list.get(list.size()-1).getEdgeNumber();
 
         PathDataController.printAllTableToLog(list);
@@ -126,12 +125,10 @@ public class PathViewer extends AppCompatActivity  {
             @Override
             public void onClick(View v)
             {
-                Log.d(TAG, "next");
                 counterIncrement();
                 map.setNumber(counter);
                 map.invalidate();
-
-                Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
+                //Log.d(TAG, "Wybrana krawędź "+Integer.toString(counter));
                 hideButtonOnMainEdgeIfRatioIsSet(buttonStopStart);
             }
         });
@@ -143,7 +140,6 @@ public class PathViewer extends AppCompatActivity  {
             {
                 try
                 {
-                    Log.d(TAG, "stopstart");
                     if(isTheClockTicking)
                     {
                         buttonStopStart.setImageResource(R.drawable.start_process_icon);
@@ -159,12 +155,12 @@ public class PathViewer extends AppCompatActivity  {
                         timeStart = System.currentTimeMillis();
                         isTheClockTicking = true;
                         buttonNext.setVisibility(View.INVISIBLE);
+                        buttonSave.setVisibility(View.VISIBLE);
                         hideButtonIfRatioIsNotSet(buttonNext);
                     }
                 }
                 catch (ArithmeticException e)
                 {
-                    Log.d(TAG, "złapałem błąd");
                     new AlertDialog.Builder(PathViewer.this)
                             .setTitle(getResources().getString(R.string.error))
                             .setMessage(getResources().getString(R.string.error_path))
@@ -182,11 +178,13 @@ public class PathViewer extends AppCompatActivity  {
         });
 
         buttonSave = (ImageButton) findViewById(R.id.buttonPathViewerSave);
+        hideButtonIfRatioIsNotSet(buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 updateData(true);
+                Toast.makeText(getApplicationContext(), R.string.updated_edges, Toast.LENGTH_SHORT).show();
                 if( process == 1 )
                 launchMeasurementCreator();
             }
@@ -256,18 +254,11 @@ public class PathViewer extends AppCompatActivity  {
     public void getTimeDifference(long start, long stop)
     {
         long time = stop-start;
-        Log.d(TAG, "Czas w ms: "+Long.toString((time)));
+        //Log.d(TAG, "Czas w ms: "+Long.toString((time)));
         ArrayList<Integer> parallel = new ArrayList<>();
 
         for(int i = 0 ; i<=counterLimit ; i++)
         {
-            float jeden = PathData.getSegmentLength(list.get(i).getP1(), list.get(getCounterIncrement(i)).getP1(), list.get(i).getP2(), list.get(getCounterIncrement(i)).getP2());
-            float dwa =  PathData.getSegmentLength(list.get(counter).getP1(), list.get(getCounterIncrement()).getP1(), list.get(counter).getP2(), list.get(getCounterIncrement()).getP2());
-            float adin = list.get(i).getA();
-            float adin2 = list.get(counter).getA();
-            Log.d(TAG, "lalala"+jeden+","+dwa);
-            Log.d(TAG, "oololo"+adin+","+adin2);
-
             if( (list.get(i).getA() == list.get(counter).getA()) &&
                     (PathData.getSegmentLength(list.get(i).getP1(), list.get(getCounterIncrement(i)).getP1(), list.get(i).getP2(), list.get(getCounterIncrement(i)).getP2()) ==
                             PathData.getSegmentLength(list.get(counter).getP1(), list.get(getCounterIncrement()).getP1(), list.get(counter).getP2(), list.get(getCounterIncrement()).getP2())) &&
@@ -275,10 +266,8 @@ public class PathViewer extends AppCompatActivity  {
                     i!= counter)
             {
                 parallel.add(i);
-                Log.d(TAG, "MAM!");
             }
         }
-
 
         if(counter == 0)
         {
@@ -286,39 +275,16 @@ public class PathViewer extends AppCompatActivity  {
             float ratio = time/ segmentLength;
             PathData.setWalkRatio(ratio);
             PathData.setRatio(ratio);
+            this.ratio = ratio;
             WalkRatio item = new WalkRatio();
             item.setValue(ratio);
             item.setIdRooms(idRooms);
             WalkRatioController controller = new WalkRatioController();
             controller.insert(item, getApplicationContext());
-
-            Log.d(TAG, "Ratio: "+ratio);
-            Log.d(TAG, "Długość pierwszego(0) odcinka: "+Float.toString(segmentLength));
         }
         else
         {
-            Log.d(TAG,"sprawdzenie counter i getCounter "+ counter +","+getCounterIncrement());
-            Log.d(TAG, "Ratio: "+PathData.getRatio());
-
             PathData.setNewLength(time, list.get(counter), list.get(getCounterIncrement()), false);
-
-            for( Integer item : parallel)
-            {
-                Log.d(TAG, "paralel" + item);
-            }
-
-    /*
-            if(!parallel.isEmpty())
-            {
-                for( Integer item : parallel)
-                {
-                    if(PathData.isPointsCrossed(list.get(counter), list.get(getCounterIncrement()), list.get(item), list.get(getCounterIncrement(item))))
-                        PathData.setNewLength(time, list.get(getCounterIncrement(item)), list.get(item) );
-                    else
-                        PathData.setNewLength(time, list.get(item), list.get(getCounterIncrement(item)));
-                }
-            }
-*/
 
             if(!parallel.isEmpty())
             {
@@ -341,7 +307,7 @@ public class PathViewer extends AppCompatActivity  {
      */
     public void hideButtonIfRatioIsNotSet(ImageButton button)
     {
-        if(PathData.getRatio() == 0)
+        if(ratio == 0)
         {
             button.setVisibility(View.INVISIBLE);
         }
@@ -365,13 +331,11 @@ public class PathViewer extends AppCompatActivity  {
 
     private void updateData(boolean ifInDatabase)
     {
-        Log.d(TAG, "save");
         int listLength = list.size();
         //uaktualnienie wpółczynników funkcji
         for (int i = 0; i < listLength-1; i++)
         {
             PathData.setNewCoefficients(list.get(i), list.get(i+1));
-            Log.d(TAG, "iterator"+i+", "+i+1);
         }
         //ostatni punkt z pierwszym
         PathData.setNewCoefficients(list.get(listLength-1), list.get(0));
@@ -397,7 +361,7 @@ public class PathViewer extends AppCompatActivity  {
         Point size = new Point();
         display.getSize(size);
 
-        return (int) size.x;
+        return size.x;
     }
 
 
@@ -415,9 +379,6 @@ public class PathViewer extends AppCompatActivity  {
     @Override
     protected void onStop() {
         super.onStop();
-        //wyzerowanie ratia
-        //PathData.setRatio(0);
-       // Log.d(TAG, "wyzerowanie ratia");
     }
 
 

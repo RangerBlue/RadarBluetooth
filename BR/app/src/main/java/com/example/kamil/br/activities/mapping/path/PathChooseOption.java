@@ -62,10 +62,6 @@ public class PathChooseOption extends AppCompatActivity {
             }
         });
 
-        //drukowanie
-       List<PathData> all = new PathDataController().selectAll(getApplicationContext());
-       PathDataController.printAllTableToLog((ArrayList<PathData>) all);
-
         hideButtonIfPathAlreadyExists();
 
     }

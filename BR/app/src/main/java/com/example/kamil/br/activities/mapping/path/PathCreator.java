@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.PathData;
@@ -98,6 +99,7 @@ public class PathCreator extends AppCompatActivity {
                 Intent intent = new Intent(PathCreator.this, PathViewer.class);
                 intent.putExtra("id", idRooms);
                 intent.putExtra("process", process);
+                Toast.makeText(getApplicationContext(), R.string.added_edges, Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -106,13 +108,12 @@ public class PathCreator extends AppCompatActivity {
     }
 
     /**
-     * Rysowanie pól, na których zaznaczamy kształt
+     * Rysowanie pól, na których zaznaczany jest kształt
      */
     public void drawGrid()
     {
 
         GridLayout grid = (GridLayout) findViewById(R.id.grid);
-        //grid.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         int columnAndRowCount = (int) Math.sqrt(gridsCells);
         grid.setColumnCount(columnAndRowCount);
         grid.setRowCount(columnAndRowCount);
@@ -124,8 +125,6 @@ public class PathCreator extends AppCompatActivity {
         for (int i = 0; i < cells.length; i++)
         {
             cells[i] = new Button(this);
-            //[i].setBackground(getResources().getDrawable(R.drawable.curved_button));
-            cells[i].setBackground(gradient);
             //dodawanie pola
             grid.addView(cells[i], screenWidth / grid.getColumnCount(), screenWidth / grid.getColumnCount());
             final int i_ = i;
@@ -135,7 +134,6 @@ public class PathCreator extends AppCompatActivity {
                 public void onClick(View v) {
                     v.setEnabled(false);
                     v.setBackgroundColor(getResources().getColor(R.color.colorBlack));
-                    Log.d(TAG, "Numer pola: "+String.valueOf(i_));
                     position.add(i_);
                     numberOfVertex++;
                 }

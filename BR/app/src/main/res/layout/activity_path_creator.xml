@@ -30,7 +30,6 @@
         android:layout_height="match_parent"
         android:padding="5dp">
         <GridLayout
-
             android:id="@+id/grid"
             android:layout_gravity="center">
         </GridLayout>

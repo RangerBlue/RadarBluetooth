@@ -19,7 +19,6 @@ import com.example.kamil.br.adapters.BluetoothFinderAdapter;
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.model.BluetoothResults;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +52,7 @@ public class BluetoothFinder extends AppCompatActivity {
      * Kólko postępu
      */
     private ProgressDialog progressCircle;
+
     /**
      * Obiekt, który reaguje na powiadomienie, w tym przypadku bluetooth
      */
@@ -71,15 +71,16 @@ public class BluetoothFinder extends AppCompatActivity {
 
                 // pobranie rssi
                 int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-                Log.d(TAG, "znaleziono urządzenie: "+device.getName()+" o rssi: "+rssi+" dB");
+                //Log.d(TAG, "znaleziono urządzenie: "+device.getName()+" o rssi: "+rssi+" dBm");
 
                 // stworzenie obiektu opisującego pomiar
                 BluetoothResults bluetoothResults = new BluetoothResults();
 
-                DecimalFormat format = new DecimalFormat();
-                format.setMinimumFractionDigits(2);
 
-                bluetoothResults.setName(device.getName()+" "+getResources().getString(R.string.is)+" "+Float.toString(BluetoothDistance.getDistance(rssi, -1)).substring(0,4)+" "+getResources().getString(R.string.from_here));
+                String distance = Float.toString(BluetoothDistance.getDistance(rssi, -1));
+                if(distance.length()>4)
+                    distance = distance.substring(0,4);
+                bluetoothResults.setName(device.getName()+" "+getResources().getString(R.string.is)+" "+distance+" "+getResources().getString(R.string.from_here));
                 bluetoothResults.setAddress(device.getAddress());
                 bluetoothResults.setRssi(rssi);
                 bluetoothResults.setTime(System.currentTimeMillis());
@@ -96,7 +97,7 @@ public class BluetoothFinder extends AppCompatActivity {
             //zakończono szukanie
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
             {
-                Log.i(TAG, "zakończono szukanie");
+                //Log.i(TAG, "zakończono szukanie");
                 progressCircle.dismiss();
                 unregisterReceiver(this);
 
@@ -104,17 +105,14 @@ public class BluetoothFinder extends AppCompatActivity {
             //rozpoczęto szukanie
             else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
             {
-                Log.i(TAG, "rozpoczęto szukanie");
+                //Log.i(TAG, "rozpoczęto szukanie");
             }
-
-
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Log.i(TAG, "wywołanie onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_finder);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -126,7 +124,6 @@ public class BluetoothFinder extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Log.i(TAG, "Wciśnięto przycisk search");
                 progressCircle = new ProgressDialog(v.getContext());
                 progressCircle.setMessage(getResources().getString(R.string.progress_scanning));
                 progressCircle.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -161,8 +158,21 @@ public class BluetoothFinder extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause()
     {
+        super.onPause();
         super.onPause();
         if(mBluetoothAdapter != null)
         {
@@ -171,18 +181,14 @@ public class BluetoothFinder extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-       // unregisterReceiver(mReceiver);
+    protected void onDestroy()
+    {
         super.onDestroy();
     }
 }

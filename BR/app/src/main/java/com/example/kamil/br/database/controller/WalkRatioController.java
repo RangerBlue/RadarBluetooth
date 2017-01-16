@@ -35,7 +35,7 @@ public class WalkRatioController {
         values.put(WalkRatio.VALUE, walkRatio.getValue());
         values.put(WalkRatio.ID_ROOMS, walkRatio.getIdRooms());
         db.insert(WalkRatio.TABLE, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     /**
@@ -50,7 +50,7 @@ public class WalkRatioController {
                 " DELETE FROM " + WalkRatio.TABLE +
                         " WHERE WalkRatio." + WalkRatio.ID_WALKRATIO+"="+Integer.toString(id);
         db.execSQL(delete);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     /**
@@ -91,7 +91,7 @@ public class WalkRatioController {
     /**
      * zwraca całą tabele
      * @param context kontekst aplikacji
-     * @return
+     * @return tabela w formie listy
      */
     public static List<WalkRatio> selectAll(Context context)
     {

@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * Aktywność służaca do wyboru opcji związanych z pokojami czyli
- * utworzenie, wyświetlenie, edycja, usunięcie
+ * utworzenie, wyświetlenie,usunięcie
  * Created by Kamil
  */
 public class RoomMenu extends AppCompatActivity {
@@ -49,10 +49,6 @@ public class RoomMenu extends AppCompatActivity {
                 edit();
             }
         });
-
-        //wypisanie całej tabeli Rooms
-        List<Rooms> all = new RoomsController().selectAll(getApplicationContext());
-        RoomsController.printAllTableToLog((ArrayList<Rooms>) all);
 
     }
 

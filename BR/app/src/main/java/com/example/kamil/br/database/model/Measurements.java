@@ -1,6 +1,7 @@
 package com.example.kamil.br.database.model;
 
 /**
+ * Obiekt pomiaru
  * Created by Kamil on 2016-09-21.
  */
 public class Measurements {
@@ -10,9 +11,19 @@ public class Measurements {
     public static final String NAME = "name";
     public static final String ID_ROOMS = "idrooms";
 
-    //nazwy pól
+    /**
+     * identyfikator
+     */
     private int idMeasurements;
+
+    /**
+     * nazwa
+     */
     private String name;
+
+    /**
+     * identyfikator pomieszcenia
+     */
     private int idRooms;
 
     public int getIdRooms() {

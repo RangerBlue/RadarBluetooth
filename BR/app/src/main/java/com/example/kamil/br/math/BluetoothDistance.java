@@ -13,7 +13,6 @@ import java.util.Random;
  * RSSI to skrót od ang. Received Signal Strength Indication. Jest to wskaźnik mocy (nie jakości) odbieranego sygnału radiowego.
  * RSSI jest w dBm
  * Created by Kamil on 2016-10-09.
- * @link http://evilrobotfactory.blogspot.com/2014/05/estimating-distance-from-rssi-values.html
  */
 public class BluetoothDistance
 {
@@ -27,25 +26,24 @@ public class BluetoothDistance
      * n- wykładnik utraty sygnału
      * d - dystans
      * A-wartość RSSI w referencyjnym dystansie(tu będzie 1m prawdopodobnie)
-     * @param rssi wielkość rssi
+     * @param P wielkość rssi
      */
-    public static float getDistance(int rssi, float type)
+    public static float getDistance(int P, float type)
     {
-        Float n;
-        if( type != -1 )
-            n = type;
-        else
-            n = 2.0f;
-        
-        Log.d(TAG, "Odległość:  "+n);
-        int A = -77; // ustawione doświadczalnie                        xD
-        float d = (float) (Math.pow(10, (((-1*(rssi-A))) / (10 * n))));
+        int A = -74;
+        float n = 1.7f;
+        float d = (float) (Math.pow(10, ((A-P)) / (10 * n)));
         Log.d(TAG, "Odległość:  "+d);
-        Log.d(TAG,"rssi: "+rssi);
+        Log.d(TAG,"rssi: "+P);
         return d;
 
     }
 
+    /**
+     * zwraca unikalne losowe kolory dla ilości podanych elementów
+     * @param numberOfDevices liczba elementów
+     * @return lista kolorów
+     */
     public static ArrayList<Integer> getColorsForDevices(int numberOfDevices)
     {
         Random random = new Random();

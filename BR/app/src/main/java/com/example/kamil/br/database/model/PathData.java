@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Klasa służąca do opisu krawędzi danego pokoju, każda krawędź jest opisana w postaci półprostej,
  * punkt początkowy, oraz funkcja przechodząca przez ten punkt, punktem końcowym danej krawędzi jest
  * punkt początkowy następnej
- * Created by kamil on 30.07.16.
+ * Created by Kamil on 30.07.16.
  */
 public class PathData implements Serializable, Cloneable
 {
@@ -96,9 +96,8 @@ public class PathData implements Serializable, Cloneable
     private static int gridCells;
 
     /**
-     * nie wiem do czego to
+     * Identyfikator pokoju
      */
-    //Todo: ogarnąc do czego jest zdublowany
     private static int roomNumber;
 
     /**
@@ -250,10 +249,8 @@ public class PathData implements Serializable, Cloneable
      */
     public static void setNewLength(long time, PathData firstValue, PathData secondValue, boolean swap )
     {
-        float oldLength = getSegmentLength(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2()); Log.d(TAG," oldLength: "+Float.toString(oldLength) );
-        float newLength = time/ratio;  Log.d(TAG+" newLength",Float.toString(newLength) );
-        Log.d(TAG,"Punkt startowy: "+"("+(Float.toString(firstValue.getP1()))+","+Float.toString(firstValue.getP2())+")");
-        Log.d(TAG+"Punkt przed zmianą","("+(Float.toString(secondValue.getP1()))+","+Float.toString(secondValue.getP2())+")");
+        float oldLength = getSegmentLength(firstValue.getP1(), secondValue.getP1(), firstValue.getP2(), secondValue.getP2());
+        float newLength = time/ratio;
 
         //sprawdzenie czy liniowa czy nie
         if(firstValue.getIsIfLinear()==1)
@@ -277,18 +274,6 @@ public class PathData implements Serializable, Cloneable
                 getNewPointNotLinear(newLength, firstValue, secondValue);
         }
 
-        //wypisanie zmienonego wiersza
-        Log.d(TAG,
-                    "ID "+String.valueOf(secondValue.getIdPathData()) +
-                            " A "+ secondValue.getA() +
-                            " B "+ secondValue.getB() +
-                            " X "+ secondValue.getX() +
-                            " Linear "+ secondValue.getIsIfLinear() +
-                            " P1 "+ secondValue.getP1() +
-                            " P2 "+ secondValue.getP2() +
-                            " EdgeNumbers "+ secondValue.getEdgeNumber() +
-                            " IdRooms "+ secondValue.getIdRooms()
-            ) ;
 
     }
 
@@ -342,34 +327,32 @@ public class PathData implements Serializable, Cloneable
      * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
      * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
      */
-    private static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)  {
-
-
-        Log.d(TAG,"getNewPoint wywołanie");
-        float a = firstValue.getA(); Log.d(TAG+ " a", Float.toString(a));
-        float b = firstValue.getB(); Log.d(TAG+" b", Float.toString(b));
-        float x1 = firstValue.getP1(); Log.d(TAG+ " x1", Float.toString(x1));
-        float y1 = firstValue.getP2(); Log.d(TAG+" y1", Float.toString(y1));
-        float d = newLength; Log.d(TAG+"d", Float.toString(d));
-        float quadraticFunctionA = (1+a*a); Log.d(TAG+" qFA", Float.toString(quadraticFunctionA));
-        float quadraticFunctionB = 2*(a*(b-y1)-x1);  Log.d(TAG+" qFB", Float.toString(quadraticFunctionB));
-        float quadraticFunctionC = (float) (Math.pow((y1-b),2)+Math.pow(x1,2)-Math.pow(d,2)); Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
+    private static void getNewPoint(float newLength, PathData firstValue,PathData secondValue)
+    {
+        float a = firstValue.getA(); //Log.d(TAG+ " a", Float.toString(a));
+        float b = firstValue.getB(); //Log.d(TAG+" b", Float.toString(b));
+        float x1 = firstValue.getP1(); //Log.d(TAG+ " x1", Float.toString(x1));
+        float y1 = firstValue.getP2(); //Log.d(TAG+" y1", Float.toString(y1));
+        float d = newLength; //Log.d(TAG+"d", Float.toString(d));
+        float quadraticFunctionA = (1+a*a); //Log.d(TAG+" qFA", Float.toString(quadraticFunctionA));
+        float quadraticFunctionB = 2*(a*(b-y1)-x1);  //Log.d(TAG+" qFB", Float.toString(quadraticFunctionB));
+        float quadraticFunctionC = (float) (Math.pow((y1-b),2)+Math.pow(x1,2)-Math.pow(d,2)); //Log.d(TAG+"qFC", Float.toString(quadraticFunctionC));
         QuadraticFunction function = new QuadraticFunction(quadraticFunctionA, quadraticFunctionB, quadraticFunctionC);
 
         //obliczenie rozwiązań równania okręgu
-        Point solution1 = new Point(function.getX1(), firstValue.getA(), firstValue.getB()); Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
-        Point solution2 = new Point(function.getX2(), firstValue.getA(), firstValue.getB()); Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
+        Point solution1 = new Point(function.getX1(), firstValue.getA(), firstValue.getB()); //Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
+        Point solution2 = new Point(function.getX2(), firstValue.getA(), firstValue.getB()); //Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
 
         //ustawienie odległosci od nowego punktu to starego punktu
-        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
-        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
+        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); //Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
+        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); //Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
 
         //wybranie punktu znajdującego się bliżej staregp
         Point closerPoint = Point.getCloserSolution(solution1, solution2);
 
         //ustawienie nowego punktu
-        secondValue.setP1(closerPoint.x); Log.d(TAG+"wynik x", Float.toString(closerPoint.x));
-        secondValue.setP2(closerPoint.y); Log.d(TAG+"wynik y", Float.toString(closerPoint.y));
+        secondValue.setP1(closerPoint.x); //Log.d(TAG+"wynik x", Float.toString(closerPoint.x));
+        secondValue.setP2(closerPoint.y); //Log.d(TAG+"wynik y", Float.toString(closerPoint.y));
 
     }
 
@@ -381,18 +364,17 @@ public class PathData implements Serializable, Cloneable
      */
     private static void getNewPointNotLinear(float newLength, PathData firstValue,PathData secondValue)
     {
-        Log.d(TAG,"getNewPointNotLinear wywołanie");
 
-        Point solution1 = new Point(secondValue.getP1(), firstValue.getP2()+newLength); Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
-        Point solution2 = new Point(secondValue.getP1(), firstValue.getP2()-newLength); Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
+        Point solution1 = new Point(secondValue.getP1(), firstValue.getP2()+newLength); //Log.d(TAG+" solution1", "("+Float.toString(solution1.x)+","+Float.toString(solution1.y)+")");
+        Point solution2 = new Point(secondValue.getP1(), firstValue.getP2()-newLength); //Log.d(TAG+" solution2", "("+Float.toString(solution2.x)+","+Float.toString(solution2.y)+")");
 
-        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
-        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
+        solution1.setLength(getSegmentLength(secondValue.getP1(), solution1.x, secondValue.getP2(), solution1.y)); //Log.d(TAG+" s1 length", Float.toString(solution1.getLength()));
+        solution2.setLength(getSegmentLength(secondValue.getP1(), solution2.x, secondValue.getP2(), solution2.y)); //Log.d(TAG+" s2 length", Float.toString(solution2.getLength()));
 
         Point closerPoint = Point.getCloserSolution(solution1, solution2);
 
-        secondValue.setP1(closerPoint.x); Log.d(TAG+"wynik x", Float.toString(closerPoint.x));
-        secondValue.setP2(closerPoint.y); Log.d(TAG+"wynik y", Float.toString(closerPoint.y));
+        secondValue.setP1(closerPoint.x); //Log.d(TAG+"wynik x", Float.toString(closerPoint.x));
+        secondValue.setP2(closerPoint.y); //Log.d(TAG+"wynik y", Float.toString(closerPoint.y));
 
     }
 
@@ -464,21 +446,6 @@ public class PathData implements Serializable, Cloneable
         record.setIdRooms(idRooms);
         pathDataController.insert(record, applicationContext);
 
-
-
-        //wypisanie w logu calej listy funkcji
-        for (PathData item : target)
-        {
-            Log.d("Dane: : ",
-                    "a:" + Float.toString(item.getA()) +
-                            "|b:" + Float.toString(item.getB()) +
-                            "|x:" + Float.toString(item.getX()) +
-                            "|linear:" + Float.toString(item.getIsIfLinear()) +
-                            "|p1:" + Float.toString(item.getP1()) +
-                            "|p2:" + Float.toString(item.getP2()) +
-                            "|edgeNumber:" + Integer.toString(item.getEdgeNumber())+
-                            "|idRooms:" + Integer.toString(item.getIdRooms()));
-        }
     }
 
     /**
@@ -489,7 +456,6 @@ public class PathData implements Serializable, Cloneable
      */
     public static PathData positionToCoefficients(int position1, int position2)
     {
-        Log.d("Positions", Integer.toString(position1) + ", " + Integer.toString(position2));
         int xPosition1 = getXAxis(position1);
         int yPosition1 = getYAxis(xPosition1, position1);
         int xPosition2 = getXAxis(position2);
@@ -517,7 +483,8 @@ public class PathData implements Serializable, Cloneable
      * @param position pozycja narożnika
      * @return pozycja na osi x
      */
-    public static int getXAxis(int position) {
+    public static int getXAxis(int position)
+    {
         int divider = gridCells;
         int step = (int) Math.sqrt(gridCells);
 
@@ -547,7 +514,8 @@ public class PathData implements Serializable, Cloneable
      * @param order pozcyja narożnika
      * @return współrzędna narożnika na osi y
      */
-    public static int getYAxis(int xPosition, int order) {
+    public static int getYAxis(int xPosition, int order)
+    {
         int step = (int) Math.sqrt(gridCells);
         if (order < step - 1) {
             return 0;
@@ -562,8 +530,8 @@ public class PathData implements Serializable, Cloneable
      * @param firstValue Rekord z bazy opisujący daną krawedź(bez punktu końcowego)
      * @param secondValue Rekord z bazy opisujący daną krawedź(tylko punkt końcowy)
      */
-    public static void setNewCoefficients(PathData firstValue, PathData secondValue) {
-        Log.d(TAG, "wywołanie setNewCoefficients");
+    public static void setNewCoefficients(PathData firstValue, PathData secondValue)
+    {
         float x1 = firstValue.getP1();
         float y1 = firstValue.getP2();
         float x2 = secondValue.getP1();
@@ -574,11 +542,8 @@ public class PathData implements Serializable, Cloneable
         {
             PathData result = new PathData(x1, y1);
             firstValue.setA(result.getA());
-            Log.d(TAG, "Nowe a" + result.getA());
             firstValue.setB(result.getB());
-            Log.d(TAG, "Nowe b" + result.getB());
             firstValue.setX(result.getX());
-            Log.d(TAG, "Nowe x" + result.getX());
             firstValue.setIfLinear(result.getIsIfLinear());
         }
         else
@@ -588,16 +553,22 @@ public class PathData implements Serializable, Cloneable
             float b = (y1 - a * x1);
             PathData result = new PathData(a, b, x1, y1);
             firstValue.setA(result.getA());
-            Log.d(TAG, "Nowe a" + result.getA());
             firstValue.setB(result.getB());
-            Log.d(TAG, "Nowe b" + result.getB());
             firstValue.setX(result.getX());
-            Log.d(TAG, "Nowe x" + result.getX());;
             firstValue.setIfLinear(result.getIsIfLinear());
         }
 
     }
 
+    /**
+     * Funkcja sprawdzająca czy punkty początkowe i konćowe dwóch krawedzi leża po przeciwnych stronach
+     * (czy proste poprowadzone między nimi przecinają sie)
+     * @param edge1P1 punkt początkowy krawędzi 1
+     * @param edge1P2 punkt końcowy krawędzi 1
+     * @param edge2P1 punkt początkowy krawędzi 2
+     * @param edge2P2 punkt końcowy krawędzi 2
+     * @return
+     */
     public static boolean isPointsCrossed(PathData edge1P1, PathData edge1P2, PathData edge2P1, PathData edge2P2 )
     {
         float x1 = edge1P2.getA();

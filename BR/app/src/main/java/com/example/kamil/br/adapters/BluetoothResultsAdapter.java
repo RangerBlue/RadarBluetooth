@@ -14,8 +14,8 @@ import com.example.kamil.br.database.model.BluetoothResults;
 import java.util.ArrayList;
 
 /**
- * Created by Kamil on 2016-12-13.
  * Adapter do wyświetlania wyniów pomiaru bluetooth na liście rezultatów
+ * Created by Kamil
  */
 
 public class BluetoothResultsAdapter  extends ArrayAdapter<BluetoothResults> {
@@ -38,6 +38,8 @@ public class BluetoothResultsAdapter  extends ArrayAdapter<BluetoothResults> {
 
         //pobranie jednego elementu
         BluetoothResults btResutlt = bluetoothResultsList.get(position);
+
+
 
         //  Stwórz Inflater
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

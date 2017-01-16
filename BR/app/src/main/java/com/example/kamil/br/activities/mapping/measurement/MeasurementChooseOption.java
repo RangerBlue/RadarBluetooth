@@ -1,10 +1,12 @@
 package com.example.kamil.br.activities.mapping.measurement;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.kamil.br.R;
 import com.example.kamil.br.database.controller.MeasurementsController;
@@ -16,6 +18,7 @@ import java.util.List;
 /**
  * Aktywność służąca do wyboru między dodaniem nowego mapowania, a wybraniem istniejącego
  * do wyświetlenia lub edytowania
+ * Created by Kamil
  */
 public class MeasurementChooseOption extends AppCompatActivity {
 
@@ -34,10 +37,18 @@ public class MeasurementChooseOption extends AppCompatActivity {
      */
     private int idRooms;
 
+    /**
+     * adapter bluetooth
+     */
+    BluetoothAdapter mBluetoothAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_results_choose_option);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
@@ -61,8 +72,6 @@ public class MeasurementChooseOption extends AppCompatActivity {
         List<Measurements> all = new MeasurementsController().selectAll(getApplicationContext());
         MeasurementsController.printAllTableToLog((ArrayList<Measurements>) all);
 
-
-
     }
 
     /**
@@ -81,9 +90,14 @@ public class MeasurementChooseOption extends AppCompatActivity {
      */
     private void create()
     {
-        Intent intent = new Intent(this, MeasurementCreate.class);
-        intent.putExtra("idRooms", idRooms);
-        startActivity(intent);
+        if(!isBluetoothEnabled())
+            Toast.makeText(getApplicationContext(), R.string.bluetooth_required, Toast.LENGTH_SHORT).show();
+        else
+        {
+            Intent intent = new Intent(this, MeasurementCreate.class);
+            intent.putExtra("idRooms", idRooms);
+            startActivity(intent);
+        }
     }
 
     /**
@@ -96,5 +110,17 @@ public class MeasurementChooseOption extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * sprawdza czy bluetooth jest włączony
+     * @return
+     */
+    private boolean isBluetoothEnabled()
+    {
+        if(mBluetoothAdapter.isEnabled())
+            return true;
+        else
+            return false;
+    }
 
 }

@@ -65,7 +65,7 @@ public class BluetoothResultsController {
             values.put(BluetoothResults.ID_ROOMS, bluetoothResult.getIdRooms());
             db.insert(BluetoothResults.TABLE, null, values);
         }
-        db.close(); // Closing database connection
+        db.close();
     }
 
     /**

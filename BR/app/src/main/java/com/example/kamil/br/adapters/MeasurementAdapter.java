@@ -13,8 +13,8 @@ import com.example.kamil.br.database.model.Measurements;
 import java.util.ArrayList;
 
 /**
- * Created by Kamil on 2016-10-10.
  * Adapter do wyświetlania daty pomiaru na liście
+ * Created by Kamil on 2016-10-10.
  */
 public class MeasurementAdapter extends ArrayAdapter<Measurements>
 {

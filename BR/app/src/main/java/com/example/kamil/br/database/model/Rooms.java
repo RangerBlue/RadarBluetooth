@@ -1,6 +1,7 @@
 package com.example.kamil.br.database.model;
 
 /**
+ * Obiekt opisujacy pomieszczenia
  * Created by Kamil on 2016-09-21.
  */
 public class Rooms

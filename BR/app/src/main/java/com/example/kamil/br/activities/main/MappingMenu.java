@@ -15,6 +15,7 @@ import com.example.kamil.br.activities.mapping.room.RoomMenu;
 
 /**
  * Menu mapowania, glówna część aplikacji, obsługa mapowania
+ * Created by Kamil
  */
 public class MappingMenu extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class MappingMenu extends AppCompatActivity {
     private ImageButton buttonPath;
 
     /**
-     * Przycisk do edycji map
+     * Przycisk do edycji mapowania
      */
     private ImageButton buttonMap;
 

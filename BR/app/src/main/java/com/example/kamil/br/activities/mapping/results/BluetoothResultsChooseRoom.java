@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Aktywność służaca do wyboru, pokoju, w którym znaleziono urządzenie
+ * Created by Kamil
  */
 public class BluetoothResultsChooseRoom extends AppCompatActivity {
 

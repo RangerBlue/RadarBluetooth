@@ -2,14 +2,18 @@ package com.example.kamil.br.activities.mapping.measurement;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kamil.br.activities.settings.UserSpeed;
 import com.example.kamil.br.math.BluetoothDistance;
 import com.example.kamil.br.R;
 import com.example.kamil.br.activities.main.MappingMenu;
@@ -24,8 +28,11 @@ import java.util.ArrayList;
 /**
  * aktywność służąca do wyświetlenia mapy ze znalezionymi urządzeniami, w postaci punktów
  * w pomieszczeniu
+ * Created by Kamil
  */
 public class MeasurementView extends AppCompatActivity {
+
+    private String TAG = MeasurementView.class.getSimpleName();
 
     /**
      * widok na którym będzie wyświetlany wynik
@@ -51,7 +58,7 @@ public class MeasurementView extends AppCompatActivity {
      * Lista z nazwami unikalnych urządzeń
      */
     private ArrayList<String> distinctDevices;
-    private String TAG = MeasurementView.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +67,7 @@ public class MeasurementView extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth_results_view);
         map = (MapDrawView) findViewById(R.id.viewMapDraw);
 
+        checkSpeed();
 
         //odebranie paczki
         int idMeasurement = getIntent().getIntExtra("idMeasurement",-1);
@@ -70,7 +78,6 @@ public class MeasurementView extends AppCompatActivity {
         BluetoothResultsController btController = new BluetoothResultsController();
         ArrayList<BluetoothResults> bluetoothResultsList;
         bluetoothResultsList = (ArrayList<BluetoothResults>) btController.selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurement );
-        btController.printAllTableToLog(bluetoothResultsList);
 
         PathDataController pdController = new PathDataController();
         ArrayList<PathData> pathDataList ;
@@ -131,8 +138,20 @@ public class MeasurementView extends AppCompatActivity {
                    finish();
             }
         });
+    }
 
+    /**
+     * Sprawdzenie czy prędkość jest ustawiona
+     */
+    private void checkSpeed()
+    {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
 
-
+        if( pref.getFloat("velocity", 0f) == 0)
+        {
+            Toast.makeText(getApplicationContext(), R.string.speed_needed, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MeasurementView.this, UserSpeed.class);
+            startActivity(intent);
+        }
     }
 }

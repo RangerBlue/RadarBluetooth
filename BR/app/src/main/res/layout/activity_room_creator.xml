@@ -14,9 +14,12 @@
     <TableRow>
         <ImageView
             android:id="@+id/imageArrow"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             android:src="@drawable/arrow_icon"
             />
     </TableRow>
@@ -41,24 +44,6 @@
             />
     </TableRow>
 
-    <TableRow
-        android:background="@color/colorPrimaryDark">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/type"
-            android:layout_gravity="center"
-            android:id="@+id/textViewRoomCreatorType"
-           />
-    </TableRow>
-
-    <TableRow>
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/room_creator_spinner"
-            />
-    </TableRow>
 
     <TableRow>
         <ImageButton

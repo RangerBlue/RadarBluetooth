@@ -36,10 +36,6 @@ public class RoomCreator extends AppCompatActivity {
      * Pole tekstowe na nazwę pokoju
      */
     private EditText roomNameEditText;
-    /**
-     * Rozwijana lista na typ pokoju
-     */
-    private Spinner roomTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,14 +48,7 @@ public class RoomCreator extends AppCompatActivity {
 
         roomNameEditText = (EditText) findViewById(R.id.editTextRoomName);
 
-        roomTypeSpinner = (Spinner) findViewById(R.id.room_creator_spinner);
-        //tworzenie Array adaptera ze tablicy wartosci i defaultowych elementów spinera
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.room_type_arrays, android.R.layout.simple_spinner_item);
-        //wybranie layoutu który zostanie wykorzystany gdy pojawi sie lista
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roomTypeSpinner.setAdapter(adapter);
 
-        roomTypeSpinner.setSelection(0);
 
         confirmButton = (ImageButton) findViewById(R.id.buttonConfirm);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -70,16 +59,12 @@ public class RoomCreator extends AppCompatActivity {
                 {
                     Rooms room = new Rooms();
                     room.setName(roomNameEditText.getText().toString());
-                    Log.d("agsg", String.valueOf(getRoomType(roomTypeSpinner.getSelectedItemPosition())));
-                    room.setType(getRoomType(roomTypeSpinner.getSelectedItemPosition()));
+                    room.setType(0);
                     RoomsController roomController = new RoomsController();
                     roomController.insert(room, getApplicationContext());
                     Toast.makeText(getApplicationContext(), R.string.added_room, Toast.LENGTH_SHORT).show();
                     roomNameEditText.setFocusable(false);
                     roomNameEditText.setClickable(false);
-                    roomTypeSpinner.setFocusableInTouchMode(false);
-                    roomTypeSpinner.setFocusable(false);
-                    roomTypeSpinner.setClickable(false);
                     v.setClickable(false);
 
                     if(process == 1)
@@ -94,30 +79,6 @@ public class RoomCreator extends AppCompatActivity {
 
     }
 
-    /**
-     * Zwraca wspólczynnik w zależności od numeru typu pomieszczenia
-     * @param listPosition numer typu pomieszczenia
-     * @return wartość współczynnika
-     */
-    private float getRoomType(int listPosition)
-    {
-        float returnValue = 0;
-
-        switch (listPosition)
-        {
-            case 0:
-                returnValue =  1.6f;
-                break;
-            case 1:
-                returnValue = 2.7f;
-                break;
-            case 2:
-                returnValue = 2f;
-                break;
-        }
-
-        return returnValue;
-    }
 
     /**
      * Przechodzi do aktywnosci rysowania kształtu pomieszczenia

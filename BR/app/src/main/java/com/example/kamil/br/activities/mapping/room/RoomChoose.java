@@ -24,7 +24,7 @@ import com.example.kamil.br.database.model.Rooms;
 import java.util.ArrayList;
 
 /**
- * Aktywność służaca wybrania pokoju, który chcemy edytować: zmienić nazwę, typ lub usunąć
+ * Aktywność służaca wybrania pokoju, który chcemy edytować
  * Created by Kamil
  */
 public class RoomChoose extends AppCompatActivity {
@@ -102,7 +102,6 @@ public class RoomChoose extends AppCompatActivity {
                 RoomsController controller = new RoomsController();
                 controller.deleteRoomAndAllDependencies(idToPass, getApplicationContext());
                 Toast.makeText(getApplicationContext(), R.string.deleted_room, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "delete");
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);

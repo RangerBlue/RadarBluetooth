@@ -10,6 +10,10 @@ import com.example.kamil.br.R;
 import com.example.kamil.br.activities.mapping.room.RoomChoose;
 import com.example.kamil.br.activities.mapping.room.RoomCreator;
 
+/**
+ * Aktwyność służąca do wyboru działania w procesie
+ * Created by Kamil
+ */
 public class OptionRoom extends AppCompatActivity {
 
     /**

@@ -16,19 +16,36 @@ import java.util.ArrayList;
 /**
  * Widok w którym pokazywane jest odległość znalezionych urządzeń przez
  * nasze urzadzenie w formie graficznej
+ * Created by Kamil
  */
 public class RadarDrawView extends View {
-    private static ArrayList<BluetoothResults> data;
-    private Paint p;
+
     private static String TAG = RadarDrawView.class.getSimpleName();
+
+    /**
+     * Lista z danymi o rezultatach
+     */
+    private static ArrayList<BluetoothResults> data;
+
+    /**
+     * Obiekt paint
+     */
+    private Paint p;
+
+    /**
+     * Lista kolorów
+     */
     private static ArrayList<Integer> colorList;
+
+    /**
+     * Szerkość kanwy
+     */
     int canvasWidth;
+
+    /**
+     * Długośc kanwy
+     */
     int canvasHeight;
-
-    int ratio = 1000;
-    int radius = 3;
-
-
 
     public void setData(ArrayList<BluetoothResults> data)
     {
@@ -60,16 +77,11 @@ public class RadarDrawView extends View {
 
         p = new Paint();
         p.setAntiAlias(true);
-        //figura wypełniona
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.BLUE);
 
-        //dodać obliczanie współczynnika zależnie od urządzenia, gdy jest szersze itp
-
-
         canvasWidth = this.getMeasuredWidth();
         canvasHeight = this.getMeasuredHeight();
-
 
         drawAxis(canvas, p, canvasWidth, canvasHeight);
 
@@ -79,7 +91,6 @@ public class RadarDrawView extends View {
         {
             p.setStrokeWidth(2);
             p.setColor(colorList.get(i));
-            //figura pusta w środku
             p.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(canvasWidth/2,canvasWidth/2,MetersToPixels(BluetoothDistance.getDistance(e.getRssi(), -1)),p);
             Log.d(TAG,e.getName()+","+ Integer.toString(e.getRssi()));

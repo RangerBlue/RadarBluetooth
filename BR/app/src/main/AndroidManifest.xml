@@ -19,6 +19,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activities.main.MainActivity"
            >
             <intent-filter>
@@ -27,9 +28,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.mapping.measurement.MeasurementCreate"
-            android:label="@string/measurement_small"/>
+            android:label="@string/measurement_small"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.mapping.path.PathViewer"
-            android:label="@string/path_small"/>
+            android:label="@string/path_small"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.mapping.path.PathCreator"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -48,26 +51,32 @@
         <activity android:name=".activities.mapping.results.BluetoothResultsChooseRoom"
             android:label="@string/results_small"/>
         <activity android:name=".activities.main.BluetoothFinder"
-            android:label="@string/search_devices_small"/>
+            android:label="@string/search_devices_small"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.main.Radar"
-            android:label="@string/radar_small"/>
+            android:label="@string/radar_small"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.mapping.measurement.MeasurementChooseRoom"
             android:label="@string/measurement_small"/>
         <activity android:name=".activities.mapping.measurement.MeasurementChooser"
             android:label="@string/measurement_small"/>
         <activity android:name=".activities.mapping.measurement.MeasurementView"
-            android:label="@string/measurement_small"/>
+            android:label="@string/measurement_small"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.main.MappingMenu"
             android:label="@string/mapping_small"/>
         <activity android:name=".activities.settings.UserSpeed"
-            android:label="@string/user_speed"/>
+            android:label="@string/user_speed"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.mapping.results.BluetoothResultsEditor"
             android:label="@string/results_small"/>
         <activity android:name=".activities.mapping.results.BluetoothResultsMeasurementChooser"
             android:label="@string/results_small"/>
         <activity android:name=".activities.main.Settings"
             android:label="@string/settings"/>
-        <activity android:name=".activities.main.Tracking" />
+        <activity android:name=".activities.main.Tracking"
+            android:label="@string/tracking"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.mapping.process.OptionRoom"
             android:label="@string/button_edit_room"/>
     </application>

@@ -1,6 +1,7 @@
 package com.example.kamil.br.activities.settings;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,10 +9,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import com.example.kamil.br.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
 
 /**
  * Aktywność służąca do pomiaru średniej prędkości użytkownika z jaką będzie się
@@ -70,7 +75,12 @@ public class UserSpeed extends AppCompatActivity {
     private boolean isClockIsTicking = false;
 
     /**
-     * średnia wartość prędkości
+     * Pole tekstowe na wartość prędkości
+     */
+    private EditText speedEditText;
+
+    /**
+     *średnia prędkość
      */
     private Float averageValue;
 
@@ -78,6 +88,44 @@ public class UserSpeed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_speed);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View prompt = inflater.inflate(R.layout.gps_input, null);
+
+        AlertDialog.Builder promptDialog = new AlertDialog.Builder(this);
+        promptDialog.setView(prompt);
+        final EditText speedEditText = (EditText) prompt.findViewById(R.id.GPSinputEditText);
+
+
+        promptDialog
+                .setCancelable(false)
+                .setMessage(getResources().getString(R.string.gps_input))
+                .setPositiveButton(getResources().getString(R.string.set),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id)
+                            {
+                                final String value = speedEditText.getText().toString();
+                                if(value.isEmpty())
+                                {
+                                    Toast.makeText(getApplicationContext(), R.string.wrong_input, Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    saveSpeed(Float.valueOf(value));
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.your_speed)+" "+value, Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            }
+                        })
+                .setNegativeButton(getResources().getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = promptDialog.create();
+        alertDialog.show();
 
         values = new ArrayList<>();
 
@@ -108,7 +156,6 @@ public class UserSpeed extends AppCompatActivity {
 
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
-        Log.d(TAG, "gps"+locationManager.toString());
 
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -131,8 +178,6 @@ public class UserSpeed extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Toast.makeText(UserSpeed.this, "onStatusChanged ",
-                        Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -140,30 +185,17 @@ public class UserSpeed extends AppCompatActivity {
                 startButton.setImageResource(R.drawable.switch_on_off_icon);
                 progressBar.setVisibility(View.VISIBLE);
                 startButton.setClickable(true);
-                Toast.makeText(UserSpeed.this, "Enabled new provider ",
-                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(UserSpeed.this, "onProviderDisabled ",
-                        Toast.LENGTH_LONG).show();
 
             }
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Toast.makeText(UserSpeed.this, "Dziwny if ",
-                    Toast.LENGTH_LONG).show();
-
             return;
         }
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
     }

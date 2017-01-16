@@ -21,9 +21,11 @@ import java.util.ArrayList;
 /**
  * Aktywność służąca do wyświetlania wszystkich rezultatów w pomiarze, przytrzymując
  * item można go usunąć z menu podręcznego
+ * Created by Kamil
  */
 public class BluetoothResultsEditor extends AppCompatActivity {
 
+    private String TAG = getClass().getSimpleName();
     /**
      * widok listowy
      */
@@ -33,7 +35,6 @@ public class BluetoothResultsEditor extends AppCompatActivity {
      * adapter listy
      */
     private BluetoothResultsAdapter adapter;
-    private String TAG = getClass().getSimpleName();
 
     /**
      * id pomiaru
@@ -52,9 +53,15 @@ public class BluetoothResultsEditor extends AppCompatActivity {
         list = (ListView) findViewById(R.id.listViewMeasurementEditor);
         registerForContextMenu(list);
         ArrayList<BluetoothResults> all = (ArrayList<BluetoothResults>) new BluetoothResultsController().selectBluetoothResultsWhereIdRoomsAndIdMeasurements(getApplicationContext(), idRooms, idMeasurements);
+        ArrayList<BluetoothResults> all_ = new ArrayList<>();
+        for(BluetoothResults item : all)
+        {
+            if(item.getRssi()<0)
+               all_.add(item);
+        }
         BluetoothResultsController.printAllTableToLog(all);
 
-        adapter = new BluetoothResultsAdapter(this, all);
+        adapter = new BluetoothResultsAdapter(this, all_);
         list.setAdapter(adapter);
     }
 

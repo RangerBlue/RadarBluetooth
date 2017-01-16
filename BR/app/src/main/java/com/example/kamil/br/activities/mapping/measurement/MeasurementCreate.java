@@ -7,12 +7,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.kamil.br.activities.settings.UserSpeed;
 import com.example.kamil.br.database.controller.MeasurementsController;
 import com.example.kamil.br.database.model.Measurements;
 import com.example.kamil.br.views.PathDrawView;
@@ -32,14 +35,8 @@ public class MeasurementCreate extends AppCompatActivity
      * aktywność służaca do mapowania pomieszczenia, nawigujemy po kolei po krawędziach, każde przejscie po krawędzi trzeba
      * oznaczyć w czasie, naciskając przycisk startu a następnie stopu, gdy znajdziemy się w wybranym miejscu szukamy urządzenia,
      * gdy zakończymy proces możemy go zapisać
-     *
      * proces szukania urządzeń jest zasobożerną procedurą, trwa około 12 sekund
-     *
-    From documentation:
-    The discovery process usually involves an inquiry scan of about 12 seconds, followed by a page scan of each new device to retrieve its Bluetooth name.
-    Device discovery is a heavyweight procedure.
-
-    I suppose that you have to wait until discovery routine is finished and there's no ways to speed up this process.
+     * Created by Kamil
      */
     private String TAG = MeasurementCreate.class.getSimpleName();
     /**
@@ -135,21 +132,18 @@ public class MeasurementCreate extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            Log.d("OnReceive", "W środku ");
 
             String action = intent.getAction();
-            // When discovery finds a device
+            // znaleziono urządzenie
             if (BluetoothDevice.ACTION_FOUND.equals(action))
             {
 
-                // Get the bluetoothDevice object from the Intent
+                // pobranie urządzenia bluetooth
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                // Get the "RSSI" to get the signal strength as integer,
-                // but should be displayed in "dBm" units
+                // pobranie rssi
                 int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
 
-                // Create the device object and add it to the arrayList of devices
                 BluetoothResults bluetoothResults = new BluetoothResults();
                 bluetoothResults.setName(device.getName());
                 bluetoothResults.setAddress(device.getAddress());
@@ -159,6 +153,7 @@ public class MeasurementCreate extends AppCompatActivity
                 bluetoothResults.setIdMeasurements(idMeasurements);
                 bluetoothResults.setIdRooms(idRooms);
 
+                Toast.makeText(getApplicationContext(), R.string.found_device, Toast.LENGTH_SHORT).show();
 
                 //wstawianie do listy
                 arrayOfFoundBTDevices.add(bluetoothResults);
@@ -182,6 +177,8 @@ public class MeasurementCreate extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement_creator);
+
+        checkSpeed();
 
         //odebranie paczki
         idRooms = getIntent().getIntExtra("idRooms",-1);
@@ -214,7 +211,6 @@ public class MeasurementCreate extends AppCompatActivity
                 progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressBar.show();
                 progressBar.setCanceledOnTouchOutside(false);
-                Log.d("Wywołanie funkcji", "Wywoływanie display ..");
                 displayListOfFoundDevices();
             }
         });
@@ -275,8 +271,8 @@ public class MeasurementCreate extends AppCompatActivity
                 BluetoothResultsController controller = new BluetoothResultsController();
                 //wstawienie do bazy
                 controller.insertList(arrayOfFoundBTDevices, getApplicationContext());
-                BluetoothResultsController.printAllTableToLog(arrayOfFoundBTDevices);
-
+                //BluetoothResultsController.printAllTableToLog(arrayOfFoundBTDevices);
+                Toast.makeText(getApplicationContext(), R.string.measurement_added, Toast.LENGTH_SHORT).show();
                 if( process == 1 )
                     launchMeasurementViewer();
             }
@@ -333,17 +329,11 @@ public class MeasurementCreate extends AppCompatActivity
      */
     private void displayListOfFoundDevices()
     {
-        Log.d("DisplayList", "W środku ");
-
 
         mBluetoothAdapter.startDiscovery();
 
-        // Discover new devices
-        // Create a BroadcastReceiver for ACTION_FOUND
-
-        // Register the BroadcastReceiver
+        // zarejestrowanie broadcastreceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        //nowe rzeczy
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
@@ -358,7 +348,7 @@ public class MeasurementCreate extends AppCompatActivity
     public void createMeasurement(int idToPass)
     {
         Measurements measurement = new Measurements();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         measurement.setName(dateFormat.format(date));
         measurement.setIdRooms(idToPass);
@@ -378,6 +368,21 @@ public class MeasurementCreate extends AppCompatActivity
         intent.putExtra("process", process);
         intent.putExtra("idMeasurement", idMeasurement);
         startActivity(intent);
+    }
+
+    /**
+     * Sprawdzenie czy prędkość jest ustawiona
+     */
+    private void checkSpeed()
+    {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("options", 0);
+
+        if( pref.getFloat("velocity", 0f) == 0)
+        {
+            Toast.makeText(getApplicationContext(), R.string.speed_needed, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MeasurementCreate.this, UserSpeed.class);
+            startActivity(intent);
+        }
     }
 
     @Override

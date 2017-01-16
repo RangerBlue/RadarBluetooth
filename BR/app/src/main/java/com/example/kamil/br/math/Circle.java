@@ -3,11 +3,9 @@ package com.example.kamil.br.math;
 import android.util.Log;
 
 import com.example.kamil.br.database.model.PathData;
+import com.example.kamil.br.math.QuadraticFunction.Point;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import com.example.kamil.br.math.QuadraticFunction.Point;
 
 /**
  * Opisuje okrąg w układzie wsółrzędnych
@@ -84,7 +82,7 @@ public class Circle
         if(isCirclesCrossed(circle1, circle2))
         {
             QuadraticFunction container = new QuadraticFunction();
-            //jesli rozwiązaniem będzie funkcjia "nielioniwa"
+            //jesli rozwiązaniem nie będzie funkcja
             if(b == d)
             {
                 float x = (a + c)/2;
@@ -102,11 +100,7 @@ public class Circle
                 double p2x = x;
 
                 double p1y = result.getX1();
-
                 double p2y = result.getX2();
-
-
-
 
                 point1.setA((float) p1x);
                 point2.setA((float) p2x);
@@ -114,50 +108,37 @@ public class Circle
                 point1.setB((float) p1y);
                 point2.setB((float) p2y);
 
-
                 returnList.add(point1);
                 returnList.add(point2);
-
-
             }
             else
             {
                 //równanie y= a_x + b_
                 float a_ = (a-c)/(d-b);
-
                 float b_ = (float) ((Math.pow(c, 2) - Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(d, 2)+ Math.pow(r1, 2)-Math.pow(r2, 2)))/(2*(d-b));
-
 
                 //postać równania kwadratowego do otrzymania rozwiązań
                 float resultEquation_a = (float) (1 + Math.pow(a_, 2));
-
                 float resultEquation_b = (float) 2*(a_*b_ - a - b*a_);
-
                 float resultEquation_c = (float) (Math.pow(a, 2)+ Math.pow((b_ - b), 2) - Math.pow(r1, 2));
-
                 QuadraticFunction result = new QuadraticFunction(resultEquation_a, resultEquation_b, resultEquation_c);
-
 
                 //rozwiązania
                 Point point1= container.new Point();
                 Point point2= container.new Point();
 
                 float p1x = result.getX1();
-
                 float p2x = result.getX2();
 
 
-
                 float p1y = a_*p1x + b_;
-
                 float p2y = a_*p2x + b_;
 
+                point1.setA(p1x);
+                point2.setA(p2x);
 
-                point1.setA((float) p1x);
-                point2.setA((float) p2x);
-
-                point1.setB((float) p1y);
-                point2.setB((float) p2y);
+                point1.setB(p1y);
+                point2.setB(p2y);
 
                 returnList.add(point1);
                 returnList.add(point2);
@@ -166,26 +147,24 @@ public class Circle
         }
         else
         {
-
+            //okręgi nie przecinają się
             QuadraticFunction container = new QuadraticFunction();
             Point point1= container.new Point();
             Point point2= container.new Point();
 
-            point1.setA((float) circle1.getA());
-            point2.setA((float) circle2.getA());
+            point1.setA( circle1.getA());
+            point2.setA( circle2.getA());
 
-            point1.setB((float) circle1.getB());
-            point2.setB((float) circle2.getB());
-            float addLength = (PathData.getSegmentLength(point1.getA(), point2.getA(), point1.getB(), point2.getB()) - circle1.getR() - circle2.getR())/2;
+            point1.setB(circle1.getB());
+            point2.setB(circle2.getB());
+            float distanceBetweenCircles = (PathData.getSegmentLength(point1.getA(), point2.getA(), point1.getB(), point2.getB()));
+            float addLength  = distanceBetweenCircles/(circle1.getR()+circle2.getR());
+            addLength+=addLength*0.1f;
+            Circle circlePlus1 = new Circle(a, b, r1 * addLength);
+            Circle circlePlus2 = new Circle(c, d, r2 * addLength);
 
-
-            Circle circlePlus1 = new Circle(a, b, r1 + addLength);
-            Circle circlePlus2 = new Circle(c, d, r2 + addLength);
-
-            ArrayList<QuadraticFunction.Point> result;
+            ArrayList<Point> result;
             result = getIntersectionPointsOfTwoCircles(circlePlus1,circlePlus2);
-
-
 
             returnList.add(result.get(0));
             returnList.add(result.get(1));
@@ -194,6 +173,8 @@ public class Circle
 
     }
 
+
+
     /**
      * Zwraca liste punktów przecięcia trzech okręgów
      * @param first Pierwszy okrąg
@@ -201,14 +182,20 @@ public class Circle
      * @param third Trzeci okrąg
      * @return lista punktów
      */
-    public static ArrayList<QuadraticFunction.Point> getIntersectionPointsOfThreeCircles(Circle first, Circle second, Circle third)
+    public static ArrayList<Point> getIntersectionPointsOfThreeCircles(Circle first, Circle second, Circle third)
     {
-        ArrayList<QuadraticFunction.Point> result = new ArrayList<>();
-        result.ensureCapacity(6);
+        ArrayList<Point> result = new ArrayList<>();
+        ArrayList<Point> temp;
+        result.ensureCapacity(3);
 
-        result.addAll(getIntersectionPointsOfTwoCircles(first, second));
-        result.addAll(getIntersectionPointsOfTwoCircles(second, third));
-        result.addAll(getIntersectionPointsOfTwoCircles(third, first));
+        temp = getIntersectionPointsOfTwoCircles(first, second);
+        result.add(getAveragePoint(temp.get(0), temp.get(1)));
+
+        temp = getIntersectionPointsOfTwoCircles(second, third);
+        result.add(getAveragePoint(temp.get(0), temp.get(1)));
+
+        temp = getIntersectionPointsOfTwoCircles(third, first);
+        result.add(getAveragePoint(temp.get(0), temp.get(1)));
 
         return result;
     }
@@ -231,6 +218,13 @@ public class Circle
 
     }
 
+    /**
+     * Zwraca środek cięzkości trójkąta
+     * @param p1 punkt 1
+     * @param p2 punkt 2
+     * @param p3 punkt 3
+     * @return środek ciężkości
+     */
     public static QuadraticFunction.Point centerOfTriangle(QuadraticFunction.Point p1, QuadraticFunction.Point p2, QuadraticFunction.Point p3){
 
         QuadraticFunction container = new QuadraticFunction();
@@ -242,14 +236,20 @@ public class Circle
         return center;
     }
 
-    public static QuadraticFunction.Point centerOfPolygon(QuadraticFunction.Point p1, QuadraticFunction.Point p2, QuadraticFunction.Point p3, QuadraticFunction.Point p4){
-
-        QuadraticFunction.Point c1=centerOfTriangle(p1, p2, p4);
-        QuadraticFunction.Point c2=centerOfTriangle(p2, p3, p4);
-        float centerX = (c1.getA()+c2.getA())/2;
-        float centerY = (c1.getB()+c2.getB())/2;
+    /**
+     * Zwraca środek ciężkości trójkąta
+     * @param list lista trzech punktów
+     * @return środek ciężkości
+     */
+    public static Point centerOfTriangle(ArrayList<Point> list)
+    {
+        Point p1 = list.get(0);
+        Point p2 = list.get(1);
+        Point p3 = list.get(2);
         QuadraticFunction container = new QuadraticFunction();
-        QuadraticFunction.Point center = container.new Point();
+        float centerX = (p1.getA()+p2.getA()+p3.getA())/3;
+        float centerY = (p1.getB()+p2.getB()+p3.getB())/3;
+        Point center = container.new Point();
         center.setA(centerX);
         center.setB(centerY);
         return center;
@@ -262,199 +262,73 @@ public class Circle
      * @param tab
      * @return
      */
-    public static Point multiCircle(ArrayList<Circle> tab){
-        QuadraticFunction container = new QuadraticFunction();
-        Point center = container.new Point();
-        if(tab.size()==3){
-            ArrayList<Point> punkty;
-            ArrayList<PointsDistance> wyniki ;
-            ArrayList<Point> end = new ArrayList<>();
-            Point finalPoint = container.new Point();
-
-            punkty = getIntersectionPointsOfThreeCircles(tab.get(0), tab.get(1), tab.get(2));
-            wyniki = Circle.getClosestPoint(punkty);
-            wyniki = Circle.getTriangleOfResult(wyniki);
-            end = Circle.pairsOfPointsToPoints(wyniki);
-            finalPoint = Circle.centerOfTriangle(end.get(0), end.get(1), end.get(2));
-            Log.d("multiccore", "("+finalPoint.getA()+","+finalPoint.getB()+")");
+    public static Point multiCircle(ArrayList<Circle> tab)
+    {
+        if(tab.size()==3)
+        {
+            ArrayList<Point> points = getIntersectionPointsOfThreeCircles(tab.get(0), tab.get(1), tab.get(2));
+            Point finalPoint =Circle.centerOfTriangle(points.get(0), points.get(1), points.get(2));
             return finalPoint;
-
-
-        }else if(tab.size()==4){
+        }
+        else
+        {
             ArrayList<Point> cross = new ArrayList<>();
-            ArrayList<PointsDistance> wyniki ;
-            Point finalPoint = container.new Point();
-            ArrayList<Point> end = new ArrayList<>();
-            for(int i=0; i<tab.size()-2; i++){
-                for(int j=i+1; j<tab.size()-1; j++){
-                    for(int k=j+1; k<tab.size(); k++){
-
-                        cross = getIntersectionPointsOfThreeCircles(tab.get(i), tab.get(j), tab.get(k));
-                    }
-                }
+            for( int i = 0, j=i+1, k=j+1; i<tab.size() ; i++,j++,k++)
+            {
+                j = (j == tab.size()) ? 0 : j ;
+                k = (k == tab.size()) ? 0 : k ;
+                cross.add(centerOfTriangle(getIntersectionPointsOfThreeCircles(tab.get(i), tab.get(j), tab.get(k)))) ;
             }
-            wyniki = Circle.getClosestPoint(cross);
-            wyniki = Circle.getQuadOfResult(wyniki);
-            end = Circle.pairsOfPointsToPoints(wyniki);
-            finalPoint = Circle.centerOfPolygon(end.get(0), end.get(1), end.get(2), end.get(3));
-            System.out.print("Wynik dla 4 to:\nx: " + finalPoint.getA() +"\ny: " + finalPoint.getB());
-            return finalPoint;
-        }else{
-            ArrayList<Point> cross = new ArrayList<>();
 
-            for(int i=0; i<tab.size()-2; i++){
-                for(int j=i+1; j<tab.size()-1; j++){
-                    for(int k=j+1; k<tab.size(); k++){
-                        cross = getIntersectionPointsOfThreeCircles(tab.get(i), tab.get(j), tab.get(k));
-                    }
-                }
-            }
-            //wyniki = Circle.getClosestPoint(cross);
-            Point finalPoint = arithmeticMean(cross);
-            Log.d("Wynik dla wielu to:\\nx:", "("+finalPoint.getA()+","+finalPoint.getB()+")");
+            Point finalPoint = Circle.arithmeticMean(cross);
             return finalPoint;
 
         }
     }
 
+
     /**
-     * wyliczanie średniej artmetycznej
-     * @param point
-     * @return
+     * wyliczanie średniej z list punkyów
+     * @param point lista punktó
+     * @return średni punkt
      */
 
     public static Point arithmeticMean(ArrayList<Point> point)
     {
-        float sumx = 0;
-        float sumy = 0;
-        float ile = point.size();
+        float sumX = 0;
+        float sumY = 0;
+        float i = point.size();
         QuadraticFunction container = new QuadraticFunction();
-        Point wynik = container.new Point();
+        Point result = container.new Point();
 
         for( Point item : point )
         {
-            sumx+=item.getA();
-            sumy+=item.getB();
+            sumX+=item.getA();
+            sumY+=item.getB();
         }
-        wynik.setA(sumx/ile);
-        wynik.setB(sumy/ile);
-        return wynik;
-    }
-
-    public static ArrayList<PointsDistance> getClosestPoint(ArrayList<Point> listOfPoints)
-    {
-        ArrayList<PointsDistance> distanceBetweenPoints = new ArrayList<>();
-        for(int i=0; i<listOfPoints.size()-1;i++){
-            for(int j=1+i; j<listOfPoints.size();j++){
-                distanceBetweenPoints.add(new PointsDistance(listOfPoints.get(i), listOfPoints.get(j)));
-            }
-        }
-        return distanceBetweenPoints;
-    }
-
-    public static ArrayList<PointsDistance>getTriangleOfResult(ArrayList<PointsDistance> closestPoints)
-    {
-        ArrayList<PointsDistance> result = new ArrayList<>();
-        Collections.sort(closestPoints);
-
-        for(int i=0; i<3 ; i++)
-        {
-            result.add(closestPoints.get(i));
-        }
-
+        result.setA(sumX/i);
+        result.setB(sumY/i);
         return result;
     }
 
-    public static ArrayList<PointsDistance>getQuadOfResult(ArrayList<PointsDistance> closestPoints)
+
+    /**
+     * Wyliczanie średniej z dwóch punktów
+     * @param first punkt 1
+     * @param second punkt 2
+     * @return wynik
+     */
+    public static Point getAveragePoint(Point first, Point second)
     {
-        ArrayList<PointsDistance> result = new ArrayList<>();
-        Collections.sort(closestPoints);
+        QuadraticFunction container = new QuadraticFunction();
+        Point point = container.new Point();
+        point.setA((first.getA()+second.getA())/2);
+        point.setB((first.getB()+second.getB())/2);
 
-        for(int i=0; i<4 ; i++)
-        {
-            result.add(closestPoints.get(i));
-        }
-
-        return result;
+        return point;
     }
 
-    public static ArrayList<Point> pairsOfPointsToPoints(ArrayList<PointsDistance> list)
-    {
-        ArrayList<Point> returnList = new ArrayList<>();
-        returnList.ensureCapacity(3);
-        QuadraticFunction container= new QuadraticFunction();
 
-        for( PointsDistance item : list )
-        {
-            Point p = container.new Point();
-            p.setA((item.getP1().getA()+item.getP2().getA())/2);
-            p.setB((item.getP1().getB()+item.getP2().getB())/2);
-            returnList.add(p);
-
-        }
-        return  returnList;
-    }
-
-    public static class PointsDistance implements Comparable<PointsDistance>
-    {
-        private float distance;
-        private Point p1;
-        private Point p2;
-
-        public PointsDistance() {
-        }
-
-        public PointsDistance(Point p1, Point p2) {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.distance =PathData.getSegmentLength(p1.getA(), p2.getA(), p1.getB(), p2.getB());
-        }
-
-
-
-        public PointsDistance(float distance, Point p1, Point p2) {
-            this.distance = distance;
-            this.p1 = p1;
-            this.p2 = p2;
-        }
-
-        public float getDistance() {
-            return distance;
-        }
-
-        public void setDistance(float distance) {
-            this.distance = distance;
-        }
-
-        public Point getP1() {
-            return p1;
-        }
-
-        public void setP1(Point p1) {
-            this.p1 = p1;
-        }
-
-        public Point getP2() {
-            return p2;
-        }
-
-        public void setP2(Point p2) {
-            this.p2 = p2;
-        }
-
-        @Override
-        public int compareTo(PointsDistance t) {
-            if(distance == t.getDistance())
-                return 0;
-            else if(distance < t.getDistance())
-                return -1;
-            else
-                return 1;
-        }
-
-
-
-    }
 
     public static void printAllTableToLog(ArrayList<Circle> list)
     {
