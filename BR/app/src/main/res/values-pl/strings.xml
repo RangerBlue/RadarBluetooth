@@ -86,7 +86,7 @@
     <string name="mapping_small">Mapowanie</string>
     <string name="error_not_enough">Nie ma wystarczająco dużo danych aby zlokalizować urządzenie </string>
     <string name="error_not_enough_2"> potrzeba więcej niż 2 pomiary w mapowaniu </string>
-    <string name="gps_input">Jeśli nie chcesz lub nie możesz zmierzyć prędkości za pomocą GPS, możesz ustawić ją ręcznie w jednostkach m/s.</string>
+    <string name="gps_input">Jeśli nie chcesz lub nie możesz zmierzyć prędkości za pomocą GPS, możesz ustawić ją ręcznie w jednostkach m/s.(Typowa średnia prędkość to ok. 1.1 m/s)</string>
     <string name="cancel">Anuluj</string>
     <string name="tracking_input">Podaj nazwę lub adres urządzenia, możesz również podać oba.</string>
     <string name="added_edges">Dodano ściany</string>
@@ -97,4 +97,5 @@
     <string name="speed_needed">Musisz ustawić wartość prędkości jeśli chcesz skorzystac z tej funkcji</string>
     <string name="empty_measurement">Nie ma żadnych danych w tym pomiarze</string>
     <string name="bluetooth_required">Musisz włączyć bluetooth</string>
+    <string name="measure">Zmierz</string>
 </resources>

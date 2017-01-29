@@ -25,7 +25,9 @@ public class RoomsController {
         return "CREATE TABLE " + Rooms.TABLE + "(" +
                 Rooms.ID_ROOMS + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Rooms.WALK_RATIO + " REAL," +
-                Rooms.NAME + " TEXT )";
+                Rooms.NAME + " TEXT, " +
+                Rooms.A_VALUE + " INTEGER, "+
+                Rooms.N_VALUE + " REAL )";
     }
 
     public void insert(Rooms room, Context context)
@@ -34,6 +36,8 @@ public class RoomsController {
         ContentValues values = new ContentValues();
         values.put(Rooms.NAME, room.getName());
         values.put(Rooms.WALK_RATIO, room.getWalkRatio());
+        values.put(Rooms.A_VALUE, room.getA());
+        values.put(Rooms.N_VALUE, room.getN());
         db.insert(Rooms.TABLE, null, values);
         db.close(); // Closing database connection
     }
@@ -163,6 +167,66 @@ public class RoomsController {
     }
 
     /**
+     * Zwraca wartość A
+     * @param context kontekst aplikacji
+     * @param idRoom identyfikator pokoju
+     * @return
+     */
+    public static Integer selectAWhereId(Context context, int idRoom)
+    {
+        List<Integer> values = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.A_VALUE+
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Integer a  = cursor.getInt(cursor.getColumnIndex(Rooms.A_VALUE));
+                values.add(a);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return values.get(0);
+    }
+
+    /**
+     * Zwraca wartość n
+     * @param context kontekst aplikacji
+     * @param idRoom identyfikator pokoju
+     * @return
+     */
+    public static Float selectNWhereId(Context context, int idRoom)
+    {
+        List<Float> values = new ArrayList<>();
+        SQLiteDatabase db = new DBHandler(context).getWritableDatabase();
+        String selectQuery =
+                " SELECT " +
+                        "Rooms." + Rooms.N_VALUE+
+                        " FROM " + Rooms.TABLE +
+                        " WHERE Rooms." + Rooms.ID_ROOMS+"="+Integer.toString(idRoom);
+
+        // pętla po wszystkich wierszach i zapis do listy
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Float a  = cursor.getFloat(cursor.getColumnIndex(Rooms.N_VALUE));
+                values.add(a);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return values.get(0);
+    }
+
+    /**
      * zwraca całą tabelę
      * @param context kontekst aplikacji
      * @return
@@ -176,6 +240,8 @@ public class RoomsController {
                 "Rooms." + Rooms.ID_ROOMS +
                 ", Rooms." + Rooms.NAME +
                 ", Rooms." + Rooms.WALK_RATIO +
+                ", Rooms." + Rooms.A_VALUE+
+                ", Rooms." + Rooms.N_VALUE+
                 " FROM " + Rooms.TABLE;
 
         // pętla po wszystkich wierszach i zapis do listy
@@ -186,6 +252,8 @@ public class RoomsController {
                 room.setIdRooms(cursor.getInt(cursor.getColumnIndex(Rooms.ID_ROOMS)));
                 room.setName(cursor.getString(cursor.getColumnIndex(Rooms.NAME)));
                 room.setWalkRatio(cursor.getFloat(cursor.getColumnIndex(Rooms.WALK_RATIO)));
+                room.setA(cursor.getInt(cursor.getColumnIndex(Rooms.A_VALUE)));
+                room.setN(cursor.getFloat(cursor.getColumnIndex(Rooms.N_VALUE)));
                 rooms.add(room);
             } while (cursor.moveToNext());
         }
@@ -288,7 +356,9 @@ public class RoomsController {
             Log.d("Tabela Rooms: ",
                     "\t|ID| "+String.valueOf(element.getIdRooms()) +
                             "\t|Name| "+ String.valueOf(element.getName()) +
-                            "\t|Walkratio| "+ String.valueOf(element.getWalkRatio())
+                            "\t|Walkratio| "+ String.valueOf(element.getWalkRatio()) +
+                            "\t|A| "+ String.valueOf(element.getA()) +
+                            "\t|N| "+ String.valueOf(element.getN())
             ) ;
         }
     }

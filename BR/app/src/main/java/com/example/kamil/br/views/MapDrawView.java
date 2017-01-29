@@ -364,7 +364,7 @@ public class MapDrawView extends View {
     {
         p.setStrokeWidth(1);
        // canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,radius,p);
-        float length = getConvertedValue(BluetoothDistance.getDistance(value));
+        float length = getConvertedValue(BluetoothDistance.getDistance(value,path.get(0).getIdRooms(),getContext()));
         //canvas.drawCircle((record.getP1()+xMove)*ratio,(record.getP2Reverse()+yMove)*ratio,length*ratio,p);
         Circle circle = new Circle(record.getP1(), record.getP2(), length);
         circles.add(circle);

@@ -11,6 +11,9 @@ public class Rooms
     public static final String ID_ROOMS = "idrooms";
     public static final String NAME = "name";
     public static final String WALK_RATIO = "walkRatio";
+    public static final String A_VALUE= "A";
+    public static final String N_VALUE= "n";
+
 
     //nazwy pól
     /**
@@ -27,6 +30,16 @@ public class Rooms
      * typ pokoju
      */
     private float walkRatio;
+
+    /**
+     * wartość referencyjna RSSI
+     */
+    private float A;
+
+    /**
+     * wartość współczynnika dopasowującego funkcję
+     */
+    private float n;
 
     public String getName() {
         return name;
@@ -50,5 +63,21 @@ public class Rooms
 
     public void setWalkRatio(float walkRatio) {
         this.walkRatio = walkRatio;
+    }
+
+    public float getA() {
+        return A;
+    }
+
+    public void setA(float a) {
+        A = a;
+    }
+
+    public float getN() {
+        return n;
+    }
+
+    public void setN(float n) {
+        this.n = n;
     }
 }

@@ -97,4 +97,5 @@
     <string name="speed_needed">First you must set speed value for using this option</string>
     <string name="empty_measurement">There is no data in this measurement</string>
     <string name="bluetooth_required">You need to turn on bluetooth first</string>
+    <string name="measure">Measure</string>
 </resources>

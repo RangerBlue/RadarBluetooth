@@ -24,12 +24,12 @@ public class DBHandler extends SQLiteOpenHelper {
     /**
      * wersja bazy
      */
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * nazwa bazy
      */
-    private static final String DATABASE_NAME = "Database";
+    private static final String DATABASE_NAME = "Databaseusun";
 
 
 

@@ -50,6 +50,9 @@ public class RoomMenu extends AppCompatActivity {
             }
         });
 
+        ArrayList<Rooms> nowa = (ArrayList<Rooms>) RoomsController.selectAll(getApplicationContext());
+        RoomsController.printAllTableToLog(nowa);
+
     }
 
     /**

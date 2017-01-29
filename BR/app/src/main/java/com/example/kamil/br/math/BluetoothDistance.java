@@ -2,8 +2,11 @@ package com.example.kamil.br.math;
 
 import android.bluetooth.BluetoothDevice;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+
+import com.example.kamil.br.database.controller.RoomsController;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,6 +39,34 @@ public class BluetoothDistance
         Log.d(TAG, "Odległość:  "+d);
         Log.d(TAG,"rssi: "+P);
         return d;
+
+    }
+
+    public static float getDistance(int P, int idRooms, Context context)
+    {
+        int A = RoomsController.selectAWhereId(context, idRooms);
+        float n = RoomsController.selectNWhereId(context, idRooms);
+        float d = (float) (Math.pow(10, ((A-P)) / (10 * n)));
+
+        return d;
+
+    }
+
+    /**
+     * Obliczna wspólczynnik n
+     * @param tab tablica wartości RSSI w danej odległosci
+     * @return
+     */
+    public static float getValueN(int[] tab)
+    {
+        float sum=0;
+        for( int i=1 ; i<9; i++)
+        {
+            sum += (tab[0]-tab[i])/(10*Math.log10(i+1));
+        }
+        float n = sum/8;
+
+        return n;
 
     }
 
